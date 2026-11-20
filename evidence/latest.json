@@ -4,7 +4,7 @@
   "cso": "Orrinwick Beacon",
   "class": "c",
   "frmr_version": "2026.11.02.01",
-  "generated_at": "2026-11-20T13:58:32+00:00",
+  "generated_at": "2026-11-20T14:08:04+00:00",
   "summary": {
     "total": 46,
     "pass": 35,
@@ -1296,9 +1296,9 @@
           "method_id": "abo-iac-backup-policy",
           "kind": "static",
           "source": "environment/iac-plan.json",
-          "description": "Backup plan runs at least every 4h, keeps 14+ days, copies to a locked vault in us-west-2 and covers every protected data store",
+          "description": "Backup plan runs at least every 2h, keeps 14+ days, copies to a locked vault in us-west-2 and covers every protected data store",
           "status": "pass",
-          "expected": "<= 4h interval, >= 14d, locked copy in us-west-2",
+          "expected": "<= 2h interval, >= 14d, locked copy in us-west-2",
           "observed": "0 gap(s)",
           "findings": []
         },
