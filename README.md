@@ -8,7 +8,7 @@ This repository shows what a FedRAMP 20x Class C package could look like for a s
 - a **scope record** (the Minimum Assessment Scope) written as JSON, with documents and diagrams generated from it
 - **simulated validator output** (JSON files) that shows what continuous validation results could look like
 - a set of **documents** a provider would maintain, including ten policies that map to all 46 KSIs
-- a planned **trust center** that reads the JSON from this repository and displays the current posture
+- a **trust center** that reads the JSON from this repository and displays the current posture
 
 ## The fictional company
 
@@ -49,11 +49,11 @@ Open [`trust-center/index.html`](trust-center/index.html) in a browser for the f
 
 ## How this project was built
 
-An AI assistant (Claude) wrote much of the scaffolding: the build tools, the diagram generators, the generated documents and the trust center page. Manual work includes, making the scope decisions and writing the policies, the GRC validators and the documents related to reasoning, to help describe the decisions behind the fake company data. 
+An AI assistant (Claude) wrote much of the scaffolding: the build tools, the diagram generators, the generated documents and the trust center page. I make the scope decisions, write the policies and the validator designs, and decide what each check must prove. Claude writes the Python for the checks from my designs, and I review and test each one.
 
 ## Folder guide
 
-| Folder | What is in it | Human Yes or Claude No? |
+| Folder | What is in it | Edit by hand? |
 |---|---|---|
 | `docs/` | The written documents: company overview, data and resource inventory, scope document, security decision record, templates. `docs/diagrams/` holds the diagrams (`.drawio` files open in diagrams.net) | Yes, except `minimum-assessment-scope.md`, `rules-matrix.md`, `policies-index.md` and `policies/`, which are generated |
 | `policies/` | `policy-set.json`: the ten policies, one per KSI theme. `make policies` renders `docs/policies/` and `docs/policies-index.md` from it | Yes (this is the file to edit) |
@@ -61,7 +61,7 @@ An AI assistant (Claude) wrote much of the scaffolding: the build tools, the dia
 | `environment/` | The fictional company's data: company facts, recovery objectives, a pretend Terraform plan and a pretend live-state snapshot. Every resource names the scope-record ID it implements | Yes |
 | `validators/` | The check logic for each KSI (Python) | Yes |
 | `tools/` | Scripts that build everything else | Yes |
-| `evidence/` | Generated JSON: the KSI registry, the latest validation result, scope summary, and and a day-by-day history written by each run | No, generated |
+| `evidence/` | Generated JSON: the KSI registry, the latest validation result, scope summary, and a day-by-day history written by each run | No, generated |
 | `frmr/` | Where `make frmr` downloads FedRAMP's rules data. Nothing from FedRAMP is committed. See `frmr/PROVENANCE.md` | No |
 | `schemas/` | JSON Schemas that the project's own JSON files must follow | Rarely |
 | `trust-center/` | The trust center. `src/page.html` is the page source. `index.html` is generated from it as one self-contained file (open it in a browser). The page reads `evidence/latest.json` from this repository when it can reach it, and otherwise shows the data embedded in the snapshot. `brand/` holds the logo | `src/page.html` yes |
@@ -93,23 +93,15 @@ make test     # runs the unit tests
 make serve    # previews the trust center at http://localhost:8000
 ```
 
-**Windows.** Windows does not include `make`. Use one of these:
-- Install it with a package manager (for example `winget install GnuWin32.Make` or `choco install make`), or run the commands in WSL.
-- Or run the scripts one at a time. This is the same order as `make all`:
+**Windows.** Windows does not include `make`. Run `build.ps1` from the repository folder instead. It runs the same steps as `make all`, then the unit tests, and stops at the first step that fails:
 
 ```powershell
 pip install jsonschema
-python tools/fetch_frmr.py
-python tools/check_environment.py
-python tools/check_scope_changes.py
-python tools/build_registry.py c
-python tools/run_validators.py
-python tools/check_evidence.py
-python tools/build_mas.py
-python tools/build_policies.py
-python tools/build_docs.py
-python tools/build_trust_center.py
+.\build.ps1          # build and test
+.\build.ps1 -NoTest  # build only
 ```
+
+If PowerShell blocks the script, run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once. If you run the Python scripts yourself, set `$env:PYTHONUTF8 = "1"` first. Some scripts read files without naming UTF-8, and Windows then fails on characters such as curly quotes. `build.ps1` sets this for you. You can also install `make` (for example `winget install GnuWin32.Make`) or use WSL.
 
 Then open `trust-center/index.html` in a browser.
 
@@ -118,7 +110,7 @@ Then open `trust-center/index.html` in a browser.
 | Piece | Status |
 |---|---|
 | KSI text, class variants, rules | Real: downloaded from [FedRAMP/rules](https://github.com/FedRAMP/rules) at a pinned commit and schema-checked by `make check`. Outputs keep IDs and names only; read the statement text upstream |
-| Check logic | The author's interpretation of each KSI. Read the official statement in FedRAMP/rules before trusting a check. Where a check is narrower than the official statement, `validators/registry.py` records a coverage note (shown on the indicator). A known gap in the same file holds a KSI at `partial` |
+| Check logic | My interpretation of each KSI. My design for each check, and where it proves less than the official statement, is in [`docs/validator-design/`](docs/validator-design/). Read the official statement in FedRAMP/rules before trusting a check. Where a check is narrower than the official statement, `validators/registry.py` records a coverage note (shown on the indicator). A known gap in the same file holds a KSI at `partial` |
 | Environment data | Fictional. The validators read simulated files, not a real cloud account |
 | Validator output and history | Generated from the fictional data. History starts at the first run and grows with each run |
 | Documents | Templates with fictional content. `TODO` marks what is still to be written |
@@ -135,10 +127,16 @@ Each KSI is rolled up as `pass` (two or more automated methods, all passing, no 
 ## Roadmap
 
 1. Move access control from the demo (browser storage or Claude sign-in) to a real server.
-2. Build methods for the remaining KSIs, including recovery objectives and restore tests.
-3. Add third-party entries for hosted tools (source control, identity provider, endpoint management), a recovery environment resource, and a scope change log with a CI check.
-4. Write the remaining documents: incident response plan, cryptographic modules, significant change log, secure configuration guide.
-5. Complete the CPO including SDR. 
+2. Build the checks for my remaining nine GRC KSIs.
+3. Run the validators every day on a schedule, so the results stay current without a push (VDR-TFR-MVX requires at least every 3 days for machine-based resources at Class C).
+4. Write the validator design for all 46 KSIs in `docs/validator-design/` and close the gaps the reviews find.
+5. Write the remaining documents: incident response plan, cryptographic modules, significant change log and secure configuration guide. Rewrite the vulnerability report and publish it as JSON.
+6. Assemble an example FedRAMP Certification Package, the final submission to FedRAMP (FRC-CSO-PKG). It has three parts, each in Markdown and in JSON that validates against FedRAMP's published schema (FRC-CSO-JSN):
+   - **Certification Package Overview** (CPO-CSO-OVR): metadata and the accountable official (CPO-CSO-MTD), public information and service list (CDS-CSO-PUB, CDS-CSO-SVC), relevant policies (CDS-CSO-IRP), the scope (MAS-CSO-IIR, MAS-CSO-FLO, MAS-CSO-TPR), cryptographic modules (CMU-CSO-CMD) and the independent assessment results (IVV-CSO-ICP, CPO-CSO-OSA).
+   - **Security Decision Record** (SDR-CSO-FRR): for each applicable rule, how it is met, its verification, validation and artifacts, plus a summary (SDR-CSX-KSI) and historical metrics (SDR-CSX-KMT) for each KSI.
+   - **An example Ongoing Certification Report** (CCM-OCR-AVL).
+
+   A real package needs an independent assessment by a FedRAMP Recognized assessor within the previous 3 months (FRC-APP-FIA). This project includes only a labelled, empty template for the assessor's summary. A check will confirm that the package reflects validation within the previous 7 days (FRC-APP-FCP) and is updated at least every 2 weeks (CPO-CSX-CPM). The Marketplace listing (FRC-APP-MLF) and the application form (FRC-APP-AFC) are real-world steps and are out of scope.
 
 ## Visibility
 
