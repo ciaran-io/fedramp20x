@@ -89,6 +89,14 @@ Each KSI is rolled up as `pass` (two or more automated methods, all passing, no 
 | Documents | Written for the fictional company. `TODO` marks sections still to be written |
 | Cloud platform | AWS and Terraform are a design assumption for the fictional company. The scope record itself is vendor-neutral |
 
+## Design decisions
+
+The main decisions and the reasons for them are in the [security decision record](docs/security-decision-record.md). These show the trade-offs best:
+
+- **[SD-003: backup and restore for recovery](docs/security-decision-record.md#sd-003-recovery-uses-backup-and-restore-with-cross-region-encrypted-backups).** I chose cross-region encrypted backups with no standing recovery environment. A warm standby or pilot light would add a second environment to the assessment scope. Multi-AZ alone gives no protection from a regional failure.
+- **[SD-004: scope questions OQ1 to OQ10](docs/security-decision-record.md#sd-004-scope-decisions-accepted-oq1-to-oq10).** Billing, error tracking and support tooling stay out of scope only under stated conditions, for example that no identifiers leave in error reports. Each condition is a prohibited flow in the scope record.
+- **[SD-001: passwordless workforce sign-in](docs/security-decision-record.md#sd-001-workforce-authentication-is-passwordless-first).** Phishing-resistant authenticators only, with no password-only path. The IAM checks test both the policy and each user's enrolled factors.
+- **[A 90-day review of the recovery objectives](docs/validator-design/RPL.md#ksi-rpl-rro-reviewing-recovery-objectives).** FedRAMP leaves the review interval to the provider. I set 90 days, and the design records why VDR-TFR-NMV does not require it.
 ## How this project was built
 
 An AI assistant (Claude) wrote much of the scaffolding and drafts the validator designs and the check code. I make the scope decisions, write the policies, decide what each KSI check must prove, and review, correct and test every design and check before I commit it. The design reviews are where my judgement shows: for example, my review of RPL-ABO found two checks that were weaker than the policy.
@@ -106,6 +114,14 @@ An AI assistant (Claude) wrote much of the scaffolding and drafts the validator 
 
    A real package needs an independent assessment by a FedRAMP Recognized assessor within the previous 3 months (FRC-APP-FIA). This project includes only a labelled, empty template for the assessor's summary. A check will confirm that the package reflects validation within the previous 7 days (FRC-APP-FCP) and is updated at least every 2 weeks (CPO-CSX-CPM). The Marketplace listing (FRC-APP-MLF) and the application form (FRC-APP-AFC) are real-world steps and are out of scope.
 
+## Limits and what I would do next
+
+- **Fictional data.** The company, the environment and every record are invented. The fixtures were set to show a mostly healthy service with two open findings (KSI-IAM-SNU and KSI-SVC-EIS), so that the failure path is visible.
+- **No real cloud account.** The live methods read snapshot files in `environment/`. With a real AWS account, I would replace each snapshot with API calls (for example AWS Backup, IAM and AWS Config), run them under a read-only role with short-lived credentials, and keep the daily schedule.
+- **Checks narrower than the KSI.** Some checks prove less than the official statement. Each one has a coverage note in `validators/registry.py` and a gap entry in its design. For example, no check yet confirms the alert for a failed backup job (KSI-RPL-ABO).
+- **Not finished.** Nine of my GRC KSIs have no checks yet, and several documents still have `TODO` sections.
+- **No independent assessment.** A real Class C package needs a FedRAMP Recognized assessor. Nothing here has been assessed.
+- **Access gate.** The trust center's access control is a demonstration only (see [Visibility](#visibility)).
 ## Visibility
 
 This repository is public. Every document in it is readable by anyone, so the trust center's access gate is a demonstration only. GitHub Pages is not used. `trust-center/index.html` is a snapshot of the trust center as one HTML file. Download it and open it in a browser.
