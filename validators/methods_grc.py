@@ -1,19 +1,12 @@
-"""Author-owned validation methods for GRC-type KSIs (stubs).
+"""Validation methods for my ten GRC-type KSIs.
 
-These ten KSIs are assigned to the project author. Each
-KSI needs two automated methods (rule FRC-CSX-VVK, Class C):
-  static - checks what the policy or configuration SAYS must happen
-  live   - checks the records that show it DID happen
+Each KSI needs two automated methods (rule FRC-CSX-VVK, Class C):
+  static - checks what the policy or configuration says must happen
+  live   - checks the records that show it did happen
 
-How to finish one stub:
-  1. Fill in the matching data in environment/grc-records.json.
-  2. Replace `raise NotImplementedError` with code. Copy the pattern of abo_static
-     and abo_live in validators/methods.py. Use env.grc for the records.
-  3. Add the two functions to KSI_METHODS in validators/registry.py.
-  4. Run `make all` and read the result for your KSI in evidence/latest.json.
-
-This module is not imported anywhere until you register a method, so the stubs
-do not change any result.
+I write the design for each KSI in docs/validator-design/ first. A KSI counts
+only after both methods are registered in validators/registry.py. Functions that
+still raise NotImplementedError are not registered, so they change no result.
 """
 from __future__ import annotations
 
@@ -21,7 +14,7 @@ import datetime
 import json
 from pathlib import Path
 
-from .base import Env, MethodResult, result  # noqa: F401  (used once you write the methods)
+from .base import Env, MethodResult, result
 
 STATIC, LIVE = "static", "live"
 
