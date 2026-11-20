@@ -17,7 +17,7 @@ FedRAMP statement text is not copied into this repository. Each design describes
 | INR | 3 | Not started |
 | MLA | 5 | Not started |
 | PIY | 5 | Not started |
-| RPL | 4 | Not started |
+| RPL | 4 | [RPL.md](RPL.md) |
 | SCR | 2 | Not started |
 | SVC | 8 | Not started |
 
