@@ -14,7 +14,7 @@ FedRAMP statement text is not copied into this repository. Each design describes
 | CMT | 4 | Not started |
 | CNA | 8 | Not started |
 | IAM | 6 | Not started |
-| INR | 3 | Not started |
+| INR | 3 | [INR.md](INR.md) |
 | MLA | 5 | Not started |
 | PIY | 5 | Not started |
 | RPL | 4 | [RPL.md](RPL.md) |
