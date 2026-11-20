@@ -1,0 +1,150 @@
+{
+  "_notice": "FICTIONAL. Policy content for Orrinwick Labs, Inc. Edit this file by hand. tools/build_policies.py renders docs/policies/*.md, docs/policies-index.md and evidence/policies.json from it.",
+  "version": "0.1",
+  "effective": "2026-11-19",
+  "approver": "CISO",
+  "general": {
+    "applies_to": "All Orrinwick staff and contractors, and every information resource marked in scope in mas/mas-record.json.",
+    "exceptions": "An exception needs a written request, a named risk owner, a compensating control and an expiry date of no more than 90 days. The GRC Lead records approved exceptions in docs/security-decision-record.md. An expired exception is a policy violation.",
+    "enforcement": "Violations are reported to the GRC Lead. Staff violations follow the personnel security process (N5)."
+  },
+  "policies": [
+    {
+      "id": "POL-CED", "theme": "CED", "title": "Cybersecurity education policy",
+      "owner": "GRC Lead", "review_cadence": "Annual, and after any significant change",
+      "purpose": "Staff know the security duties of their role and the company checks that the training works.",
+      "resources": ["N1", "N2", "N3", "N5"],
+      "requirements": [
+        {"id": "CED-1", "text": "All staff complete general security training within 30 days of hire and once every 12 months.", "ksis": ["CED-RAT"]},
+        {"id": "CED-2", "text": "Staff with production access, support staff with tenant access and incident responders complete role-specific training before access is granted.", "ksis": ["CED-RAT"]},
+        {"id": "CED-3", "text": "Engineering staff complete secure software delivery training each year.", "ksis": ["CED-RAT"]},
+        {"id": "CED-4", "text": "Staff on the incident and recovery roster take part in at least one recovery exercise each year.", "ksis": ["CED-RAT"]},
+        {"id": "CED-5", "text": "The GRC Lead reviews training completion and effectiveness each quarter. Effectiveness evidence includes phishing exercise results and incident root causes.", "ksis": ["CED-RAT"]}
+      ]
+    },
+    {
+      "id": "POL-CMT", "theme": "CMT", "title": "Change management policy",
+      "owner": "Platform Lead", "review_cadence": "Annual",
+      "purpose": "Every change to the offering is recorded, reviewed, tested and reversible.",
+      "resources": ["E1", "E2", "E3", "P1", "P2", "P11"],
+      "requirements": [
+        {"id": "CMT-1", "text": "Every change to a production resource is made through the pipeline. The pipeline logs the change, the author, the reviewer and the result.", "ksis": ["CMT-LMC"]},
+        {"id": "CMT-2", "text": "Production machine-based resources are replaced from a trusted image or build. Staff do not modify running resources by hand.", "ksis": ["CMT-RMV"]},
+        {"id": "CMT-3", "text": "The Platform Lead reviews the change procedure each year and after any failed or emergency change.", "ksis": ["CMT-RVP"]},
+        {"id": "CMT-4", "text": "Every deployment runs automated tests for integrity and security before release and checks that the deployed state matches the intended state after release.", "ksis": ["CMT-VTD"]},
+        {"id": "CMT-5", "text": "A change that matches a significant change rule is entered in the significant change log. The GRC Lead sends the required notice within the rule timeline (SCN rules).", "ksis": ["CMT-LMC", "CMT-RVP"]}
+      ]
+    },
+    {
+      "id": "POL-CNA", "theme": "CNA", "title": "Cloud-native architecture policy",
+      "owner": "Platform Lead", "review_cadence": "Annual, and after any architecture change",
+      "purpose": "The architecture limits who and what can reach each resource and keeps the service available during component loss.",
+      "resources": ["P1", "P2", "P3", "P4", "P8", "P12", "E3"],
+      "requirements": [
+        {"id": "CNA-1", "text": "Each resource has a documented function and the minimum privileges needed for it.", "ksis": ["CNA-DFP"]},
+        {"id": "CNA-2", "text": "Infrastructure is declared in code. A resource that exists outside the code is a defect and is removed or brought into the code within 5 business days.", "ksis": ["CNA-EIS"]},
+        {"id": "CNA-3", "text": "Hardening baselines from the secure configuration guide apply to every resource type.", "ksis": ["CNA-IBP"]},
+        {"id": "CNA-4", "text": "Public exposure is limited to the load balancer, gateway and web application firewall (P8). Each open port and public endpoint is justified in the scope record.", "ksis": ["CNA-MAT"]},
+        {"id": "CNA-5", "text": "Production runs in more than one availability zone. Cross-region encrypted backups meet the recovery objectives in policy POL-RPL.", "ksis": ["CNA-OFA"]},
+        {"id": "CNA-6", "text": "Inbound and outbound traffic is denied by default. Allowed flows match the flows in the scope record.", "ksis": ["CNA-RNT"]},
+        {"id": "CNA-7", "text": "The Platform Lead reviews protections each year and after any significant change.", "ksis": ["CNA-RVP"]},
+        {"id": "CNA-8", "text": "Production uses logical networks and security groups to separate tenants' workloads from operations tooling and from other trust zones.", "ksis": ["CNA-ULN"]}
+      ]
+    },
+    {
+      "id": "POL-IAM", "theme": "IAM", "title": "Identity and access management policy",
+      "owner": "CISO", "review_cadence": "Annual",
+      "purpose": "Only authorised people and workloads reach resources, with the least privilege needed and for the shortest time.",
+      "resources": ["E6", "E7", "E8", "E9", "S4", "N1", "N2", "P1", "P5", "P6"],
+      "requirements": [
+        {"id": "IAM-1", "text": "Account creation, change and removal are automated from the identity provider. Leavers lose access within 24 hours.", "ksis": ["IAM-AAM"]},
+        {"id": "IAM-2", "text": "Workforce sign-in uses phishing-resistant passwordless methods (WebAuthn or platform authenticators). No password-only path exists.", "ksis": ["IAM-APM"]},
+        {"id": "IAM-3", "text": "Access follows least privilege. Permissions unused for 90 days are removed. Access is reviewed every quarter.", "ksis": ["IAM-ELP"]},
+        {"id": "IAM-4", "text": "Production and tenant-data access is granted just in time through the access gateway (E6), with an approval, a reason and an expiry.", "ksis": ["IAM-JIT"]},
+        {"id": "IAM-5", "text": "Workloads authenticate with short-lived credentials. Static keys rotate at least every 90 days and are held in secrets management (P6).", "ksis": ["IAM-SNU"]},
+        {"id": "IAM-6", "text": "Suspicious account activity raises an alert. The on-call responder starts a response within the time set in the incident response plan.", "ksis": ["IAM-SUS"]},
+        {"id": "IAM-7", "text": "Support impersonation (S4) needs a recorded customer approval and writes an audit entry that the customer can see.", "ksis": ["IAM-ELP", "IAM-JIT"]}
+      ]
+    },
+    {
+      "id": "POL-INR", "theme": "INR", "title": "Incident response policy",
+      "owner": "CISO", "review_cadence": "Annual, and after every incident",
+      "purpose": "Staff detect, classify, report and learn from security incidents in the time the rules require.",
+      "resources": ["N3", "N7", "E4"],
+      "requirements": [
+        {"id": "INR-1", "text": "The incident response plan defines roles, severity levels, evaluation steps and the communication timelines in the ICP rules.", "ksis": ["INR-RIR"]},
+        {"id": "INR-2", "text": "Each incident of severity moderate or above ends with an after action report within 10 business days.", "ksis": ["INR-AAR"]},
+        {"id": "INR-3", "text": "The CISO reviews the plan each year against the previous year's incidents.", "ksis": ["INR-RIR", "INR-RPI"]},
+        {"id": "INR-4", "text": "The security team reviews past incidents every quarter for repeated causes and records the findings.", "ksis": ["INR-RPI"]}
+      ]
+    },
+    {
+      "id": "POL-MLA", "theme": "MLA", "title": "Monitoring, logging and auditing policy",
+      "owner": "Security Operations Lead", "review_cadence": "Annual",
+      "purpose": "Security-relevant events are recorded, protected, searched and reviewed.",
+      "resources": ["E4", "P1", "P2", "P3", "P4", "P8", "E6", "E7"],
+      "requirements": [
+        {"id": "MLA-1", "text": "Log access is limited to named security and operations roles. Log changes and deletions raise an alert.", "ksis": ["MLA-ALA"]},
+        {"id": "MLA-2", "text": "Resource configurations are evaluated against the baseline at least daily.", "ksis": ["MLA-EVC"]},
+        {"id": "MLA-3", "text": "Each in-scope resource logs authentication, authorisation, administrative, configuration and data-access events. Logs do not contain alert summaries or credentials.", "ksis": ["MLA-LET"]},
+        {"id": "MLA-4", "text": "Logs flow to the security monitoring stack (E4), which correlates events and raises alerts.", "ksis": ["MLA-OSM"]},
+        {"id": "MLA-5", "text": "Security staff review alerts daily and review log coverage each quarter. Logs are kept for 12 months.", "ksis": ["MLA-RVL"]}
+      ]
+    },
+    {
+      "id": "POL-PIY", "theme": "PIY", "title": "Policy and inventory policy",
+      "owner": "GRC Lead", "review_cadence": "Annual",
+      "purpose": "The company knows what it runs, keeps its policies current and has executive backing for security.",
+      "resources": ["N3", "N4", "E1", "E5", "P1"],
+      "requirements": [
+        {"id": "PIY-1", "text": "The inventory of in-scope resources is generated from the scope record and checked against live state. A live resource with no scope ID is a finding.", "ksis": ["PIY-GIV"]},
+        {"id": "PIY-2", "text": "The executive team reviews security status, risks and policy exceptions every quarter. The review is minuted.", "ksis": ["PIY-RES"]},
+        {"id": "PIY-3", "text": "The executive team reviews security spending against the risk register each year.", "ksis": ["PIY-RIS"]},
+        {"id": "PIY-4", "text": "Security requirements are part of each stage of the software development lifecycle. Design review, code review and dependency scanning are required for every release.", "ksis": ["PIY-RSD"]},
+        {"id": "PIY-5", "text": "Orrinwick publishes a vulnerability disclosure route, answers reports within 3 business days and tracks each report to closure.", "ksis": ["PIY-RVD"]},
+        {"id": "PIY-6", "text": "The GRC Lead reviews every policy in this set at its stated cadence and records the review date.", "ksis": ["PIY-RES"]}
+      ]
+    },
+    {
+      "id": "POL-RPL", "theme": "RPL", "title": "Recovery planning policy",
+      "owner": "Platform Lead", "review_cadence": "Annual, and after any recovery test",
+      "purpose": "Orrinwick can restore the offering and its data within its stated objectives.",
+      "resources": ["P3", "P4", "P12", "E3", "P1"],
+      "requirements": [
+        {"id": "RPL-1", "text": "The recovery objectives are a recovery time of 8 hours and a recovery point of 4 hours. The Platform Lead reviews them each year and records the result in environment/recovery-objectives.json.", "ksis": ["RPL-RRO"]},
+        {"id": "RPL-2", "text": "Backups run at least every 2 hours, are encrypted and are copied to a second US region (P12) into a vault that has a compliance-mode lock. Backup jobs and copy jobs are monitored and a failed job raises an alert.", "ksis": ["RPL-ABO"]},
+        {"id": "RPL-3", "text": "The recovery plan describes how a recovery environment is built from infrastructure code and how data is restored into it. It is kept in step with the architecture.", "ksis": ["RPL-ARP"]},
+        {"id": "RPL-4", "text": "A restore test runs at least every 6 months. It records the time taken, the data age restored and any failure.", "ksis": ["RPL-TRC"]},
+        {"id": "RPL-5", "text": "The recovery environment, once built, falls under the same scope record and controls as production.", "ksis": ["RPL-ARP"]}
+      ]
+    },
+    {
+      "id": "POL-SCR", "theme": "SCR", "title": "Supply chain risk policy",
+      "owner": "GRC Lead", "review_cadence": "Annual",
+      "purpose": "Orrinwick knows which third parties touch federal customer data and manages the risk they carry.",
+      "resources": ["T1", "T2", "T3", "T4", "T5", "N6"],
+      "requirements": [
+        {"id": "SCR-1", "text": "Each third party in the data path is listed in the scope record as a third-party resource with its function, the data it receives and its authorisation status.", "ksis": ["SCR-MIT"]},
+        {"id": "SCR-2", "text": "A third party is reviewed before first use and each year after. Notification providers (T1 to T3) receive no alert summaries.", "ksis": ["SCR-MIT"]},
+        {"id": "SCR-3", "text": "The GRC Lead monitors third-party advisories, outages and ownership changes every month and records any that affect the offering.", "ksis": ["SCR-MON"]},
+        {"id": "SCR-4", "text": "Open-source and third-party software components are tracked in a software bill of materials for each release.", "ksis": ["SCR-MIT", "SCR-MON"]}
+      ]
+    },
+    {
+      "id": "POL-SVC", "theme": "SVC", "title": "Service configuration policy",
+      "owner": "Platform Lead", "review_cadence": "Annual",
+      "purpose": "Configuration, secrets, communications and data in the offering are managed by automation and checked against the intended state.",
+      "resources": ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "E2", "E3"],
+      "requirements": [
+        {"id": "SVC-1", "text": "Resource configuration is applied by automation. Manual configuration is a defect.", "ksis": ["SVC-ACM"]},
+        {"id": "SVC-2", "text": "Secrets live in secrets management (P6). Keys are held in the key management service (P5). Secrets rotate at least every 90 days and never appear in code, logs or tickets.", "ksis": ["SVC-ASM"]},
+        {"id": "SVC-3", "text": "The security team evaluates new tools and findings every quarter and records the improvements made.", "ksis": ["SVC-EIS"]},
+        {"id": "SVC-4", "text": "The offering does not keep residual access, credentials or data after a change. Deprecated resources are removed within 30 days.", "ksis": ["SVC-PRR"]},
+        {"id": "SVC-5", "text": "Customer data is deleted from production within 30 days of a verified customer request and from backups at the next backup expiry. Staging holds synthetic data only.", "ksis": ["SVC-RUD"]},
+        {"id": "SVC-6", "text": "Data at rest is encrypted. Queues, tables and volumes use customer-data keys from the key management service.", "ksis": ["SVC-SIN"]},
+        {"id": "SVC-7", "text": "Every data flow in the scope record uses TLS 1.2 or later with a valid certificate. Certificates renew automatically.", "ksis": ["SVC-VCM"]},
+        {"id": "SVC-8", "text": "Deployed images and packages are signed. The pipeline verifies the signature and a digest before release.", "ksis": ["SVC-VRI"]}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "_notice": "FICTIONAL. GRC records for Orrinwick Beacon. The author fills this file in by hand. Dates use YYYY-MM-DD. null means not done yet, so the matching check fails until you enter a date.",
+  "as_of": "2026-11-19",
+  "training": {
+    "cadence_days": 365,
+    "people": [
+      {
+        "id": "P-001",
+        "role": "engineer",
+        "general_completed": null,
+        "role_specific_completed": null,
+        "secure_delivery_completed": null,
+        "incident_or_recovery_completed": null
+      }
+    ],
+    "effectiveness_reviews": [
+      {
+        "date": null,
+        "summary": ""
+      }
+    ]
+  },
+  "ir_plan": {
+    "doc": "docs/incident-response-plan.md",
+    "review_cadence_days": 365,
+    "last_reviewed": null
+  },
+  "incidents": [
+    {
+      "id": "INC-001",
+      "severity": "moderate",
+      "opened": null,
+      "closed": null,
+      "aar_completed": null,
+      "lessons_incorporated": null
+    }
+  ],
+  "incident_pattern_reviews": [
+    {
+      "date": null,
+      "summary": ""
+    }
+  ],
+  "exec_reviews": [
+    {
+      "date": null,
+      "topic": "security status and risks",
+      "minutes_ref": null
+    }
+  ],
+  "security_investment_reviews": [
+    {
+      "date": null,
+      "summary": ""
+    }
+  ],
+  "vulnerability_disclosure": {
+    "policy_url": null,
+    "inbox": null,
+    "response_target_business_days": 3,
+    "last_program_review": null,
+    "reports": [
+      {
+        "id": "VDR-RPT-001",
+        "received": null,
+        "first_response": null,
+        "closed": null
+      }
+    ]
+  },
+  "change_procedure": {
+    "doc": "policies/policy-set.json#POL-CMT",
+    "review_cadence_days": 365,
+    "last_reviewed": null,
+    "failed_or_emergency_changes": [
+      {
+        "date": null,
+        "id": ""
+      }
+    ]
+  },
+  "protection_reviews": [
+    {
+      "date": null,
+      "summary": ""
+    }
+  ]
+}

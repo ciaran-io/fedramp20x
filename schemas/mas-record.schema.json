@@ -1,0 +1,595 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/mas-record.schema.json",
+  "title": "Minimum Assessment Scope record (demo)",
+  "description": "Project-defined structure for documenting MAS-CSO-IIR, -FLO, -MDI, -TPR and -SUP. This is NOT an official FedRAMP schema; FedRAMP does not prescribe one. Structural rules live here; cross-reference and consistency rules live in tools/build_mas.py.",
+  "type": "object",
+  "required": [
+    "record_version",
+    "frmr_version",
+    "cso",
+    "trust_zones",
+    "external_entities",
+    "data_classes",
+    "information_resources",
+    "information_flows",
+    "prohibited_flows",
+    "metadata_inclusion",
+    "third_party_resources",
+    "supplement",
+    "exclusions_note"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "level": {
+      "enum": [
+        "Low",
+        "Moderate",
+        "High"
+      ]
+    },
+    "category": {
+      "type": "object",
+      "required": [
+        "confidentiality",
+        "integrity",
+        "availability"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "confidentiality": {
+          "$ref": "#/$defs/level"
+        },
+        "integrity": {
+          "$ref": "#/$defs/level"
+        },
+        "availability": {
+          "$ref": "#/$defs/level"
+        }
+      }
+    },
+    "idlist": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z]+[0-9]+[a-z]?$"
+      },
+      "uniqueItems": true
+    },
+    "text": {
+      "type": "string",
+      "minLength": 8
+    }
+  },
+  "properties": {
+    "_notice": {
+      "type": "string"
+    },
+    "record_version": {
+      "type": "string"
+    },
+    "frmr_version": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "review",
+        "approved"
+      ]
+    },
+    "cso": {
+      "type": "object",
+      "required": [
+        "name",
+        "provider",
+        "target_class",
+        "description"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "target_class": {
+          "enum": [
+            "a",
+            "b",
+            "c",
+            "d"
+          ]
+        },
+        "description": {
+          "$ref": "#/$defs/text"
+        },
+        "overview_doc": {
+          "type": "string"
+        }
+      }
+    },
+    "trust_zones": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "in_cso",
+          "description"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^Z-[A-Z0-9]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "in_cso": {
+            "type": "boolean"
+          },
+          "description": {
+            "$ref": "#/$defs/text"
+          }
+        }
+      }
+    },
+    "external_entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "zone",
+          "description"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^X[0-9]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "zone": {
+            "type": "string"
+          },
+          "description": {
+            "$ref": "#/$defs/text"
+          }
+        }
+      }
+    },
+    "data_classes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "federal_customer_data",
+          "fcd_basis",
+          "security_category",
+          "category_rationale"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^D[0-9]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "$ref": "#/$defs/text"
+          },
+          "federal_customer_data": {
+            "enum": [
+              "yes",
+              "no",
+              "mixed"
+            ]
+          },
+          "fcd_basis": {
+            "$ref": "#/$defs/text"
+          },
+          "security_category": {
+            "$ref": "#/$defs/category"
+          },
+          "category_rationale": {
+            "$ref": "#/$defs/text"
+          }
+        }
+      }
+    },
+    "information_resources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "kind",
+          "group",
+          "zone",
+          "purpose",
+          "decision",
+          "handles",
+          "rationale"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^(P|E|S|C|T|N|SUP)[0-9]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "machine_based",
+              "non_machine_based"
+            ]
+          },
+          "group": {
+            "type": "string"
+          },
+          "zone": {
+            "type": "string"
+          },
+          "purpose": {
+            "$ref": "#/$defs/text"
+          },
+          "decision": {
+            "enum": [
+              "in_scope",
+              "third_party",
+              "out_of_scope",
+              "out_conditional",
+              "supplement"
+            ]
+          },
+          "handles": {
+            "$ref": "#/$defs/idlist"
+          },
+          "may_hold": {
+            "$ref": "#/$defs/idlist"
+          },
+          "impact_on_fcd": {
+            "$ref": "#/$defs/text"
+          },
+          "rationale": {
+            "$ref": "#/$defs/text"
+          },
+          "security_category": {
+            "$ref": "#/$defs/category"
+          },
+          "category_rationale": {
+            "$ref": "#/$defs/text"
+          },
+          "conditions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "text",
+                "evidence"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^COND-[A-Z0-9]+-[0-9]+$"
+                },
+                "text": {
+                  "$ref": "#/$defs/text"
+                },
+                "evidence": {
+                  "$ref": "#/$defs/text"
+                }
+              }
+            }
+          },
+          "performed_via": {
+            "$ref": "#/$defs/idlist"
+          }
+        }
+      }
+    },
+    "information_flows": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "type",
+          "source",
+          "destination",
+          "data_classes",
+          "protocol",
+          "authentication",
+          "encryption_in_transit",
+          "description"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^F[0-9]{2,3}$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "data",
+              "control"
+            ]
+          },
+          "source": {
+            "type": "string"
+          },
+          "destination": {
+            "type": "string"
+          },
+          "data_classes": {
+            "$ref": "#/$defs/idlist"
+          },
+          "protocol": {
+            "type": "string"
+          },
+          "authentication": {
+            "type": "string"
+          },
+          "encryption_in_transit": {
+            "type": "string"
+          },
+          "description": {
+            "$ref": "#/$defs/text"
+          },
+          "conditional_on": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^COND-[A-Z0-9]+-[0-9]+$"
+            }
+          }
+        }
+      }
+    },
+    "prohibited_flows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "from",
+          "to",
+          "data_classes",
+          "control",
+          "evidence"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^PF[0-9]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "from": {
+            "$ref": "#/$defs/idlist"
+          },
+          "to": {
+            "$ref": "#/$defs/idlist"
+          },
+          "data_classes": {
+            "$ref": "#/$defs/idlist"
+          },
+          "control": {
+            "$ref": "#/$defs/text"
+          },
+          "evidence": {
+            "$ref": "#/$defs/text"
+          }
+        }
+      }
+    },
+    "metadata_inclusion": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "metadata_type",
+          "generated_by",
+          "about",
+          "stored_in",
+          "note"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^MD[0-9]+$"
+          },
+          "metadata_type": {
+            "type": "string"
+          },
+          "generated_by": {
+            "type": "string"
+          },
+          "about": {
+            "type": "string"
+          },
+          "stored_in": {
+            "$ref": "#/$defs/idlist"
+          },
+          "data_class": {
+            "type": "string",
+            "pattern": "^D[0-9]+$"
+          },
+          "note": {
+            "$ref": "#/$defs/text"
+          }
+        }
+      }
+    },
+    "third_party_resources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "resource_id",
+          "provider_type",
+          "usage_and_configuration",
+          "justification",
+          "potential_impact",
+          "mitigation_measures",
+          "compensating_controls"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^TPR-[A-Z0-9]+$"
+          },
+          "resource_id": {
+            "type": "string"
+          },
+          "provider_type": {
+            "type": "string"
+          },
+          "authorization_status": {
+            "type": "string"
+          },
+          "usage_and_configuration": {
+            "$ref": "#/$defs/text"
+          },
+          "justification": {
+            "$ref": "#/$defs/text"
+          },
+          "potential_impact": {
+            "$ref": "#/$defs/text"
+          },
+          "mitigation_measures": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/text"
+            }
+          },
+          "compensating_controls": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        }
+      }
+    },
+    "supplement": {
+      "type": "object",
+      "required": [
+        "label",
+        "items"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "resource_id",
+              "relationship",
+              "certification_status",
+              "why_outside"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "resource_id": {
+                "type": "string"
+              },
+              "relationship": {
+                "$ref": "#/$defs/text"
+              },
+              "certification_status": {
+                "type": "string"
+              },
+              "why_outside": {
+                "$ref": "#/$defs/text"
+              }
+            }
+          }
+        }
+      }
+    },
+    "exclusions_note": {
+      "$ref": "#/$defs/text"
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "question",
+          "affects",
+          "leaning"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^OQ[0-9]+$"
+          },
+          "question": {
+            "$ref": "#/$defs/text"
+          },
+          "affects": {
+            "type": "string"
+          },
+          "leaning": {
+            "$ref": "#/$defs/text"
+          },
+          "status": {
+            "enum": [
+              "open",
+              "decided"
+            ]
+          },
+          "decision": {
+            "$ref": "#/$defs/text"
+          },
+          "decided_on": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          }
+        }
+      }
+    }
+  }
+}

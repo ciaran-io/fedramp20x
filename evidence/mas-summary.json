@@ -1,0 +1,221 @@
+{
+  "record_version": "0.1.0",
+  "frmr_version": "2026.11.02.01",
+  "decisions": {
+    "in_scope": 27,
+    "third_party": 7,
+    "out_conditional": 8,
+    "out_of_scope": 4,
+    "supplement": 1
+  },
+  "conditions": [
+    {
+      "id": "COND-E10-1",
+      "resource": "E10",
+      "text": "Staging runs in separate cloud accounts with no network path or shared credentials to production.",
+      "evidence": "Account and network configuration checks; credential-sharing scan."
+    },
+    {
+      "id": "COND-E10-2",
+      "resource": "E10",
+      "text": "Production data, snapshots and backups are never restored or copied into staging.",
+      "evidence": "Snapshot sharing deny policy and restore-event audit."
+    },
+    {
+      "id": "COND-E11-1",
+      "resource": "E11",
+      "text": "Only company-managed devices passing posture checks can use the production access gateway (E6).",
+      "evidence": "Gateway device posture policy and denied-access logs."
+    },
+    {
+      "id": "COND-S1-1",
+      "resource": "S1",
+      "text": "Structured intake rejects attachments and free-text alert content; redaction is applied to inbound text.",
+      "evidence": "Intake configuration test with sample payloads."
+    },
+    {
+      "id": "COND-S1-2",
+      "resource": "S1",
+      "text": "Support staff are trained and attest that tickets carry no customer alert content.",
+      "evidence": "Training records and quarterly ticket sampling."
+    },
+    {
+      "id": "COND-S2-1",
+      "resource": "S2",
+      "text": "Data loss prevention rules block alert content, contact lists and credentials in outbound and internal mail.",
+      "evidence": "DLP rule export and test messages."
+    },
+    {
+      "id": "COND-S3-1",
+      "resource": "S3",
+      "text": "Chat retention and DLP detect and remove customer content; policy prohibits sharing it.",
+      "evidence": "DLP configuration and sampled search results."
+    },
+    {
+      "id": "COND-C4-1",
+      "resource": "C4",
+      "text": "Only aggregate monthly counts per tenant leave the platform; no alert, user or content detail is exported.",
+      "evidence": "Billing export schema check and sample review."
+    },
+    {
+      "id": "COND-C5-1",
+      "resource": "C5",
+      "text": "Secret scanning and policy keep credentials and customer data out of the wiki; access limited to staff.",
+      "evidence": "Secret scan results and access list."
+    },
+    {
+      "id": "COND-T4-1",
+      "resource": "T4",
+      "text": "Scrubbing removes tenant, user and alert identifiers and all D1 to D4 content before any telemetry leaves the platform.",
+      "evidence": "Automated outbound payload test in the pipeline."
+    }
+  ],
+  "prohibited_flows": [
+    {
+      "id": "PF1",
+      "name": "Customer content into support and corporate tools",
+      "from": [
+        "P2",
+        "P3",
+        "E4",
+        "S4"
+      ],
+      "to": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "data_classes": [
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "D7"
+      ],
+      "control": "Structured intake, redaction and data loss prevention keep customer content out; staff attest to policy.",
+      "evidence": "DLP and intake tests with seeded sample content; quarterly sampling."
+    },
+    {
+      "id": "PF2",
+      "name": "Production data into staging",
+      "from": [
+        "P3",
+        "P4"
+      ],
+      "to": [
+        "E10"
+      ],
+      "data_classes": [
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "D5",
+        "D6",
+        "D7",
+        "D10"
+      ],
+      "control": "Separate accounts, deny policies on snapshot sharing and no restore paths from production.",
+      "evidence": "Policy configuration check and restore-event audit."
+    },
+    {
+      "id": "PF3",
+      "name": "Alert content into notification channels",
+      "from": [
+        "P2",
+        "P10"
+      ],
+      "to": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "data_classes": [
+        "D4"
+      ],
+      "control": "Payload policy: push, email, SMS and voice use reference IDs and fixed text only. A payload linter blocks sends that contain summary text.",
+      "evidence": "Linter unit tests and sampled outbound payload review."
+    },
+    {
+      "id": "PF4",
+      "name": "Identifiers and content to error tracking",
+      "from": [
+        "P2"
+      ],
+      "to": [
+        "T4"
+      ],
+      "data_classes": [
+        "D1",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "control": "Scrubbing removes tenant, user and alert identifiers and all content before telemetry leaves the platform.",
+      "evidence": "Pipeline test that injects canary values and asserts they never appear outbound."
+    },
+    {
+      "id": "PF5",
+      "name": "Unmanaged devices to production",
+      "from": [
+        "E11"
+      ],
+      "to": [
+        "E6",
+        "P1",
+        "P2",
+        "P3"
+      ],
+      "data_classes": [
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "D5",
+        "D6",
+        "D7"
+      ],
+      "control": "Gateway device posture checks deny any device not enrolled in management and EDR.",
+      "evidence": "Gateway policy export and denied-access log sample."
+    },
+    {
+      "id": "PF6",
+      "name": "Detailed usage data to billing",
+      "from": [
+        "P3"
+      ],
+      "to": [
+        "C4"
+      ],
+      "data_classes": [
+        "D3",
+        "D5"
+      ],
+      "control": "Export schema allows only per-tenant aggregate counts.",
+      "evidence": "Schema validation test on the export job."
+    },
+    {
+      "id": "PF7",
+      "name": "Credentials and customer content into the wiki",
+      "from": [
+        "P2",
+        "P3",
+        "P6",
+        "E4",
+        "S4"
+      ],
+      "to": [
+        "C5"
+      ],
+      "data_classes": [
+        "D7",
+        "D8"
+      ],
+      "control": "Secret scanning blocks credentials; policy and review keep customer content out of runbooks and design documents.",
+      "evidence": "Secret scan results on the wiki and a quarterly content sample."
+    }
+  ],
+  "check_counts": {
+    "INFO": 2
+  }
+}

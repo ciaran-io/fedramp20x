@@ -1,0 +1,2666 @@
+[
+ {
+  "process": "AFC",
+  "id": "AFC-CSO-ACK",
+  "name": "Acknowledge Receipt",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AFC",
+  "id": "AFC-CSO-CRA",
+  "name": "Complete Required Actions",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AFC",
+  "id": "AFC-CSO-EMR",
+  "name": "Emergency Message Routing",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AFC",
+  "id": "AFC-CSO-IMA",
+  "name": "Important Message Actions",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AFC",
+  "id": "AFC-CSO-INB",
+  "name": "Maintain a FedRAMP Security Inbox",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AFC",
+  "id": "AFC-CSO-NOC",
+  "name": "Notification of Changes",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AFC",
+  "id": "AFC-CSO-RCV",
+  "name": "Receive Email Without Disruption",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AFC",
+  "id": "AFC-CSO-TFG",
+  "name": "Trust @fedramp.gov and @gsa.gov",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AFC",
+  "id": "AFC-FRP-CDS",
+  "name": "Criticality Designators",
+  "force": "MUST",
+  "affects": [
+   "FedRAMP"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AFC",
+  "id": "AFC-FRP-COR",
+  "name": "Explain Corrective Actions",
+  "force": "MUST",
+  "affects": [
+   "FedRAMP"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AFC",
+  "id": "AFC-FRP-ERT",
+  "name": "Elevated Reaction Timeframes",
+  "force": "MUST",
+  "affects": [
+   "FedRAMP"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AFC",
+  "id": "AFC-FRP-PNT",
+  "name": "Public Notice of Emergency Tests",
+  "force": "MUST",
+  "affects": [
+   "FedRAMP"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AFC",
+  "id": "AFC-FRP-RPM",
+  "name": "Reaction Metrics",
+  "force": "MAY",
+  "affects": [
+   "FedRAMP"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AFC",
+  "id": "AFC-FRP-RQA",
+  "name": "Required Actions",
+  "force": "MUST",
+  "affects": [
+   "FedRAMP"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AFC",
+  "id": "AFC-FRP-UFS",
+  "name": "Use FedRAMP_Security Email in Emergencies",
+  "force": "MUST",
+  "affects": [
+   "FedRAMP"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AFC",
+  "id": "AFC-FRP-VRE",
+  "name": "Verified Emails",
+  "force": "MUST",
+  "affects": [
+   "FedRAMP"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AGU",
+  "id": "AGU-AGC-AIP",
+  "name": "Agency Internal Policies",
+  "force": "MUST",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AGU",
+  "id": "AGU-AGC-GRC",
+  "name": "Governance, Risk, and Compliance Tools",
+  "force": "MUST",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AGU",
+  "id": "AGU-AGC-LIA",
+  "name": "Agency Liaison Program",
+  "force": "SHOULD",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AGU",
+  "id": "AGU-AGC-NAA",
+  "name": "Notify FedRAMP After Authorization",
+  "force": "MUST",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AGU",
+  "id": "AGU-AGC-NAI",
+  "name": "Notify Additional Information Requests",
+  "force": "MUST",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AGU",
+  "id": "AGU-AGC-NAR",
+  "name": "No Additional Security Requirements",
+  "force": "MUST NOT",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AGU",
+  "id": "AGU-AGC-SIN",
+  "name": "Shared FedRAMP Inbox",
+  "force": "SHOULD",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AGU",
+  "id": "AGU-AGC-TPP",
+  "name": "No Certification Type or Path Preferences",
+  "force": "MUST NOT",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AGU",
+  "id": "AGU-AGC-WKG",
+  "name": "FedRAMP Working Groups",
+  "force": "SHOULD",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AGU",
+  "id": "AGU-USE-ABU",
+  "name": "Authorization Before Use",
+  "force": "MUST",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AGU",
+  "id": "AGU-USE-AFR",
+  "name": "Accept FedRAMP Rules",
+  "force": "MUST",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AGU",
+  "id": "AGU-USE-CLA",
+  "name": "Using FedRAMP Class A Certifications",
+  "force": "SHOULD NOT",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AGU",
+  "id": "AGU-USE-DSO",
+  "name": "Designate Senior Official",
+  "force": "SHOULD",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AGU",
+  "id": "AGU-USE-NFC",
+  "name": "Notify FedRAMP of Monitoring Concerns",
+  "force": "MUST",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AGU",
+  "id": "AGU-USE-NPC",
+  "name": "Notify Provider of Concerns",
+  "force": "SHOULD",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AGU",
+  "id": "AGU-USE-RCF",
+  "name": "Resolve Certification Package Conflicts",
+  "force": "MUST",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AGU",
+  "id": "AGU-USE-RIR",
+  "name": "Review All Information Resources",
+  "force": "SHOULD",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AGU",
+  "id": "AGU-USE-ROR",
+  "name": "Review Ongoing Certification Reports",
+  "force": "SHOULD",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "AGU",
+  "id": "AGU-USE-RSG",
+  "name": "Review Secure Configuration Guides",
+  "force": "MUST",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CCM",
+  "id": "CCM-AGM-CSC",
+  "name": "Consider Security Category",
+  "force": "SHOULD",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CCM",
+  "id": "CCM-AGM-ROR",
+  "name": "Review Ongoing Reports",
+  "force": "MUST",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CCM",
+  "id": "CCM-OCR-AFS",
+  "name": "Anonymized Feedback Summary",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CCM",
+  "id": "CCM-OCR-AVL",
+  "name": "Report Availability",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CCM",
+  "id": "CCM-OCR-FBM",
+  "name": "Feedback Mechanism",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CCM",
+  "id": "CCM-OCR-LSI",
+  "name": "Limit Sensitive Information",
+  "force": "MUST NOT",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CCM",
+  "id": "CCM-OCR-NRD",
+  "name": "Next Report Date",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CCM",
+  "id": "CCM-OCR-RPS",
+  "name": "Responsible Public Certification Report Sharing",
+  "force": "MAY",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CCM",
+  "id": "CCM-OCR-SOR",
+  "name": "Spread Out Reports",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CCM",
+  "id": "CCM-QTR-ACT",
+  "name": "Additional Content",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CCM",
+  "id": "CCM-QTR-MTG",
+  "name": "Quarterly Review Meeting",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CCM",
+  "id": "CCM-QTR-NID",
+  "name": "No Irresponsible Disclosure",
+  "force": "MUST NOT",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CCM",
+  "id": "CCM-QTR-NRD",
+  "name": "Next Review Date",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CCM",
+  "id": "CCM-QTR-REG",
+  "name": "Meeting Registration Info",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CCM",
+  "id": "CCM-QTR-RTP",
+  "name": "Restrict Third Parties",
+  "force": "SHOULD NOT",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CCM",
+  "id": "CCM-QTR-RTR",
+  "name": "Record/Transcribe Reviews",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CCM",
+  "id": "CCM-QTR-SAR",
+  "name": "Schedule Around Reports",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CCM",
+  "id": "CCM-QTR-SCR",
+  "name": "Share Content Responsibly",
+  "force": "MAY",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CCM",
+  "id": "CCM-QTR-SRR",
+  "name": "Share Recordings Responsibly",
+  "force": "MAY",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CDS",
+  "id": "CDS-CSO-AVR",
+  "name": "Availability Reporting",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CDS",
+  "id": "CDS-CSO-CBF",
+  "name": "Consistency Between Formats",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CDS",
+  "id": "CDS-CSO-FID",
+  "name": "Always Include FedRAMP ID",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CDS",
+  "id": "CDS-CSO-FRC",
+  "name": "FedRAMP Certification Reports",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CDS",
+  "id": "CDS-CSO-HAD",
+  "name": "Historical FedRAMP Certification Data",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CDS",
+  "id": "CDS-CSO-IRP",
+  "name": "Include Relevant Policies",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CDS",
+  "id": "CDS-CSO-PSM",
+  "name": "Per-Service Certification Materials",
+  "force": "MAY",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CDS",
+  "id": "CDS-CSO-PUB",
+  "name": "Public Information",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CDS",
+  "id": "CDS-CSO-RIS",
+  "name": "Responsible Information Sharing",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CDS",
+  "id": "CDS-CSO-RPS",
+  "name": "Responsible Public Package Sharing",
+  "force": "MAY",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CDS",
+  "id": "CDS-CSO-SVC",
+  "name": "Public Service List",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CDS",
+  "id": "CDS-CSO-UTC",
+  "name": "Use Trust Centers",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CDS",
+  "id": "CDS-TRC-AAI",
+  "name": "Agency Access Inventory",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CDS",
+  "id": "CDS-TRC-ACL",
+  "name": "Access Logging",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CDS",
+  "id": "CDS-TRC-HMR",
+  "name": "Human and Machine-Readable Certification Data",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CDS",
+  "id": "CDS-TRC-PAC",
+  "name": "Programmatic Access",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CDS",
+  "id": "CDS-TRC-SSM",
+  "name": "Self-Service Access Management",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CDS",
+  "id": "CDS-TRC-USH",
+  "name": "Uninterrupted Sharing",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CDS",
+  "id": "CDS-UTC-AAD",
+  "name": "Agency Access Denial",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CDS",
+  "id": "CDS-UTC-AGA",
+  "name": "Agency Access",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CMU",
+  "id": "CMU-CSO-CAT",
+  "name": "Configuration of Agency Tenants",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CMU",
+  "id": "CMU-CSO-CMD",
+  "name": "Cryptographic Module Documentation",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CMU",
+  "id": "CMU-CSO-UVM",
+  "name": "Using Validated Cryptographic Modules",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CPO",
+  "id": "CPO-CSO-MTD",
+  "name": "Certification Package Overview Metadata",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CPO",
+  "id": "CPO-CSO-OSA",
+  "name": "Overall Summary of Assessment in Certification Package",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CPO",
+  "id": "CPO-CSO-OVR",
+  "name": "Overview of the Cloud Service Offering",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "CPO",
+  "id": "CPO-CSX-CPM",
+  "name": "Certification Package Maintenance for 20x",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "FRC",
+  "id": "FRC-APP-AFC",
+  "name": "Applying for FedRAMP Certification",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "FRC",
+  "id": "FRC-APP-FCP",
+  "name": "Fresh FedRAMP Certification Package",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "FRC",
+  "id": "FRC-APP-FIA",
+  "name": "Fresh Independent Assessment",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "FRC",
+  "id": "FRC-APP-MLF",
+  "name": "Marketplace Listing First",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "FRC",
+  "id": "FRC-APP-NTP",
+  "name": "No Third-Party Applicants",
+  "force": "MUST NOT",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "FRC",
+  "id": "FRC-APP-USA",
+  "name": "Updating Stale Assessments",
+  "force": "MAY",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "FRC",
+  "id": "FRC-CSO-FCP",
+  "name": "FedRAMP Certification Profile",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "FRC",
+  "id": "FRC-CSO-JSN",
+  "name": "FedRAMP JSON Schemas",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "FRC",
+  "id": "FRC-CSO-MRA",
+  "name": "Maintain Responsibility and Accountability",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "FRC",
+  "id": "FRC-CSO-PKG",
+  "name": "FedRAMP Certification Package",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "FRC",
+  "id": "FRC-CSO-POP",
+  "name": "Pick One Program Certification Type",
+  "force": "MUST NOT",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "FRC",
+  "id": "FRC-CSX-MAS",
+  "name": "Application within MAS",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "FRC",
+  "id": "FRC-CSX-VVK",
+  "name": "Automated Verification and Validation of Key Security Indicators",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "FRC",
+  "id": "FRC-CSX-VVR",
+  "name": "Automated Verification and Validation of FedRAMP Rules",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IEC",
+  "id": "IEC-CSO-AIR",
+  "name": "Automated Incident Reporting",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IEC",
+  "id": "IEC-CSO-DPR",
+  "name": "Default PAIN Rating",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IEC",
+  "id": "IEC-CSO-EFI",
+  "name": "Estimate Federal Impact",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IEC",
+  "id": "IEC-CSO-EFR",
+  "name": "Evaluate FedRAMP Reportability",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IEC",
+  "id": "IEC-CSO-FIR",
+  "name": "Final Incident Report",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IEC",
+  "id": "IEC-CSO-IIR",
+  "name": "Initial Incident Report",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IEC",
+  "id": "IEC-CSO-OIR",
+  "name": "Ongoing Incident Reports",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IEC",
+  "id": "IEC-FRP-ORV",
+  "name": "Ongoing Review",
+  "force": "MUST",
+  "affects": [
+   "FedRAMP"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IVV",
+  "id": "IVV-CSO-DUS",
+  "name": "Document Use of Representative Samples",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IVV",
+  "id": "IVV-CSO-FIA",
+  "name": "FedRAMP Independent Assessments",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IVV",
+  "id": "IVV-CSO-ICP",
+  "name": "Inclusion in Certification Package",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IVV",
+  "id": "IVV-CSO-RAA",
+  "name": "Receiving Assessor Advice",
+  "force": "MAY",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IVV",
+  "id": "IVV-CSO-SEE",
+  "name": "Supply Evidence of Effectiveness",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IVV",
+  "id": "IVV-CSO-SEI",
+  "name": "Supply Evidence of Implementation",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IVV",
+  "id": "IVV-CSO-STE",
+  "name": "Supply Technical Explanations",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IVV",
+  "id": "IVV-CSO-USR",
+  "name": "Use Representative Samples",
+  "force": "MAY",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IVV",
+  "id": "IVV-CSX-AIA",
+  "name": "Annual Independent Assessments for 20x",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IVV",
+  "id": "IVV-IAS-EPX",
+  "name": "Engage Provider Experts",
+  "force": "SHOULD",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IVV",
+  "id": "IVV-IAS-OSA",
+  "name": "Overall Summary of Assessment",
+  "force": "MUST",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IVV",
+  "id": "IVV-IAS-SHA",
+  "name": "Sharing Advice",
+  "force": "MAY",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IVV",
+  "id": "IVV-IAS-SUM",
+  "name": "Assessment Summary",
+  "force": "MUST",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IVV",
+  "id": "IVV-IAS-VEF",
+  "name": "Validate Effectiveness",
+  "force": "MUST",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IVV",
+  "id": "IVV-IAS-VIM",
+  "name": "Verify Implementation",
+  "force": "MUST",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "IVV",
+  "id": "IVV-IAS-VIP",
+  "name": "Verify Inclusion in Certification Package",
+  "force": "MUST",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "MAS",
+  "id": "MAS-CSO-FLO",
+  "name": "Information Flows and Security Categories",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "MAS",
+  "id": "MAS-CSO-IIR",
+  "name": "Identify Information Resources",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "MAS",
+  "id": "MAS-CSO-MDI",
+  "name": "Metadata Inclusion",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "MAS",
+  "id": "MAS-CSO-SUP",
+  "name": "Supplemental Information",
+  "force": "MAY",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "MAS",
+  "id": "MAS-CSO-TPR",
+  "name": "Third-Party Information Resources",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "MKT",
+  "id": "MKT-CAS-LRQ",
+  "name": "Listing Requests for Advisors",
+  "force": "MUST",
+  "affects": [
+   "Advisors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "MKT",
+  "id": "MKT-CAS-RFR",
+  "name": "Advisor Responses to FedRAMP",
+  "force": "MUST",
+  "affects": [
+   "Advisors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "MKT",
+  "id": "MKT-CAS-WEB",
+  "name": "Website Requirements for Advisors",
+  "force": "MUST",
+  "affects": [
+   "Advisors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "MKT",
+  "id": "MKT-CSO-MLR",
+  "name": "Marketplace Listing Requirements",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "MKT",
+  "id": "MKT-CSO-PML",
+  "name": "Provider Marketplace Listing Requests",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "MKT",
+  "id": "MKT-FRP-SOF",
+  "name": "Scope of FedRAMP",
+  "force": "MUST NOT",
+  "affects": [
+   "FedRAMP"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "MKT",
+  "id": "MKT-IAS-LRQ",
+  "name": "Listing Requests for Assessors",
+  "force": "MUST",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "MKT",
+  "id": "MKT-IAS-OFR",
+  "name": "Only FedRAMP Recognized Assessors",
+  "force": "MUST",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "MKT",
+  "id": "MKT-IAS-WEB",
+  "name": "Website Requirements for Assessors",
+  "force": "MUST",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "MKT",
+  "id": "MKT-IIP-AGU",
+  "name": "Agency Use Cases",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "MKT",
+  "id": "MKT-IIP-DCP",
+  "name": "Demonstrating Continuous Progress",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "MKT",
+  "id": "MKT-IIP-DLA",
+  "name": "Deadline for Assessment",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "REC",
+  "id": "REC-FRP-DRD",
+  "name": "Double Revocation Disqualification",
+  "force": "MUST NOT",
+  "affects": [
+   "FedRAMP"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "REC",
+  "id": "REC-FRP-FOC",
+  "name": "Foreign Ownership Collection",
+  "force": "MUST",
+  "affects": [
+   "FedRAMP"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "REC",
+  "id": "REC-FRP-RAO",
+  "name": "Recognized Assessors Only",
+  "force": "MUST NOT",
+  "affects": [
+   "FedRAMP"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "REC",
+  "id": "REC-IAS-ACC",
+  "name": "A2LA Accreditation",
+  "force": "MUST",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "REC",
+  "id": "REC-IAS-ADA",
+  "name": "Actually Do Assessments",
+  "force": "MUST",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "REC",
+  "id": "REC-IAS-AFI",
+  "name": "Annual Foreign Interest Reports",
+  "force": "MUST",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "REC",
+  "id": "REC-IAS-ANR",
+  "name": "Annual Surveillance Assessment",
+  "force": "MUST",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "REC",
+  "id": "REC-IAS-CAP",
+  "name": "Corrective Action Plan",
+  "force": "MUST",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "REC",
+  "id": "REC-IAS-CFI",
+  "name": "Changes in Foreign Interest",
+  "force": "MUST",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "REC",
+  "id": "REC-IAS-INV",
+  "name": "Invalid Deliverables",
+  "force": "MUST",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "REC",
+  "id": "REC-IAS-PSC",
+  "name": "Policy and Standards Compliance",
+  "force": "MUST",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "REC",
+  "id": "REC-IAS-PST",
+  "name": "Performance Standards",
+  "force": "MUST",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "REC",
+  "id": "REC-IAS-RAR",
+  "name": "Re-entry after Revocation",
+  "force": "MUST",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "REC",
+  "id": "REC-IAS-RAS",
+  "name": "Full A2LA Reassessment",
+  "force": "MUST",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "REC",
+  "id": "REC-IAS-RQU",
+  "name": "Roles and Qualifications",
+  "force": "MUST",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "REC",
+  "id": "REC-IAS-SEP",
+  "name": "Advisory Separation",
+  "force": "MUST NOT",
+  "affects": [
+   "Assessors"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCG",
+  "id": "SCG-CSO-AUP",
+  "name": "Use Instructions",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCG",
+  "id": "SCG-CSO-PUB",
+  "name": "Public Secure Configuration Guidance",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCG",
+  "id": "SCG-CSO-RSC",
+  "name": "Recommended Secure Configuration",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCG",
+  "id": "SCG-CSO-SDF",
+  "name": "Secure Defaults",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCG",
+  "id": "SCG-ENH-API",
+  "name": "API Capability",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCG",
+  "id": "SCG-ENH-CMP",
+  "name": "Comparison Capability",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCG",
+  "id": "SCG-ENH-EXP",
+  "name": "Export Capability",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCG",
+  "id": "SCG-ENH-MRG",
+  "name": "Machine-Readable Guidance",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCG",
+  "id": "SCG-ENH-VRH",
+  "name": "Versioning and Release History",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCN",
+  "id": "SCN-ADP-NTF",
+  "name": "Notification Requirements",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCN",
+  "id": "SCN-CSO-ARI",
+  "name": "Additional Relevant Information",
+  "force": "MAY",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCN",
+  "id": "SCN-CSO-EMG",
+  "name": "Emergency Changes",
+  "force": "MAY",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCN",
+  "id": "SCN-CSO-EVA",
+  "name": "Evaluate Changes",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCN",
+  "id": "SCN-CSO-HIS",
+  "name": "Historical Notifications",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCN",
+  "id": "SCN-CSO-HRM",
+  "name": "Human and Machine-Readable Notifications",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCN",
+  "id": "SCN-CSO-INF",
+  "name": "Required Information",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCN",
+  "id": "SCN-CSO-MAR",
+  "name": "Maintain Audit Records",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCN",
+  "id": "SCN-CSO-NOM",
+  "name": "Notification Mechanisms",
+  "force": "MAY",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCN",
+  "id": "SCN-FRP-CAP",
+  "name": "Corrective Action Plan Conditions",
+  "force": "MAY",
+  "affects": [
+   "FedRAMP"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCN",
+  "id": "SCN-RTR-NNR",
+  "name": "No Notification Requirements",
+  "force": "SHOULD NOT",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCN",
+  "id": "SCN-TRF-NAF",
+  "name": "Notification After Finishing",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCN",
+  "id": "SCN-TRF-NAV",
+  "name": "Notification After Verification",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCN",
+  "id": "SCN-TRF-NFP",
+  "name": "Notification of Final Plans",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCN",
+  "id": "SCN-TRF-NIP",
+  "name": "Notification of Initial Plans",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCN",
+  "id": "SCN-TRF-TPR",
+  "name": "Third-Party Review",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SCN",
+  "id": "SCN-TRF-UPD",
+  "name": "Update Documentation",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SDR",
+  "id": "SDR-CSO-FRR",
+  "name": "FedRAMP Rules",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SDR",
+  "id": "SDR-CSO-MTD",
+  "name": "Security Decision Record Metadata",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SDR",
+  "id": "SDR-CSX-KMT",
+  "name": "Key Security Indicator Metrics",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "SDR",
+  "id": "SDR-CSX-KSI",
+  "name": "Key Security Indicators",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VDR",
+  "id": "VDR-CSO-ADT",
+  "name": "Automate Detection",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VDR",
+  "id": "VDR-CSO-AKE",
+  "name": "Avoid KEVs",
+  "force": "SHOULD NOT",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VDR",
+  "id": "VDR-CSO-DAC",
+  "name": "Detect After Changes",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VDR",
+  "id": "VDR-CSO-DET",
+  "name": "Vulnerability Detection",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VDR",
+  "id": "VDR-CSO-DFR",
+  "name": "Design For Resilience",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VDR",
+  "id": "VDR-CSO-FAV",
+  "name": "Failures Are Vulnerabilities",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VDR",
+  "id": "VDR-CSO-MSP",
+  "name": "Maintain Security",
+  "force": "SHOULD NOT",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VDR",
+  "id": "VDR-CSO-RES",
+  "name": "Vulnerability Response",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VDR",
+  "id": "VDR-CSO-SIR",
+  "name": "Sampling",
+  "force": "MAY",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VDR",
+  "id": "VDR-TFR-KEV",
+  "name": "Remediate KEVs",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VDR",
+  "id": "VDR-TFR-MVX",
+  "name": "Persistent Machine Verification and Validation for 20x",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VDR",
+  "id": "VDR-TFR-NMV",
+  "name": "Non-Machine Verification and Validation",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VDR",
+  "id": "VDR-TFR-PCD",
+  "name": "Persistently Complete Detection",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VDR",
+  "id": "VDR-TFR-PDD",
+  "name": "Persistent Drift Detection",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VDR",
+  "id": "VDR-TFR-PSD",
+  "name": "Persistent Sample Detection",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VDR",
+  "id": "VDR-TFR-PVR",
+  "name": "Mitigation and Remediation Expectations",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VDR",
+  "id": "VDR-TFR-RMN",
+  "name": "Remaining Vulnerabilities",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-AGM-MAP",
+  "name": "Maintain Agency Plans of Action and Milestones",
+  "force": "SHOULD",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-AGM-RVR",
+  "name": "Review Vulnerability Reports",
+  "force": "SHOULD",
+  "affects": [
+   "Agencies"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-EVA-AIA",
+  "name": "Assume It's Automatable",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-EVA-EFA",
+  "name": "Evaluation Factors",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-EVA-EFP",
+  "name": "Evaluate False Positives",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-EVA-EIR",
+  "name": "Evaluate Internet-Reachability",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-EVA-ELX",
+  "name": "Evaluate Exploitability",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-EVA-EPA",
+  "name": "Estimate Potential Agency Impact",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-EVA-GRV",
+  "name": "Group Vulnerabilities",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-FRP-ADV",
+  "name": "Sensitive Details",
+  "force": "MAY",
+  "affects": [
+   "FedRAMP"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-FRP-ARP",
+  "name": "Additional Requirements",
+  "force": "MAY",
+  "affects": [
+   "FedRAMP"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-RPT-AVI",
+  "name": "Accepted Vulnerability Info",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-RPT-HLO",
+  "name": "High-Level Overviews",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-RPT-NID",
+  "name": "Responsible Disclosure",
+  "force": "MUST NOT",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-RPT-PER",
+  "name": "Persistent Reporting",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-RPT-RPD",
+  "name": "Responsible Public Disclosure",
+  "force": "MAY",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-RPT-VDT",
+  "name": "Vulnerability Details",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-TFR-EVU",
+  "name": "Evaluate Vulnerabilities Quickly",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-TFR-IRI",
+  "name": "Internet-Reachable Incidents",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-TFR-MAV",
+  "name": "Mark Accepted Vulnerabilities",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-TFR-MHR",
+  "name": "Monthly Activity Report",
+  "force": "MUST",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-TFR-MRH",
+  "name": "Historical Activity",
+  "force": "SHOULD",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ },
+ {
+  "process": "VER",
+  "id": "VER-TFR-NRI",
+  "name": "Non-Internet-Reachable Incidents",
+  "force": "MAY",
+  "affects": [
+   "Providers"
+  ],
+  "status": "unassessed",
+  "owner": "",
+  "doc": ""
+ }
+]

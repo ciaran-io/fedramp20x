@@ -1,0 +1,858 @@
+{
+  "_notice": "FICTIONAL. Shaped like a simplified `terraform show -json` plan so a real Terraform export can replace this file. Every resource carries a `scope` field naming the resource ID in mas/mas-record.json that it implements. Method type: static (declared state).",
+  "format_version": "demo-2",
+  "generated_for": "Orrinwick Beacon",
+  "resources": [
+    {
+      "type": "aws_vpc",
+      "name": "main",
+      "scope": "P1",
+      "values": {
+        "cidr": "10.20.0.0/16",
+        "availability_zones": 2,
+        "flow_logs": true
+      }
+    },
+    {
+      "type": "aws_nat_gateway",
+      "name": "egress",
+      "scope": "P1",
+      "values": {
+        "subnets": "public",
+        "purpose": "outbound calls to notification providers"
+      }
+    },
+    {
+      "type": "aws_security_group",
+      "name": "alb",
+      "scope": "P8",
+      "values": {
+        "ingress": [
+          {
+            "port": 443,
+            "cidr": "0.0.0.0/0"
+          }
+        ],
+        "egress": [
+          {
+            "port": 8443,
+            "cidr": "sg:app"
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws_wafv2_web_acl",
+      "name": "edge",
+      "scope": "P8",
+      "values": {
+        "managed_rules": [
+          "CommonRuleSet",
+          "KnownBadInputs"
+        ],
+        "rate_limit_per_5min": 2000
+      }
+    },
+    {
+      "type": "aws_lb_listener",
+      "name": "https",
+      "scope": "P8",
+      "values": {
+        "protocol": "HTTPS",
+        "ssl_policy": "ELBSecurityPolicy-TLS13-1-2-2021-06"
+      }
+    },
+    {
+      "type": "aws_lb_listener",
+      "name": "webhooks",
+      "scope": "P8",
+      "values": {
+        "protocol": "HTTPS",
+        "ssl_policy": "ELBSecurityPolicy-TLS13-1-2-2021-06"
+      }
+    },
+    {
+      "type": "aws_security_group",
+      "name": "app",
+      "scope": "P2",
+      "values": {
+        "ingress": [
+          {
+            "port": 8443,
+            "cidr": "sg:alb"
+          }
+        ],
+        "egress": [
+          {
+            "port": 5432,
+            "cidr": "sg:db"
+          },
+          {
+            "port": 443,
+            "cidr": "sg:vpce"
+          },
+          {
+            "port": 443,
+            "cidr": "nat"
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws_ecs_service",
+      "name": "api",
+      "scope": "P2",
+      "values": {
+        "assign_public_ip": false,
+        "task_role": "role/beacon-api",
+        "desired_count": 2,
+        "availability_zones": 2
+      }
+    },
+    {
+      "type": "aws_ecs_service",
+      "name": "routing_engine",
+      "scope": "P2",
+      "values": {
+        "assign_public_ip": false,
+        "task_role": "role/beacon-router",
+        "desired_count": 2,
+        "availability_zones": 2
+      }
+    },
+    {
+      "type": "aws_ecs_service",
+      "name": "notification_workers",
+      "scope": "P2",
+      "values": {
+        "assign_public_ip": false,
+        "task_role": "role/beacon-notify",
+        "desired_count": 2,
+        "availability_zones": 2
+      }
+    },
+    {
+      "type": "aws_ecs_service",
+      "name": "web_console",
+      "scope": "P2",
+      "values": {
+        "assign_public_ip": false,
+        "task_role": "role/beacon-web",
+        "desired_count": 2,
+        "availability_zones": 2
+      }
+    },
+    {
+      "type": "aws_ecs_service",
+      "name": "push_registration",
+      "scope": "P10",
+      "values": {
+        "assign_public_ip": false,
+        "task_role": "role/beacon-push",
+        "desired_count": 2,
+        "availability_zones": 2
+      }
+    },
+    {
+      "type": "aws_security_group",
+      "name": "db",
+      "scope": "P3",
+      "values": {
+        "ingress": [
+          {
+            "port": 5432,
+            "cidr": "sg:app"
+          }
+        ],
+        "egress": []
+      }
+    },
+    {
+      "type": "aws_db_instance",
+      "name": "primary",
+      "scope": "P3",
+      "values": {
+        "storage_encrypted": true,
+        "backup_retention_days": 14,
+        "multi_az": true,
+        "publicly_accessible": false,
+        "require_tls": true,
+        "failover_tested_days_ago": 60
+      }
+    },
+    {
+      "type": "aws_s3_bucket",
+      "name": "exports",
+      "scope": "P4",
+      "values": {
+        "encrypted": true,
+        "kms_key": "kms:data",
+        "public_access_blocked": true,
+        "versioning": true
+      }
+    },
+    {
+      "type": "aws_s3_bucket",
+      "name": "backups",
+      "scope": "P4",
+      "values": {
+        "encrypted": true,
+        "kms_key": "kms:data",
+        "public_access_blocked": true,
+        "versioning": true
+      }
+    },
+    {
+      "type": "aws_s3_bucket",
+      "name": "terraform_state",
+      "scope": "E3",
+      "values": {
+        "encrypted": true,
+        "kms_key": "kms:data",
+        "public_access_blocked": true,
+        "versioning": true
+      }
+    },
+    {
+      "type": "aws_dynamodb_table",
+      "name": "terraform_lock",
+      "scope": "E3",
+      "values": {
+        "encrypted": true,
+        "point_in_time_recovery": true
+      }
+    },
+    {
+      "type": "aws_s3_bucket",
+      "name": "log_archive",
+      "scope": "E4",
+      "values": {
+        "encrypted": true,
+        "kms_key": "kms:data",
+        "public_access_blocked": true,
+        "object_lock": true
+      }
+    },
+    {
+      "type": "aws_kms_key",
+      "name": "data",
+      "scope": "P5",
+      "values": {
+        "enable_key_rotation": true
+      }
+    },
+    {
+      "type": "aws_kms_key",
+      "name": "backup-us-west-2",
+      "scope": "P5",
+      "values": {
+        "enable_key_rotation": true,
+        "region": "us-west-2"
+      }
+    },
+    {
+      "type": "aws_secretsmanager_secret_rotation",
+      "name": "db_password",
+      "scope": "P6",
+      "values": {
+        "automatically_after_days": 30
+      }
+    },
+    {
+      "type": "aws_secretsmanager_secret_rotation",
+      "name": "integration_signing_keys",
+      "scope": "P6",
+      "values": {
+        "automatically_after_days": 60
+      }
+    },
+    {
+      "type": "aws_secretsmanager_secret_rotation",
+      "name": "notify_provider_keys",
+      "scope": "P6",
+      "values": {
+        "automatically_after_days": 60
+      }
+    },
+    {
+      "type": "aws_sqs_queue",
+      "name": "alerts",
+      "scope": "P7",
+      "values": {
+        "sse_enabled": true,
+        "kms_key": "kms:data",
+        "dead_letter_queue": true
+      }
+    },
+    {
+      "type": "aws_sqs_queue",
+      "name": "escalation_timers",
+      "scope": "P7",
+      "values": {
+        "sse_enabled": true,
+        "kms_key": "kms:data",
+        "dead_letter_queue": true
+      }
+    },
+    {
+      "type": "aws_route53_zone",
+      "name": "orrinwick",
+      "scope": "P9",
+      "values": {
+        "dnssec": true
+      }
+    },
+    {
+      "type": "aws_acm_certificate",
+      "name": "public",
+      "scope": "P9",
+      "values": {
+        "validation": "DNS",
+        "renewal": "automatic"
+      }
+    },
+    {
+      "type": "aws_ecr_repository",
+      "name": "beacon",
+      "scope": "P11",
+      "values": {
+        "image_tag_mutability": "IMMUTABLE",
+        "scan_on_push": true,
+        "encryption": "KMS"
+      }
+    },
+    {
+      "type": "aws_security_group",
+      "name": "vpce",
+      "scope": "P1",
+      "values": {
+        "ingress": [
+          {
+            "port": 443,
+            "cidr": "sg:app"
+          }
+        ],
+        "egress": []
+      }
+    },
+    {
+      "type": "aws_cloudtrail",
+      "name": "org",
+      "scope": "E4",
+      "values": {
+        "is_multi_region_trail": true,
+        "enable_log_file_validation": true,
+        "include_global_service_events": true
+      }
+    },
+    {
+      "type": "aws_cloudwatch_log_group",
+      "name": "prod",
+      "scope": "E4",
+      "values": {
+        "retention_days": 400,
+        "kms_key": "kms:data"
+      }
+    },
+    {
+      "type": "aws_config_configuration_recorder",
+      "name": "main",
+      "scope": "E4",
+      "values": {
+        "all_supported": true
+      }
+    },
+    {
+      "type": "aws_config_config_rule",
+      "name": "drift_detection",
+      "scope": "E4",
+      "values": {
+        "enabled": true
+      }
+    },
+    {
+      "type": "aws_inspector2_enabler",
+      "name": "main",
+      "scope": "E5",
+      "values": {
+        "resource_types": [
+          "ECR",
+          "EC2"
+        ]
+      }
+    },
+    {
+      "type": "aws_ssm_session_preferences",
+      "name": "prod_access",
+      "scope": "E6",
+      "values": {
+        "session_logging": true,
+        "kms_encryption": true,
+        "idle_timeout_minutes": 15,
+        "inbound_ssh_allowed": false
+      }
+    },
+    {
+      "type": "aws_iam_policy",
+      "name": "breakglass_admin",
+      "scope": "E6",
+      "values": {
+        "statements": [
+          {
+            "effect": "Allow",
+            "actions": [
+              "*"
+            ],
+            "resources": [
+              "*"
+            ],
+            "condition": "approval_workflow"
+          }
+        ],
+        "breakglass": true
+      }
+    },
+    {
+      "type": "aws_iam_policy",
+      "name": "developer",
+      "scope": "E1",
+      "values": {
+        "statements": [
+          {
+            "effect": "Allow",
+            "actions": [
+              "logs:GetLogEvents",
+              "cloudwatch:GetMetricData"
+            ],
+            "resources": [
+              "arn:aws:logs:us-east-1:*:log-group:/beacon/prod/*"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws_iam_policy",
+      "name": "support_impersonation",
+      "scope": "S4",
+      "values": {
+        "statements": [
+          {
+            "effect": "Allow",
+            "actions": [
+              "beacon:ImpersonateTenant"
+            ],
+            "resources": [
+              "*"
+            ],
+            "condition": "customer_approval_and_audit"
+          }
+        ]
+      }
+    },
+    {
+      "type": "github_branch_protection",
+      "name": "main",
+      "scope": "E1",
+      "values": {
+        "required_reviews": 1,
+        "signed_commits": true,
+        "status_checks_required": true,
+        "status_checks": [
+          "unit-tests",
+          "iac-scan",
+          "dependency-scan",
+          "image-scan"
+        ],
+        "force_push_allowed": false
+      }
+    },
+    {
+      "type": "aws_iam_role",
+      "name": "ci_deploy",
+      "scope": "E2",
+      "values": {
+        "oidc_provider": "token.actions.githubusercontent.com",
+        "long_lived_keys": false
+      }
+    },
+    {
+      "type": "idp_policy",
+      "name": "workforce_mfa",
+      "scope": "E7",
+      "values": {
+        "mfa_required": true,
+        "factor_types": [
+          "webauthn",
+          "platform_authenticator"
+        ],
+        "password_only_allowed": false
+      }
+    },
+    {
+      "type": "device_management_policy",
+      "name": "admin_endpoints",
+      "scope": "E8",
+      "values": {
+        "disk_encryption": true,
+        "screen_lock_minutes": 10,
+        "posture_required_for_e6": true
+      }
+    },
+    {
+      "type": "edr_policy",
+      "name": "admin_endpoints",
+      "scope": "E9",
+      "values": {
+        "sensor_required": true,
+        "tamper_protection": true
+      }
+    },
+    {
+      "type": "aws_backup_vault",
+      "name": "primary",
+      "scope": "P4",
+      "values": {
+        "region": "us-east-1",
+        "kms_key": "kms:data"
+      }
+    },
+    {
+      "type": "aws_backup_vault",
+      "name": "recovery",
+      "scope": "P12",
+      "values": {
+        "region": "us-west-2",
+        "kms_key": "kms:backup-us-west-2"
+      }
+    },
+    {
+      "type": "aws_backup_vault_lock_configuration",
+      "name": "recovery",
+      "scope": "P12",
+      "values": {
+        "vault": "recovery",
+        "mode": "compliance",
+        "min_retention_days": 14,
+        "changeable_for_days": 0
+      }
+    },
+    {
+      "type": "aws_backup_plan",
+      "name": "beacon",
+      "scope": "P4",
+      "values": {
+        "rules": [
+          {
+            "name": "every-2-hours",
+            "vault": "primary",
+            "schedule_interval_hours": 2,
+            "delete_after_days": 14,
+            "copy_actions": [
+              {
+                "destination_vault": "recovery",
+                "destination_region": "us-west-2",
+                "delete_after_days": 14
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws_backup_selection",
+      "name": "beacon",
+      "scope": "P4",
+      "values": {
+        "plan": "beacon",
+        "resources": [
+          "db:primary",
+          "s3:backups",
+          "s3:exports"
+        ]
+      }
+    },
+    {
+      "type": "terraform_recovery_module",
+      "name": "recovery_environment",
+      "scope": "P13",
+      "values": {
+        "region": "us-west-2",
+        "deployed": false,
+        "same_modules_as_production": true,
+        "max_build_hours": 4
+      }
+    },
+    {
+      "type": "ci_pipeline",
+      "name": "deploy",
+      "scope": "E2",
+      "values": {
+        "stages": [
+          "build",
+          "test",
+          "scan",
+          "sign",
+          "deploy",
+          "verify"
+        ],
+        "automated_tests": true,
+        "security_scans": [
+          "sast",
+          "dependency",
+          "image",
+          "iac"
+        ],
+        "post_deploy_verification": true,
+        "image_signing": true,
+        "verify_signature_on_deploy": true,
+        "deploy_strategy": "redeploy",
+        "rollback_on_failure": true,
+        "audit_log_retention_days": 400,
+        "post_change_cleanup": true
+      }
+    },
+    {
+      "type": "aws_config_conformance_pack",
+      "name": "cis_foundations",
+      "scope": "E4",
+      "values": {
+        "benchmark": "CIS AWS Foundations",
+        "enabled": true
+      }
+    },
+    {
+      "type": "aws_guardduty_detector",
+      "name": "main",
+      "scope": "P1",
+      "values": {
+        "enabled": true,
+        "s3_protection": true
+      }
+    },
+    {
+      "type": "suspicious_activity_response",
+      "name": "privileged_accounts",
+      "scope": "E7",
+      "values": {
+        "disable_on_alert": true,
+        "rules": [
+          "impossible_travel",
+          "root_login",
+          "mfa_disabled",
+          "new_access_key"
+        ],
+        "max_response_minutes": 15
+      }
+    },
+    {
+      "type": "access_gateway_policy",
+      "name": "prod_access",
+      "scope": "E6",
+      "values": {
+        "standing_access": false,
+        "max_session_minutes": 480,
+        "approval_required": true,
+        "attribute_conditions": [
+          "device_posture",
+          "role"
+        ]
+      }
+    },
+    {
+      "type": "idp_lifecycle",
+      "name": "scim",
+      "scope": "E7",
+      "values": {
+        "scim_provisioning": true,
+        "deprovision_sla_hours": 24,
+        "group_based_roles": true
+      }
+    },
+    {
+      "type": "security_improvement_process",
+      "name": "quarterly",
+      "scope": "N3",
+      "values": {
+        "review_cadence_days": 90,
+        "max_open_item_age_days": 90
+      }
+    },
+    {
+      "type": "data_removal_process",
+      "name": "tenant_data",
+      "scope": "P3",
+      "values": {
+        "sla_days": 30,
+        "includes_backups": true,
+        "backup_removal": "at_expiry",
+        "audit_trail": true
+      }
+    },
+    {
+      "type": "aws_iam_role",
+      "name": "beacon-api",
+      "scope": "P1",
+      "values": {
+        "function": "API",
+        "permissions_boundary": true,
+        "wildcard_actions_allowed": false
+      }
+    },
+    {
+      "type": "aws_iam_role",
+      "name": "beacon-router",
+      "scope": "P1",
+      "values": {
+        "function": "routing",
+        "permissions_boundary": true,
+        "wildcard_actions_allowed": false
+      }
+    },
+    {
+      "type": "aws_iam_role",
+      "name": "beacon-notify",
+      "scope": "P1",
+      "values": {
+        "function": "notification workers",
+        "permissions_boundary": true,
+        "wildcard_actions_allowed": false
+      }
+    },
+    {
+      "type": "aws_iam_role",
+      "name": "beacon-web",
+      "scope": "P1",
+      "values": {
+        "function": "web console",
+        "permissions_boundary": true,
+        "wildcard_actions_allowed": false
+      }
+    },
+    {
+      "type": "aws_iam_role",
+      "name": "beacon-push",
+      "scope": "P1",
+      "values": {
+        "function": "push registration",
+        "permissions_boundary": true,
+        "wildcard_actions_allowed": false
+      }
+    },
+    {
+      "type": "log_access_policy",
+      "name": "prod-logs",
+      "scope": "E4",
+      "values": {
+        "roles": {
+          "security-analyst": "read",
+          "platform-engineer": "read_filtered",
+          "auditor": "read_time_limited"
+        },
+        "raw_log_access": "just_in_time",
+        "max_grant_hours": 8,
+        "sensitive_fields_masked": true,
+        "review_cadence_days": 30
+      }
+    },
+    {
+      "type": "siem_config",
+      "name": "central",
+      "scope": "E4",
+      "values": {
+        "centralized": true,
+        "sources": [
+          "cloudtrail",
+          "vpc_flow",
+          "alb",
+          "app",
+          "idp",
+          "pipeline"
+        ],
+        "tamper_protection": "object_lock_separate_account",
+        "retention_days": 400,
+        "review_cadence_days": 30
+      }
+    },
+    {
+      "type": "log_review_process",
+      "name": "detections",
+      "scope": "E4",
+      "values": {
+        "automated_detections": true,
+        "detection_rule_count": 42,
+        "triage_sla_minutes": 60,
+        "review_cadence_days": 7
+      }
+    },
+    {
+      "type": "iac_evaluation",
+      "name": "terraform-checks",
+      "scope": "E2",
+      "values": {
+        "policy_as_code": true,
+        "run_on_pull_request": true,
+        "scheduled_scan_days": 1,
+        "blocking": true,
+        "tools": [
+          "checkov",
+          "tflint"
+        ]
+      }
+    },
+    {
+      "type": "inventory_generator",
+      "name": "resource-inventory",
+      "scope": "P1",
+      "values": {
+        "authoritative_sources": [
+          "cloud_api",
+          "idp",
+          "ci_pipeline"
+        ],
+        "refresh_minutes": 60,
+        "requires_scope_id_tag": true
+      }
+    },
+    {
+      "type": "sdlc_review",
+      "name": "secure-sdlc",
+      "scope": "E2",
+      "values": {
+        "review_cadence_days": 90,
+        "secure_by_design_principles": [
+          "secure_defaults",
+          "memory_safe_where_possible",
+          "mfa_default",
+          "no_default_passwords"
+        ],
+        "threat_model_required": true,
+        "sast_required": true,
+        "dependency_scan_required": true
+      }
+    },
+    {
+      "type": "supply_chain_policy",
+      "name": "third-party",
+      "scope": "E2",
+      "values": {
+        "sbom_generated": true,
+        "dependency_monitoring": true,
+        "vendor_notification_clause_required": true,
+        "review_cadence_days": 90
+      }
+    },
+    {
+      "type": "recovery_plan_record",
+      "name": "beacon",
+      "scope": "P12",
+      "values": {
+        "rto_hours": 8,
+        "rpo_hours": 4,
+        "review_cadence_days": 90,
+        "restore_test_cadence_days": 90,
+        "restore_runbook": "recovery_environment"
+      }
+    }
+  ]
+}

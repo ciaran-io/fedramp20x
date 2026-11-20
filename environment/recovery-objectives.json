@@ -1,0 +1,45 @@
+{
+  "_notice": "FICTIONAL. Recovery objectives for Orrinwick Beacon. The numbers are a demo author's choice, not values set by FedRAMP (KSI-RPL-RRO says the provider defines and reviews its own).",
+  "decision": "SD-003",
+  "strategy": "backup_and_restore",
+  "strategy_summary": "Multi-AZ production in us-east-1. AWS Backup takes recovery points every 2 hours and copies them to a locked, encrypted vault in us-west-2. No standing environment exists in us-west-2; Terraform builds one on demand from those recovery points.",
+  "primary_region": "us-east-1",
+  "recovery_region": "us-west-2",
+  "rto_hours": 8,
+  "rpo_hours": 4,
+  "backup_retention_days_min": 14,
+  "restore_test_cadence_days": 90,
+  "last_reviewed": "2026-11-19",
+  "review_cadence_days": 90,
+  "data_classes_in_backups": [
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "D5",
+    "D6",
+    "D7",
+    "D10"
+  ],
+  "related_ksis": [
+    "KSI-RPL-RRO",
+    "KSI-RPL-ABO",
+    "KSI-RPL-ARP",
+    "KSI-RPL-TRC",
+    "KSI-CNA-OFA",
+    "KSI-SVC-RUD"
+  ],
+  "scope_record_resources": [
+    "P3",
+    "P4",
+    "P5",
+    "P12"
+  ],
+  "mechanism": "aws_backup",
+  "backup_interval_hours_max": 2,
+  "protected_resources": [
+    "db:primary",
+    "s3:backups",
+    "s3:exports"
+  ]
+}

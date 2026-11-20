@@ -1,0 +1,20 @@
+{
+  "_notice": "FICTIONAL. Scope change log for Orrinwick Beacon. Each entry records the evaluation of a change to mas/mas-record.json (rule SCN-CSO-MAR) and a fingerprint of the scope after it. tools/check_scope_changes.py fails when the record changes without a new entry. Add entries in date order.",
+  "entries": [
+    {
+      "id": "SC-001",
+      "date": "2026-11-19",
+      "change_type": "added",
+      "resources": [
+        "P12",
+        "P13"
+      ],
+      "scn_category": "not_significant",
+      "summary": "Baseline. Recovery model set to backup and restore with cross-region copies. Added the cross-region backup vault (P12) and the on-demand recovery environment (P13) with restore flow F44.",
+      "evaluation": "Recorded as the baseline before first certification. No agency is relying on the offering yet, so no notification is due.",
+      "decision_ref": "SD-003",
+      "notification": null,
+      "scope_fingerprint_after": "4ee5715ad9170d6c"
+    }
+  ]
+}

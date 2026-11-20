@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1960 1100" width="1960" height="1100" font-family="Helvetica, Arial, sans-serif">
+<defs>
+<marker id="a-flow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333333"/></marker>
+<marker id="a-cond" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d79b00"/></marker>
+<marker id="a-proh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker>
+</defs>
+<rect width="1960" height="1100" fill="#ffffff"/>
+<text x="24" y="34" font-size="20" font-weight="700" fill="#1a1a1a">Orrinwick Beacon: Storage, operations and privileged access</text>
+<text x="24" y="56" font-size="12.5" fill="#555555">Where data is stored and exported, how telemetry is collected, and how people reach production. Administrators and support go through recorded, approved sessions.</text>
+<text x="1936" y="34" font-size="12" font-weight="700" fill="#c0392b" text-anchor="end">FICTIONAL DEMO · generated from mas/mas-record.json</text>
+<rect x="300" y="80" width="1220" height="900" rx="6" fill="none" stroke="#1a4f8b" stroke-width="3" stroke-dasharray="10 6"/>
+<text x="310" y="100" font-size="12.5" font-weight="700" fill="#1a4f8b">Cloud service offering boundary</text>
+<rect x="330" y="120" width="1160" height="390" rx="6" fill="#f7faff" stroke="#6c8ebf" stroke-width="1.5" stroke-dasharray="10 6"/>
+<text x="340" y="140" font-size="12.5" font-weight="700" fill="#6c8ebf">Orrinwick production</text>
+<rect x="330" y="550" width="1160" height="400" rx="6" fill="#f7faff" stroke="#6c8ebf" stroke-width="1.5" stroke-dasharray="10 6"/>
+<text x="340" y="570" font-size="12.5" font-weight="700" fill="#6c8ebf">Engineering and operations</text>
+<rect x="1620" y="260" width="300" height="200" rx="6" fill="#fafafa" stroke="#999999" stroke-width="1.5" stroke-dasharray="10 6"/>
+<text x="1630" y="280" font-size="12.5" font-weight="700" fill="#999999">Agency</text>
+<path d="M1200.0,375.0 L1280.0,375.0" fill="none" stroke="#333333" stroke-width="1.6" marker-end="url(#a-flow)"/>
+<path d="M1380.0,340.0 L1380.0,230.0" fill="none" stroke="#333333" stroke-width="1.6" marker-end="url(#a-flow)"/>
+<path d="M1480.0,195.0 L1670.0,195.0" fill="none" stroke="#333333" stroke-width="1.6" marker-end="url(#a-flow)"/>
+<path d="M858.3,410.0 L950.0,465.0 L1380.0,465.0 L1380.0,410.0" fill="none" stroke="#333333" stroke-width="1.6" marker-end="url(#a-flow)"/>
+<path d="M1480.0,372.4 L1670.0,367.6" fill="none" stroke="#333333" stroke-width="1.6" marker-end="url(#a-flow)"/>
+<path d="M800.0,410.0 L800.0,650.0" fill="none" stroke="#333333" stroke-width="1.6" marker-end="url(#a-flow)"/>
+<path d="M480.6,410.0 L520.0,540.0 L732.4,650.0" fill="none" stroke="#333333" stroke-width="1.6" marker-end="url(#a-flow)"/>
+<path d="M561.5,230.0 L640.0,260.0 L640.0,530.0 L763.9,650.0" fill="none" stroke="#333333" stroke-width="1.6" marker-end="url(#a-flow)"/>
+<path d="M1100.0,650.0 L1100.0,410.0" fill="none" stroke="#333333" stroke-width="1.6" marker-end="url(#a-flow)"/>
+<path d="M1066.1,650.0 L833.9,410.0" fill="none" stroke="#333333" stroke-width="1.6" marker-end="url(#a-flow)"/>
+<path d="M1041.7,230.0 L858.3,340.0" fill="none" stroke="#333333" stroke-width="1.6" marker-end="url(#a-flow)"/>
+<rect x="370" y="160" width="200" height="70" rx="9" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="470.0" y="175.0" font-size="12.5" font-weight="700" text-anchor="middle" fill="#1a1a1a">P8 Load balancer, API</text>
+<text x="470.0" y="191.0" font-size="12.5" font-weight="400" text-anchor="middle" fill="#1a1a1a">gateway and web application</text>
+<text x="470.0" y="207.0" font-size="12.5" font-weight="400" text-anchor="middle" fill="#1a1a1a">firewall</text>
+<text x="470.0" y="223.0" font-size="10.5" text-anchor="middle" fill="#666666">category M/M/M</text>
+<rect x="370" y="340" width="200" height="70" rx="9" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="470.0" y="363.0" font-size="12.5" font-weight="700" text-anchor="middle" fill="#1a1a1a">P1 Production cloud</text>
+<text x="470.0" y="379.0" font-size="12.5" font-weight="400" text-anchor="middle" fill="#1a1a1a">accounts and network</text>
+<text x="470.0" y="395.0" font-size="10.5" text-anchor="middle" fill="#666666">category M/M/M</text>
+<rect x="1000" y="160" width="200" height="70" rx="9" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="1100.0" y="183.0" font-size="12.5" font-weight="700" text-anchor="middle" fill="#1a1a1a">S4 Support impersonation</text>
+<text x="1100.0" y="199.0" font-size="12.5" font-weight="400" text-anchor="middle" fill="#1a1a1a">tooling</text>
+<text x="1100.0" y="215.0" font-size="10.5" text-anchor="middle" fill="#666666">category M/M/M</text>
+<rect x="700" y="340" width="200" height="70" rx="9" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="800.0" y="371.0" font-size="12.5" font-weight="700" text-anchor="middle" fill="#1a1a1a">P2 Application compute</text>
+<text x="800.0" y="387.0" font-size="10.5" text-anchor="middle" fill="#666666">category M/M/M</text>
+<rect x="1000" y="340" width="200" height="70" rx="9" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="1100.0" y="363.0" font-size="12.5" font-weight="700" text-anchor="middle" fill="#1a1a1a">P3 Managed relational</text>
+<text x="1100.0" y="379.0" font-size="12.5" font-weight="400" text-anchor="middle" fill="#1a1a1a">database</text>
+<text x="1100.0" y="395.0" font-size="10.5" text-anchor="middle" fill="#666666">category M/M/M</text>
+<rect x="1280" y="340" width="200" height="70" rx="9" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="1380.0" y="371.0" font-size="12.5" font-weight="700" text-anchor="middle" fill="#1a1a1a">P4 Object storage</text>
+<text x="1380.0" y="387.0" font-size="10.5" text-anchor="middle" fill="#666666">category M/M/M</text>
+<rect x="1280" y="160" width="200" height="70" rx="9" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="1380.0" y="183.0" font-size="12.5" font-weight="700" text-anchor="middle" fill="#1a1a1a">P12 Cross-region backup</text>
+<text x="1380.0" y="199.0" font-size="12.5" font-weight="400" text-anchor="middle" fill="#1a1a1a">replica storage</text>
+<text x="1380.0" y="215.0" font-size="10.5" text-anchor="middle" fill="#666666">category M/M/M</text>
+<rect x="1670" y="160" width="200" height="70" rx="9" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="1770.0" y="191.0" font-size="12.5" font-weight="700" text-anchor="middle" fill="#1a1a1a">P13 Recovery environment</text>
+<text x="1770.0" y="207.0" font-size="10.5" text-anchor="middle" fill="#666666">category M/M/M</text>
+<rect x="700" y="650" width="200" height="70" rx="9" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="800.0" y="665.0" font-size="12.5" font-weight="700" text-anchor="middle" fill="#1a1a1a">E4 Production logging,</text>
+<text x="800.0" y="681.0" font-size="12.5" font-weight="400" text-anchor="middle" fill="#1a1a1a">monitoring and alerting</text>
+<text x="800.0" y="697.0" font-size="12.5" font-weight="400" text-anchor="middle" fill="#1a1a1a">stack</text>
+<text x="800.0" y="713.0" font-size="10.5" text-anchor="middle" fill="#666666">category M/M/L</text>
+<rect x="1000" y="650" width="200" height="70" rx="9" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="1100.0" y="665.0" font-size="12.5" font-weight="700" text-anchor="middle" fill="#1a1a1a">E6 Privileged access</text>
+<text x="1100.0" y="681.0" font-size="12.5" font-weight="400" text-anchor="middle" fill="#1a1a1a">management and production</text>
+<text x="1100.0" y="697.0" font-size="12.5" font-weight="400" text-anchor="middle" fill="#1a1a1a">access gateway</text>
+<text x="1100.0" y="713.0" font-size="10.5" text-anchor="middle" fill="#666666">category M/M/M</text>
+<rect x="1670" y="330" width="200" height="70" rx="9" fill="#f5f5f5" stroke="#666666" stroke-width="1.6"/>
+<text x="1770.0" y="353.0" font-size="12.5" font-weight="700" text-anchor="middle" fill="#1a1a1a">X1 Agency responders and</text>
+<text x="1770.0" y="369.0" font-size="12.5" font-weight="400" text-anchor="middle" fill="#1a1a1a">administrators</text>
+<text x="1770.0" y="385.0" font-size="10.5" text-anchor="middle" fill="#666666">agency-managed</text>
+<rect x="1212.6" y="366.0" width="54.8" height="17" rx="3" fill="#ffffff" fill-opacity="0.92" stroke="#333333" stroke-width="0.6"/>
+<text x="1240.0" y="379.0" font-size="11" text-anchor="middle" fill="#333333" font-weight="600">F21 D10</text>
+<rect x="1352.6" y="276.0" width="54.8" height="17" rx="3" fill="#ffffff" fill-opacity="0.92" stroke="#333333" stroke-width="0.6"/>
+<text x="1380.0" y="289.0" font-size="11" text-anchor="middle" fill="#333333" font-weight="600">F43 D10</text>
+<rect x="1528.4" y="186.0" width="93.2" height="17" rx="3" fill="#ffffff" fill-opacity="0.92" stroke="#333333" stroke-width="0.6"/>
+<text x="1575.0" y="199.0" font-size="11" text-anchor="middle" fill="#333333" font-weight="600">F44 D1-D7,D10</text>
+<rect x="1185.9" y="456.0" width="48.4" height="17" rx="3" fill="#ffffff" fill-opacity="0.92" stroke="#333333" stroke-width="0.6"/>
+<text x="1210.1" y="469.0" font-size="11" text-anchor="middle" fill="#333333" font-weight="600">F22 D5</text>
+<rect x="1550.8" y="361.0" width="48.4" height="17" rx="3" fill="#ffffff" fill-opacity="0.92" stroke="#333333" stroke-width="0.6"/>
+<text x="1575.0" y="374.0" font-size="11" text-anchor="middle" fill="#333333" font-weight="600">F23 D5</text>
+<rect x="775.8" y="521.0" width="48.4" height="17" rx="3" fill="#ffffff" fill-opacity="0.92" stroke="#333333" stroke-width="0.6"/>
+<text x="800.0" y="534.0" font-size="11" text-anchor="middle" fill="#333333" font-weight="600">F24 D9</text>
+<rect x="508.4" y="537.5" width="48.4" height="17" rx="3" fill="#ffffff" fill-opacity="0.92" stroke="#333333" stroke-width="0.6"/>
+<text x="532.6" y="550.5" font-size="11" text-anchor="middle" fill="#333333" font-weight="600">F25 D9</text>
+<rect x="615.8" y="324.9" width="48.4" height="17" rx="3" fill="#ffffff" fill-opacity="0.92" stroke="#333333" stroke-width="0.6"/>
+<text x="640.0" y="337.9" font-size="11" text-anchor="middle" fill="#333333" font-weight="600">F26 D9</text>
+<rect x="1066.2" y="521.0" width="67.6" height="17" rx="3" fill="#ffffff" fill-opacity="0.92" stroke="#333333" stroke-width="0.6"/>
+<text x="1100.0" y="534.0" font-size="11" text-anchor="middle" fill="#333333" font-weight="600">F29 D1-D7</text>
+<rect x="927.8" y="533.0" width="67.6" height="17" rx="3" fill="#ffffff" fill-opacity="0.92" stroke="#333333" stroke-width="0.6"/>
+<text x="961.6" y="546.0" font-size="11" text-anchor="middle" fill="#333333" font-weight="600">F30 D1-D7</text>
+<rect x="925.4" y="270.5" width="67.6" height="17" rx="3" fill="#ffffff" fill-opacity="0.92" stroke="#333333" stroke-width="0.6"/>
+<text x="959.2" y="283.5" font-size="11" text-anchor="middle" fill="#333333" font-weight="600">F39 D1-D6</text>
+<rect x="16" y="1008" width="1010" height="66" rx="6" fill="#ffffff" stroke="#dddddd"/>
+<rect x="24" y="1018" width="26" height="16" rx="4" fill="#dae8fc" stroke="#6c8ebf"/>
+<text x="58" y="1031" font-size="11.5" fill="#333">In the offering</text>
+<rect x="181.0" y="1018" width="26" height="16" rx="4" fill="#f5f5f5" stroke="#666666"/>
+<text x="215.0" y="1031" font-size="11.5" fill="#333">Agency-managed</text>
+<rect x="331.4" y="1018" width="26" height="16" rx="4" fill="#ffffff" stroke="#6c8ebf" stroke-dasharray="6 4"/>
+<text x="365.4" y="1031" font-size="11.5" fill="#333">Third party</text>
+<rect x="462.0" y="1018" width="26" height="16" rx="4" fill="#fff2cc" stroke="#d79b00" stroke-dasharray="6 4"/>
+<text x="496.0" y="1031" font-size="11.5" fill="#333">Excluded, conditional</text>
+<line x1="24" y1="1054" x2="64" y2="1054" stroke="#333333" stroke-width="1.6" marker-end="url(#a-flow)"/>
+<text x="74" y="1058" font-size="11.5" fill="#333">Data flow (label: ID and data classes)</text>
+<line x1="343.20000000000005" y1="1054" x2="383.20000000000005" y2="1054" stroke="#d79b00" stroke-width="2.4" stroke-dasharray="2 5" marker-end="url(#a-cond)"/>
+<text x="393.20000000000005" y="1058" font-size="11.5" fill="#333">Permitted only while the named condition holds</text>
+<line x1="713.6000000000001" y1="1054" x2="753.6000000000001" y2="1054" stroke="#c0392b" stroke-width="2.0" stroke-dasharray="8 5" marker-end="url(#a-proh)"/>
+<text x="763.6000000000001" y="1058" font-size="11.5" fill="#333">Prohibited flow (must never occur)</text>
+</svg>

@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# macOS
+.DS_Store
+
+# Generated copies of docs for the static site; rebuilt by `make site`.
+# (trust-center/api/ IS committed so other tools can read it from GitHub.)
+trust-center/documents/
+
+# FedRAMP rules data is downloaded by `make frmr`, never committed (upstream has no licence file).
+frmr/*.json

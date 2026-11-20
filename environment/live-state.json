@@ -1,0 +1,785 @@
+{
+  "_notice": "FICTIONAL. Mock 'live' API snapshot standing in for boto3 / Steampipe / IdP API collectors. Seeded with deliberate findings so the demo shows pass, fail, and partial results. Replace via validators/collectors.py.",
+  "collected_at": "2026-11-18T00:00:00Z",
+  "security_groups": [
+    {
+      "name": "alb",
+      "scope": "P8",
+      "ingress": [
+        {
+          "port": 443,
+          "cidr": "0.0.0.0/0"
+        }
+      ],
+      "egress": [
+        {
+          "port": 8443,
+          "cidr": "sg:app"
+        }
+      ]
+    },
+    {
+      "name": "app",
+      "scope": "P2",
+      "ingress": [
+        {
+          "port": 8443,
+          "cidr": "sg:alb"
+        }
+      ],
+      "egress": [
+        {
+          "port": 5432,
+          "cidr": "sg:db"
+        },
+        {
+          "port": 443,
+          "cidr": "sg:vpce"
+        },
+        {
+          "port": 443,
+          "cidr": "nat"
+        }
+      ]
+    },
+    {
+      "name": "db",
+      "scope": "P3",
+      "ingress": [
+        {
+          "port": 5432,
+          "cidr": "sg:app"
+        }
+      ],
+      "egress": []
+    },
+    {
+      "name": "vpce",
+      "scope": "P1",
+      "ingress": [
+        {
+          "port": 443,
+          "cidr": "sg:app"
+        }
+      ],
+      "egress": []
+    }
+  ],
+  "s3_buckets": [
+    {
+      "name": "exports",
+      "scope": "P4",
+      "encrypted": true,
+      "public_access_blocked": true
+    },
+    {
+      "name": "backups",
+      "scope": "P4",
+      "encrypted": true,
+      "public_access_blocked": true
+    },
+    {
+      "name": "backup_replica",
+      "scope": "P12",
+      "encrypted": true,
+      "public_access_blocked": true,
+      "region": "us-west-2"
+    },
+    {
+      "name": "terraform_state",
+      "scope": "E3",
+      "encrypted": true,
+      "public_access_blocked": true
+    },
+    {
+      "name": "log_archive",
+      "scope": "E4",
+      "encrypted": true,
+      "public_access_blocked": true
+    }
+  ],
+  "sqs_queues": [
+    {
+      "name": "alerts",
+      "scope": "P7",
+      "sse_enabled": true
+    },
+    {
+      "name": "escalation_timers",
+      "scope": "P7",
+      "sse_enabled": true
+    }
+  ],
+  "ebs_volumes": [],
+  "rds_instances": [
+    {
+      "id": "primary",
+      "scope": "P3",
+      "storage_encrypted": true,
+      "backup_retention_days": 14
+    }
+  ],
+  "kms_keys": [
+    {
+      "alias": "data",
+      "scope": "P5",
+      "rotation_enabled": true
+    },
+    {
+      "alias": "backup-us-west-2",
+      "scope": "P5",
+      "rotation_enabled": true
+    }
+  ],
+  "secrets": [
+    {
+      "name": "db_password",
+      "scope": "P6",
+      "days_since_rotation": 12,
+      "rotation_enabled": true
+    },
+    {
+      "name": "integration_signing_keys",
+      "scope": "P6",
+      "days_since_rotation": 41,
+      "rotation_enabled": true
+    },
+    {
+      "name": "notify_provider_keys",
+      "scope": "P6",
+      "days_since_rotation": 33,
+      "rotation_enabled": true
+    }
+  ],
+  "cloudtrail": {
+    "scope": "E4",
+    "is_logging": true,
+    "multi_region": true,
+    "log_file_validation": true,
+    "last_delivery_age_minutes": 7
+  },
+  "config_rules": [
+    {
+      "name": "drift_detection",
+      "scope": "E4",
+      "compliance": "COMPLIANT",
+      "non_compliant_resources": 0
+    }
+  ],
+  "drift": {
+    "unmanaged_resources": [],
+    "scan_age_hours": 3
+  },
+  "tls_scan": {
+    "endpoints": [
+      {
+        "host": "api.orrinwick.example",
+        "min_protocol": "TLSv1.2",
+        "weak_ciphers": 0
+      },
+      {
+        "host": "hooks.orrinwick.example",
+        "min_protocol": "TLSv1.2",
+        "weak_ciphers": 0
+      },
+      {
+        "host": "app.orrinwick.example",
+        "min_protocol": "TLSv1.2",
+        "weak_ciphers": 0
+      }
+    ]
+  },
+  "flow_tls": [
+    {
+      "flow": "F01",
+      "protocol": "TLSv1.2",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F02",
+      "protocol": "TLSv1.2",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F03",
+      "protocol": "TLSv1.2",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F04",
+      "protocol": "TLSv1.2",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F05",
+      "protocol": "TLSv1.3",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F06",
+      "protocol": "TLSv1.3",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F07",
+      "protocol": "TLSv1.3",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F11",
+      "protocol": "TLSv1.3",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F12",
+      "protocol": "TLSv1.3",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F13",
+      "protocol": "TLSv1.3",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F14",
+      "protocol": "TLSv1.2",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F15",
+      "protocol": "TLSv1.2",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F16",
+      "protocol": "TLSv1.2",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F17",
+      "protocol": "TLSv1.2",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F18",
+      "protocol": "TLSv1.2",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F19",
+      "protocol": "TLSv1.2",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F20",
+      "protocol": "TLSv1.2",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F21",
+      "protocol": "TLSv1.3",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F22",
+      "protocol": "TLSv1.3",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F23",
+      "protocol": "TLSv1.2",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F24",
+      "protocol": "TLSv1.3",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F25",
+      "protocol": "TLSv1.3",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F26",
+      "protocol": "TLSv1.3",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F29",
+      "protocol": "TLSv1.3",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F30",
+      "protocol": "TLSv1.3",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F39",
+      "protocol": "TLSv1.3",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F40",
+      "protocol": "TLSv1.3",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F41",
+      "protocol": "TLSv1.3",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F43",
+      "protocol": "TLSv1.3",
+      "certificate_valid": true,
+      "observed_by": "egress and service mesh telemetry (simulated)"
+    },
+    {
+      "flow": "F44",
+      "protocol": "TLSv1.2",
+      "certificate_valid": true,
+      "observed_by": "restore test telemetry (simulated)"
+    }
+  ],
+  "identity": {
+    "users_total": 37,
+    "users_phishing_resistant_mfa": 37,
+    "users_password_only": 0,
+    "deprovisioning": [
+      {
+        "user": "u-0412",
+        "offboarded": "2026-09-30",
+        "access_removed_hours": 3
+      },
+      {
+        "user": "u-0438",
+        "offboarded": "2026-10-21",
+        "access_removed_hours": 6
+      },
+      {
+        "user": "u-0451",
+        "offboarded": "2026-11-04",
+        "access_removed_hours": 6,
+        "note": "SEEDED FINDING: manual removal outside the SLA"
+      }
+    ]
+  },
+  "iam": {
+    "wildcard_admin_attachments": [
+      {
+        "principal": "role/breakglass",
+        "approval_gated": true
+      }
+    ],
+    "unused_permission_findings": 0,
+    "unused_permission_threshold": 0
+  },
+  "aws_backup": {
+    "vaults": [
+      {
+        "name": "primary",
+        "region": "us-east-1",
+        "kms_key": "kms:data",
+        "lock_enabled": false
+      },
+      {
+        "name": "recovery",
+        "region": "us-west-2",
+        "kms_key": "kms:backup-us-west-2",
+        "lock_enabled": true,
+        "lock_mode": "compliance"
+      }
+    ],
+    "protected_resources": [
+      {
+        "resource": "db:primary",
+        "scope": "P3",
+        "latest_recovery_point_age_hours": 1.4
+      },
+      {
+        "resource": "s3:backups",
+        "scope": "P4",
+        "latest_recovery_point_age_hours": 1.1
+      },
+      {
+        "resource": "s3:exports",
+        "scope": "P4",
+        "latest_recovery_point_age_hours": 1.1
+      }
+    ],
+    "copy_jobs": [
+      {
+        "resource": "db:primary",
+        "destination_vault": "recovery",
+        "destination_region": "us-west-2",
+        "status": "COMPLETED",
+        "lag_hours": 1.2
+      },
+      {
+        "resource": "s3:backups",
+        "destination_vault": "recovery",
+        "destination_region": "us-west-2",
+        "status": "COMPLETED",
+        "lag_hours": 0.3
+      },
+      {
+        "resource": "s3:exports",
+        "destination_vault": "recovery",
+        "destination_region": "us-west-2",
+        "status": "COMPLETED",
+        "lag_hours": 0.3
+      }
+    ]
+  },
+  "change_events": {
+    "last_30_days": {
+      "pipeline_changes": 212,
+      "pipeline_changes_logged": 212,
+      "manual_console_changes": 2,
+      "manual_changes_alerted": 2
+    }
+  },
+  "compute": [
+    {
+      "id": "ecs:api",
+      "scope": "P2",
+      "image_digest_matches_registry": true
+    },
+    {
+      "id": "ecs:routing_engine",
+      "scope": "P2",
+      "image_digest_matches_registry": true
+    },
+    {
+      "id": "ecs:notification_workers",
+      "scope": "P2",
+      "image_digest_matches_registry": true
+    },
+    {
+      "id": "ecs:web_console",
+      "scope": "P2",
+      "image_digest_matches_registry": true
+    },
+    {
+      "id": "ecs:push_registration",
+      "scope": "P10",
+      "image_digest_matches_registry": true
+    }
+  ],
+  "pipeline_runs_30d": {
+    "total": 212,
+    "with_tests": 212,
+    "with_scans": 212,
+    "with_post_deploy_verification": 212
+  },
+  "iam_roles": [
+    {
+      "name": "role/beacon-api",
+      "scope": "P1",
+      "wildcard_actions": []
+    },
+    {
+      "name": "role/beacon-router",
+      "scope": "P1",
+      "wildcard_actions": []
+    },
+    {
+      "name": "role/beacon-notify",
+      "scope": "P1",
+      "wildcard_actions": []
+    },
+    {
+      "name": "role/beacon-web",
+      "scope": "P1",
+      "wildcard_actions": []
+    },
+    {
+      "name": "role/beacon-push",
+      "scope": "P1",
+      "wildcard_actions": []
+    }
+  ],
+  "benchmark_results": {
+    "cis_aws_foundations": {
+      "controls_total": 52,
+      "failed": 0,
+      "failing": [],
+      "scan_age_hours": 6
+    }
+  },
+  "exposed_endpoints": {
+    "allowed": [
+      "alb.beacon.example:443",
+      "webhooks.beacon.example:443"
+    ],
+    "observed": [
+      "alb.beacon.example:443",
+      "webhooks.beacon.example:443"
+    ],
+    "lateral_paths": {
+      "web_tier_to_data_tier_direct": 0,
+      "cross_tenant_paths": 0,
+      "app_to_ops_tools": 0
+    }
+  },
+  "availability": {
+    "services": [
+      {
+        "service": "api",
+        "running_tasks": 2,
+        "azs": 2
+      },
+      {
+        "service": "routing_engine",
+        "running_tasks": 2,
+        "azs": 2
+      },
+      {
+        "service": "notification_workers",
+        "running_tasks": 2,
+        "azs": 2
+      },
+      {
+        "service": "web_console",
+        "running_tasks": 2,
+        "azs": 2
+      },
+      {
+        "service": "push_registration",
+        "running_tasks": 2,
+        "azs": 2
+      }
+    ],
+    "rds_multi_az": true,
+    "last_failover_test_days_ago": 60
+  },
+  "network": {
+    "flow_logs": {
+      "active": true,
+      "last_delivery_age_minutes": 5
+    },
+    "data_subnets_with_internet_route": 0,
+    "nacl_changes_unreviewed": 0
+  },
+  "access_keys": [
+    {
+      "principal": "svc-legacy-export",
+      "age_days": 212,
+      "scope": "P4",
+      "note": "SEEDED FINDING: long-lived key for an export job"
+    }
+  ],
+  "standing_privileged_accounts": [],
+  "suspicious_activity": [
+    {
+      "id": "SA-014",
+      "type": "impossible_travel",
+      "detected": "2026-10-02",
+      "account_secured_minutes": 6
+    },
+    {
+      "id": "SA-019",
+      "type": "new_access_key",
+      "detected": "2026-10-27",
+      "account_secured_minutes": 9,
+      "note": "SEEDED FINDING: response over target"
+    }
+  ],
+  "security_improvements": {
+    "closed_last_90_days": 14,
+    "open_items": [
+      {
+        "id": "IMP-31",
+        "age_days": 22
+      },
+      {
+        "id": "IMP-27",
+        "age_days": 118,
+        "note": "SEEDED FINDING: older than the 90 day target"
+      }
+    ]
+  },
+  "residual": {
+    "unused_iam_roles": 0,
+    "orphaned_volumes": [],
+    "active_old_task_definitions": 0,
+    "stale_dns_records": 0,
+    "post_change_reviews_completed_pct": 100
+  },
+  "data_removal_requests": [
+    {
+      "id": "DR-3",
+      "requested": "2026-08-12",
+      "completed_days": 4,
+      "backups_removed": true
+    },
+    {
+      "id": "DR-7",
+      "requested": "2026-10-05",
+      "completed_days": 11,
+      "backups_removed": true
+    }
+  ],
+  "image_integrity": {
+    "images_running": 5,
+    "signed": 5,
+    "digest_verified": 5,
+    "verification_failures_90d": 0
+  },
+  "log_access": {
+    "grants_last_90d": [
+      {
+        "id": "LA-1",
+        "role": "security-analyst",
+        "type": "standing_read"
+      },
+      {
+        "id": "LA-2",
+        "role": "auditor",
+        "type": "jit",
+        "duration_hours": 4
+      },
+      {
+        "id": "LA-3",
+        "role": "platform-engineer",
+        "type": "jit",
+        "duration_hours": 6
+      }
+    ],
+    "raw_log_standing_access": [],
+    "last_access_review_days_ago": 21,
+    "unmasked_sensitive_reads": 0
+  },
+  "siem": {
+    "sources_expected": [
+      "cloudtrail",
+      "vpc_flow",
+      "alb",
+      "app",
+      "idp",
+      "pipeline"
+    ],
+    "sources_reporting": [
+      "cloudtrail",
+      "vpc_flow",
+      "alb",
+      "app",
+      "idp",
+      "pipeline"
+    ],
+    "last_event_age_minutes": 2,
+    "tamper_events_90d": 0,
+    "object_lock_enabled": true,
+    "log_gap_events_90d": 1
+  },
+  "log_review": {
+    "last_review_days_ago": 5,
+    "alerts_30d": 88,
+    "triaged_within_sla": 88,
+    "detections_enabled": 42,
+    "detections_failing": 0
+  },
+  "iac_evaluation": {
+    "last_scan_age_hours": 6,
+    "open_high_findings": 0,
+    "findings": [],
+    "prs_merged_30d": 61,
+    "prs_with_checks": 61
+  },
+  "sdlc": {
+    "last_review_days_ago": 47,
+    "threat_models_new_features_pct": 94,
+    "secure_by_design_exceptions_open": 0,
+    "sast_critical_open": 0,
+    "dependency_critical_open": 0
+  },
+  "supply_chain": {
+    "third_parties": [
+      {
+        "id": "T1",
+        "last_advisory_check_hours": 12,
+        "notification_clause": true
+      },
+      {
+        "id": "T2",
+        "last_advisory_check_hours": 12,
+        "notification_clause": true
+      },
+      {
+        "id": "T3",
+        "last_advisory_check_hours": 12,
+        "notification_clause": true
+      },
+      {
+        "id": "T5",
+        "last_advisory_check_hours": 12,
+        "notification_clause": true
+      },
+      {
+        "id": "E1",
+        "last_advisory_check_hours": 6,
+        "notification_clause": true
+      },
+      {
+        "id": "E7",
+        "last_advisory_check_hours": 6,
+        "notification_clause": true
+      },
+      {
+        "id": "E9",
+        "last_advisory_check_hours": 6,
+        "notification_clause": true
+      }
+    ],
+    "sbom_age_days": 2,
+    "upstream_vulns_critical_open": 0,
+    "last_risk_review_days_ago": 38,
+    "risks_open_over_90d": 0
+  },
+  "restore_tests": [
+    {
+      "id": "RT-2026-08",
+      "date": "2026-08-27",
+      "days_ago": 85,
+      "result": "pass",
+      "achieved_rto_hours": 6.5,
+      "achieved_rpo_hours": 2.0,
+      "from_vault": "recovery"
+    }
+  ],
+  "recovery_plan": {
+    "last_review_days_ago": 1,
+    "documented_rto_hours": 8,
+    "documented_rpo_hours": 4
+  }
+}

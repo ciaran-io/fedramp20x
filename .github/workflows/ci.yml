@@ -1,0 +1,30 @@
+name: ci
+
+# Runs automatically on every push and pull request.
+# It does NOT touch any cloud account. It only checks that the JSON files are valid
+# and that the documents, evidence and trust center data can be rebuilt without errors.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:   # lets you start it by hand from the Actions tab
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install jsonschema
+      - name: Check the vendored FedRAMP data against its schema
+        run: make check
+      - name: Run unit tests
+        run: make test
+      - name: Validate the scope record and rebuild everything
+        run: make all

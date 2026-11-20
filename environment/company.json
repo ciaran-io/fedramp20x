@@ -1,0 +1,23 @@
+{
+  "_notice": "FICTIONAL COMPANY. Everything in /environment is invented demo data. Nothing here represents a real organization, system, or FedRAMP certification.",
+  "name": "Orrinwick Labs, Inc.",
+  "founded": 2022,
+  "headcount": 35,
+  "cso": {
+    "name": "Orrinwick Beacon",
+    "description": "Multi-tenant SaaS that receives security-relevant alerts from agency tools, routes them to on-call responders and keeps an audit trail (see docs/company-and-offering.md).",
+    "target_class": "c",
+    "framework": "20x",
+    "deployment_model": "Public cloud (AWS, fictional design assumption). Production in us-east-1, multi-AZ. Recovery by backup and restore: encrypted backups replicate to us-west-2; no standing environment there (see environment/recovery-objectives.json and SD-003)."
+  },
+  "minimum_assessment_scope": {
+    "source_of_truth": "mas/mas-record.json",
+    "document": "docs/minimum-assessment-scope.md",
+    "note": "Scope lists are not duplicated here. Every resource in environment/iac-plan.json carries a `scope` ID that must exist in the record, and every in-scope machine-based resource in the record must be implemented by at least one IaC resource (tools/check_environment.py)."
+  },
+  "owners": {
+    "ciso": "Alex Rivera (fictional)",
+    "grc_lead": "Sam Okafor (fictional)",
+    "platform_lead": "Jordan Lee (fictional)"
+  }
+}

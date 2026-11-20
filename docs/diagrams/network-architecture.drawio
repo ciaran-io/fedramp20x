@@ -1,0 +1,313 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Network architecture" id="net1">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2300" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="&lt;b style=&quot;font-size:20px&quot;&gt;Orrinwick Beacon: network architecture (design assumption)&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#555555&quot;&gt;IDs match mas/mas-record.json. AWS and Terraform are a fictional design choice, not part of the scope record. FICTIONAL DEMO.&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="20" y="10" width="1800" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="z-zag" value="Agency (customer-managed, outside the offering)" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=10 6;fillColor=#fafafa;strokeColor=#999999;strokeWidth=1.5;verticalAlign=top;align=left;spacingLeft=10;spacingTop=2;fontStyle=1;fontColor=#999999;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="20" y="100" width="280" height="560" as="geometry" />
+        </mxCell>
+        <mxCell id="z-zst" value="Orrinwick staff (remote)" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=10 6;fillColor=#eef3fb;strokeColor=#6c8ebf;strokeWidth=1.2;verticalAlign=top;align=left;spacingLeft=10;spacingTop=2;fontStyle=1;fontColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="20" y="700" width="280" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="z-zorg" value="AWS organization (fictional design assumption) · T5 cloud infrastructure provider" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=10 6;fillColor=#fbfcfe;strokeColor=#1a4f8b;strokeWidth=3;verticalAlign=top;align=left;spacingLeft=10;spacingTop=2;fontStyle=1;fontColor=#1a4f8b;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="340" y="100" width="1600" height="1190" as="geometry" />
+        </mxCell>
+        <mxCell id="z-zprod" value="Production account · us-east-1" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=10 6;fillColor=#f7faff;strokeColor=#6c8ebf;strokeWidth=1.5;verticalAlign=top;align=left;spacingLeft=10;spacingTop=2;fontStyle=1;fontColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="360" y="140" width="1240" height="820" as="geometry" />
+        </mxCell>
+        <mxCell id="z-vpc" value="Production VPC 10.20.0.0/16 · two availability zones · P1" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=10 6;fillColor=#f2f7fc;strokeColor=#3d6fa5;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=10;spacingTop=2;fontStyle=1;fontColor=#3d6fa5;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="400" y="280" width="1180" height="650" as="geometry" />
+        </mxCell>
+        <mxCell id="z-zpub" value="Public subnets" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=10 6;fillColor=#f0f7ee;strokeColor=#6a994e;strokeWidth=1.2;verticalAlign=top;align=left;spacingLeft=10;spacingTop=2;fontStyle=1;fontColor=#6a994e;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="420" y="320" width="250" height="570" as="geometry" />
+        </mxCell>
+        <mxCell id="z-zapp" value="Private application subnets" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=10 6;fillColor=#eef3fb;strokeColor=#6c8ebf;strokeWidth=1.2;verticalAlign=top;align=left;spacingLeft=10;spacingTop=2;fontStyle=1;fontColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="720" y="320" width="420" height="570" as="geometry" />
+        </mxCell>
+        <mxCell id="z-zdata" value="Data subnets (no internet route)" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=10 6;fillColor=#f4effa;strokeColor=#8e6bb5;strokeWidth=1.2;verticalAlign=top;align=left;spacingLeft=10;spacingTop=2;fontStyle=1;fontColor=#8e6bb5;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1190" y="320" width="370" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="z-vpce" value="VPC endpoints" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=10 6;fillColor=#f7f7f7;strokeColor=#888888;strokeWidth=1.2;verticalAlign=top;align=left;spacingLeft=10;spacingTop=2;fontStyle=1;fontColor=#888888;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1190" y="600" width="370" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="z-zdr" value="Recovery region · us-west-2 (backups only)" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=10 6;fillColor=#fffaf0;strokeColor=#b8860b;strokeWidth=1.5;verticalAlign=top;align=left;spacingLeft=10;spacingTop=2;fontStyle=1;fontColor=#b8860b;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1640" y="330" width="280" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="z-zsec" value="Security and logging account" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=10 6;fillColor=#f7faff;strokeColor=#6c8ebf;strokeWidth=1.5;verticalAlign=top;align=left;spacingLeft=10;spacingTop=2;fontStyle=1;fontColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="360" y="980" width="600" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="z-zeng" value="Engineering and tooling account" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=10 6;fillColor=#f7faff;strokeColor=#6c8ebf;strokeWidth=1.5;verticalAlign=top;align=left;spacingLeft=10;spacingTop=2;fontStyle=1;fontColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="980" width="920" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="z-z3p" value="Third parties (see MAS-CSO-TPR)" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=10 6;fillColor=#ffffff;strokeColor=#6c8ebf;strokeWidth=1.5;verticalAlign=top;align=left;spacingLeft=10;spacingTop=2;fontStyle=1;fontColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1960" y="100" width="320" height="430" as="geometry" />
+        </mxCell>
+        <mxCell id="z-zsaas" value="Other in-scope SaaS (not in AWS)" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=10 6;fillColor=#ffffff;strokeColor=#6c8ebf;strokeWidth=1.5;verticalAlign=top;align=left;spacingLeft=10;spacingTop=2;fontStyle=1;fontColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1960" y="560" width="320" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="n-X2" value="&lt;b&gt;X2 Agency integration tools&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;webhooks and API calls&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="150" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n-X1" value="&lt;b&gt;X1 Responders and admins&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;browser console&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="270" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n-X3" value="&lt;b&gt;X3 Agency identity provider&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;SSO (SAML or OIDC)&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="390" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n-X4" value="&lt;b&gt;X4 Responder mobile devices&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;Beacon app (SUP1)&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="510" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n-E8" value="&lt;b&gt;E8 Managed admin laptops&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;EDR and device management (E9)&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="760" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n-P9" value="&lt;b&gt;P9 Route 53 and ACM&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;DNS and TLS certificates&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="420" y="190" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n-P8" value="&lt;b&gt;P8 Load balancer and WAF&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;public ALB, AWS WAF, TLS 1.2+&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="440" y="380" width="210" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n-NAT" value="&lt;b&gt;NAT gateways&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;egress only (part of P1)&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="440" y="560" width="210" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n-P2" value="&lt;b&gt;P2 Application compute&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;ECS on Fargate: API, console, routing, workers&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="750" y="370" width="360" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="n-P10" value="&lt;b&gt;P10 Push registration&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;device token service&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="750" y="500" width="170" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n-E6" value="&lt;b&gt;E6 Access gateway&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;SSM sessions, MFA, recorded&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="940" y="500" width="170" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n-S4" value="&lt;b&gt;S4 Support tooling&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;impersonation, audited&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="750" y="620" width="170" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n-P3" value="&lt;b&gt;P3 Managed PostgreSQL&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;RDS Multi-AZ, encrypted, TLS&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1210" y="380" width="330" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n-P4" value="&lt;b&gt;P4 Object storage&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;S3 (gateway endpoint)&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1385" y="640" width="165" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n-P5" value="&lt;b&gt;P5 Key management&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;KMS customer keys&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1205" y="640" width="165" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n-P6" value="&lt;b&gt;P6 Secrets&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;Secrets Manager&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1205" y="725" width="165" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n-P7" value="&lt;b&gt;P7 Queue and scheduler&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;SQS&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1385" y="725" width="165" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n-ECR" value="&lt;b&gt;ECR endpoint&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;image pulls (P11)&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1205" y="810" width="165" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n-CWL" value="&lt;b&gt;CloudWatch Logs&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;endpoint, to E4&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1385" y="810" width="165" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n-REC" value="&lt;b&gt;P13 Recovery environment&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;built on demand by Terraform, not running&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#888888;strokeWidth=1.6;dashed=1;dashPattern=3 3;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1660" y="375" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="n-P12" value="&lt;b&gt;P12 Backup replica storage&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;S3 and RDS backup copies, own KMS key&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1660" y="455" width="240" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n-E4" value="&lt;b&gt;E4 Logging and monitoring&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;CloudWatch, org CloudTrail, GuardDuty, locked archive&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="380" y="1030" width="270" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="n-E5" value="&lt;b&gt;E5 Vulnerability scanning&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;Inspector, dependency and IaC scans&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="680" y="1030" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="n-E3" value="&lt;b&gt;E3 Terraform runners&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;S3 state with locking&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="1030" width="250" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n-E2" value="&lt;b&gt;E2 CI/CD pipeline&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;OIDC roles, no long-lived keys&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1310" y="1030" width="250" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n-P11" value="&lt;b&gt;P11 Container registry&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;ECR, signed images&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1600" y="1030" width="290" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n-E10" value="&lt;b&gt;E10 Staging account&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;separate account, no peering&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d79b00;strokeWidth=1.6;dashed=1;dashPattern=6 4;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="1160" width="250" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n-E1" value="&lt;b&gt;E1 Source control&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;hosted SaaS&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1310" y="1160" width="250" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n-T1" value="&lt;b&gt;T1 Mobile push service&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;public endpoint&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;strokeWidth=1.6;dashed=1;dashPattern=6 4;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1980" y="150" width="280" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n-T2" value="&lt;b&gt;T2 Transactional email&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;public endpoint&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;strokeWidth=1.6;dashed=1;dashPattern=6 4;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1980" y="260" width="280" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n-T3" value="&lt;b&gt;T3 Telephony (SMS, voice)&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;public endpoint&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;strokeWidth=1.6;dashed=1;dashPattern=6 4;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1980" y="370" width="280" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n-E7" value="&lt;b&gt;E7 Workforce identity provider&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;SSO and MFA, SaaS&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1980" y="610" width="280" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n-E9" value="&lt;b&gt;E9 EDR and device management&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:10px&quot;&gt;SaaS&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1980" y="720" width="280" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" value="F01-F04 · HTTPS 443, TLS 1.2+" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-X2" target="n-P8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="305" y="190" />
+              <mxPoint x="305" y="395" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e1" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-X3" target="n-P8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="312" y="430" />
+              <mxPoint x="312" y="411" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e2" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-X1" target="n-P8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="319" y="310" />
+              <mxPoint x="319" y="440" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e3" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-X4" target="n-P8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="326" y="550" />
+              <mxPoint x="326" y="455" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4" value="F05 · TLS" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-P8" target="n-P2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="F06 · 5432" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-P2" target="n-P3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="F13" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-P2" target="n-P10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-E6" target="n-P2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="F29-F30 · sessions, no inbound SSH" style="endArrow=classic;html=1;rounded=0;strokeColor=#6a3d9a;strokeWidth=2.0;dashed=1;dashPattern=8 4;fontSize=11;fontColor=#6a3d9a;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-E6" target="n-P3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1165" y="545" />
+              <mxPoint x="1165" y="450" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e9" value="F39" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-S4" target="n-P2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="735" y="660" />
+              <mxPoint x="735" y="400" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e10" value="F14-16 egress" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-P2" target="n-NAT">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="450" />
+              <mxPoint x="700" y="600" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e11" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-NAT" target="n-T1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="545" y="962" />
+              <mxPoint x="1946" y="962" />
+              <mxPoint x="1946" y="190" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e12" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-NAT" target="n-T2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="545" y="969" />
+              <mxPoint x="1950" y="969" />
+              <mxPoint x="1950" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e13" value="F14-F16 · HTTPS 443 egress via NAT" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-NAT" target="n-T3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="545" y="976" />
+              <mxPoint x="1954" y="976" />
+              <mxPoint x="1954" y="410" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e14" value="SSO + MFA · recorded session" style="endArrow=classic;html=1;rounded=0;strokeColor=#6a3d9a;strokeWidth=2.0;dashed=1;dashPattern=8 4;fontSize=11;fontColor=#6a3d9a;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-E8" target="n-E6">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="300" y="800" />
+              <mxPoint x="1025" y="800" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e15" value="F07 F11 F12 F22" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-P2" target="z-vpce">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1130" y="455" />
+              <mxPoint x="1130" y="745" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e16" value="F21 · backups" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-P3" target="n-P4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1470" y="545" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e17" value="F43 · backup replication" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-P4" target="n-P12">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1620" y="675" />
+              <mxPoint x="1620" y="490" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e18" value="F44 · restore" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-P12" target="n-REC">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e19" value="F24 F25 F26 · logs" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-CWL" target="n-E4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1467" y="954" />
+              <mxPoint x="620" y="954" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e20" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-E2" target="n-E3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e21" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-E2" target="n-P11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e22" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-E1" target="n-E2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e23" value="deploy · OIDC role" style="endArrow=classic;html=1;rounded=0;strokeColor=#333333;strokeWidth=1.6;fontSize=11;fontColor=#333333;fontStyle=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n-E2" target="z-vpc">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1520" y="945" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="notes" value="&lt;b&gt;Design assumptions (not in the record):&lt;/b&gt;&lt;br&gt;· AWS: us-east-1 primary, multi-AZ&lt;br&gt;· Recovery: backup and restore (SD-003)&lt;br&gt;· RTO 8h, RPO 4h (fictional objectives)&lt;br&gt;· ECS on Fargate, RDS PostgreSQL&lt;br&gt;· Terraform in the engineering account&lt;br&gt;· No inbound SSH; admins use E6 only&lt;br&gt;· F17-F19 and control flows not drawn" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1630" y="685" width="310" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid = network path (flow ID, port) · purple dashed = privileged human access · blue = in the offering · grey = agency · white dashed = third party · grey dotted = built only in a recovery · orange = excluded while conditions hold" style="text;html=1;align=left;whiteSpace=wrap;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="24" y="1330" width="1500" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

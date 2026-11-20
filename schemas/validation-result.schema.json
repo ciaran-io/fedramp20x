@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Orrinwick validation result",
+  "description": "Project-defined format for evidence/latest.json. FedRAMP does not define this format. KSI fields come from the official FRMR data.",
+  "type": "object",
+  "required": ["demo_notice", "company", "cso", "class", "frmr_version", "generated_at", "summary", "ksis"],
+  "properties": {
+    "demo_notice": {"type": "string"},
+    "company": {"type": "string"},
+    "cso": {"type": "string"},
+    "class": {"enum": ["a", "b", "c", "d"]},
+    "frmr_version": {"type": "string"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "summary": {
+      "type": "object",
+      "required": ["total", "pass", "partial", "fail", "not_implemented"],
+      "properties": {
+        "total": {"type": "integer", "minimum": 0}, "pass": {"type": "integer", "minimum": 0},
+        "partial": {"type": "integer", "minimum": 0}, "fail": {"type": "integer", "minimum": 0},
+        "not_implemented": {"type": "integer", "minimum": 0}
+      }
+    },
+    "ksis": {"type": "array", "items": {"$ref": "#/$defs/ksi"}}
+  },
+  "$defs": {
+    "ksi": {
+      "type": "object",
+      "required": ["id", "theme", "name", "status", "coverage_gap", "methods"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^KSI-[A-Z]{3}-[A-Z]{3}$"},
+        "theme": {"type": "string", "pattern": "^[A-Z]{3}$"},
+        "name": {"type": "string"},
+        "status": {"enum": ["pass", "partial", "fail", "not_implemented"]},
+        "coverage_gap": {"type": ["string", "null"]},
+        "coverage_note": {"type": ["string", "null"]},
+        "methods": {"type": "array", "items": {"$ref": "#/$defs/method"}}
+      }
+    },
+    "method": {
+      "type": "object",
+      "required": ["method_id", "kind", "source", "description", "status", "expected", "observed", "findings"],
+      "properties": {
+        "method_id": {"type": "string", "pattern": "^[a-z]{3}-[a-z-]+$"},
+        "kind": {"enum": ["static", "live", "unknown"]},
+        "source": {"type": "string"},
+        "description": {"type": "string"},
+        "status": {"enum": ["pass", "fail", "error"]},
+        "expected": {"type": "string"},
+        "observed": {"type": "string"},
+        "findings": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}
