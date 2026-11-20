@@ -8,7 +8,7 @@ This repository shows what a FedRAMP 20x Class C package could look like for a s
 - a **scope record** (the Minimum Assessment Scope) written as JSON, with documents and diagrams generated from it
 - **simulated validator output** (JSON files) that shows what continuous validation results could look like
 - a set of **documents** a provider would maintain, including ten policies that map to all 46 KSIs
-- a planned **trust center** that reads the JSON from this repository and displays the current posture
+- a **trust center** that reads the JSON from this repository and displays the current posture
 
 ## The fictional company
 
@@ -49,11 +49,11 @@ Open [`trust-center/index.html`](trust-center/index.html) in a browser for the f
 
 ## How this project was built
 
-An AI assistant (Claude) wrote much of the scaffolding: the build tools, the diagram generators, the generated documents and the trust center page. Manual work includes, making the scope decisions and writing the policies, the GRC validators and the documents related to reasoning, to help describe the decisions behind the fake company data. 
+An AI assistant (Claude) wrote much of the scaffolding: the build tools, the diagram generators, the generated documents and the trust center page. I make the scope decisions, write the policies and the validator designs, and decide what each check must prove. Claude writes the Python for the checks from my designs, and I review and test each one.
 
 ## Folder guide
 
-| Folder | What is in it | Human Yes or Claude No? |
+| Folder | What is in it | Edit by hand? |
 |---|---|---|
 | `docs/` | The written documents: company overview, data and resource inventory, scope document, security decision record, templates. `docs/diagrams/` holds the diagrams (`.drawio` files open in diagrams.net) | Yes, except `minimum-assessment-scope.md`, `rules-matrix.md`, `policies-index.md` and `policies/`, which are generated |
 | `policies/` | `policy-set.json`: the ten policies, one per KSI theme. `make policies` renders `docs/policies/` and `docs/policies-index.md` from it | Yes (this is the file to edit) |
@@ -61,7 +61,7 @@ An AI assistant (Claude) wrote much of the scaffolding: the build tools, the dia
 | `environment/` | The fictional company's data: company facts, recovery objectives, a pretend Terraform plan and a pretend live-state snapshot. Every resource names the scope-record ID it implements | Yes |
 | `validators/` | The check logic for each KSI (Python) | Yes |
 | `tools/` | Scripts that build everything else | Yes |
-| `evidence/` | Generated JSON: the KSI registry, the latest validation result, scope summary, and and a day-by-day history written by each run | No, generated |
+| `evidence/` | Generated JSON: the KSI registry, the latest validation result, scope summary, and a day-by-day history written by each run | No, generated |
 | `frmr/` | Where `make frmr` downloads FedRAMP's rules data. Nothing from FedRAMP is committed. See `frmr/PROVENANCE.md` | No |
 | `schemas/` | JSON Schemas that the project's own JSON files must follow | Rarely |
 | `trust-center/` | The trust center. `src/page.html` is the page source. `index.html` is generated from it as one self-contained file (open it in a browser). The page reads `evidence/latest.json` from this repository when it can reach it, and otherwise shows the data embedded in the snapshot. `brand/` holds the logo | `src/page.html` yes |
@@ -118,7 +118,7 @@ Then open `trust-center/index.html` in a browser.
 | Piece | Status |
 |---|---|
 | KSI text, class variants, rules | Real: downloaded from [FedRAMP/rules](https://github.com/FedRAMP/rules) at a pinned commit and schema-checked by `make check`. Outputs keep IDs and names only; read the statement text upstream |
-| Check logic | The author's interpretation of each KSI. Read the official statement in FedRAMP/rules before trusting a check. Where a check is narrower than the official statement, `validators/registry.py` records a coverage note (shown on the indicator). A known gap in the same file holds a KSI at `partial` |
+| Check logic | My interpretation of each KSI. Read the official statement in FedRAMP/rules before trusting a check. Where a check is narrower than the official statement, `validators/registry.py` records a coverage note (shown on the indicator). A known gap in the same file holds a KSI at `partial` |
 | Environment data | Fictional. The validators read simulated files, not a real cloud account |
 | Validator output and history | Generated from the fictional data. History starts at the first run and grows with each run |
 | Documents | Templates with fictional content. `TODO` marks what is still to be written |
