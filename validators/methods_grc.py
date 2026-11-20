@@ -236,10 +236,24 @@ def rpl_rro_static(env: Env) -> MethodResult:
 
     Official statement: see FedRAMP/rules (after `make frmr`, also frmr/fedramp-consolidated-rules.json).
 
-    Check to write: environment/recovery-objectives.json defines rto_hours, rpo_hours and review_cadence_days, and POL-RPL requires an annual review.
+    Check to write: environment/recovery-objectives.json defines rto_hours, rpo_hours and review_cadence_days, and a POL-RPL requirement covers RPL-RRO.
     Suggested method_id: "rpl-rro-static"
     """
-    raise NotImplementedError("Author to write: KSI-RPL-RRO static")
+    findings: list[str] = []
+    obj = _load("environment/recovery-objectives.json")
+    for key in ("rto_hours", "rpo_hours", "review_cadence_days"):
+        value = obj.get(key)
+        if not isinstance(value, (int, float)) or value <= 0:
+            findings.append(f"{key} is missing or not a positive number (found {value!r})")
+    policies = _load("policies/policy-set.json")["policies"]
+    pol = next((p for p in policies if p["id"] == "POL-RPL"), None)
+    if pol is None:
+        findings.append("POL-RPL is missing from policies/policy-set.json")
+    elif not any("RPL-RRO" in req.get("ksis", []) for req in pol.get("requirements", [])):
+        findings.append("No POL-RPL requirement covers KSI RPL-RRO")
+    return result("rpl-rro-static", STATIC, "environment/recovery-objectives.json",
+                  "Recovery time, recovery point and review cadence are defined, and policy POL-RPL requires the review",
+                  "RTO, RPO and cadence set; POL-RPL covers RPL-RRO", f"{len(findings)} gap(s)", findings)
 
 
 def rpl_rro_live(env: Env) -> MethodResult:
