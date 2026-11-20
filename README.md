@@ -39,6 +39,14 @@ The three diagrams below come from the scope record and the pretend Terraform pl
 
 ![Authorization boundary and trust zones](docs/diagrams/mas-boundary.svg)
 
+## Trust center
+
+The trust center shows the validator results for the fictional service. It reads `evidence/latest.json` from this repository.
+
+![Trust center overview](docs/images/trust-center-overview.png)
+
+Open [`trust-center/index.html`](trust-center/index.html) in a browser for the full page. The page and its data are fictional.
+
 ## How this project was built
 
 An AI assistant (Claude, made by Anthropic) wrote much of the scaffolding: the build tools, the diagram generators, the generated documents and the trust center page. The project author, Ciaran, makes the scope decisions and writes the policies, the GRC validators and the documents marked as author tasks.
