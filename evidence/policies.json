@@ -742,8 +742,11 @@
         },
         {
           "ksi": "KSI-RPL-RRO",
-          "methods": [],
-          "status": "not_implemented"
+          "methods": [
+            "rpl-rro-static",
+            "rpl-rro-live"
+          ],
+          "status": "pass"
         },
         {
           "ksi": "KSI-RPL-TRC",

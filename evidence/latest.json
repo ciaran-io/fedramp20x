@@ -4,13 +4,13 @@
   "cso": "Orrinwick Beacon",
   "class": "c",
   "frmr_version": "2026.11.02.01",
-  "generated_at": "2026-11-20T13:41:25+00:00",
+  "generated_at": "2026-11-20T13:58:32+00:00",
   "summary": {
     "total": 46,
-    "pass": 34,
+    "pass": 35,
     "partial": 0,
     "fail": 2,
-    "not_implemented": 10
+    "not_implemented": 9
   },
   "ksis": [
     {
@@ -1372,10 +1372,31 @@
         "cp-2.3",
         "cp-10"
       ],
-      "status": "not_implemented",
+      "status": "pass",
       "coverage_gap": null,
       "coverage_note": null,
-      "methods": []
+      "methods": [
+        {
+          "method_id": "rpl-rro-static",
+          "kind": "static",
+          "source": "environment/recovery-objectives.json",
+          "description": "Recovery time, recovery point and review cadence are defined, and policy POL-RPL requires the review",
+          "status": "pass",
+          "expected": "RTO, RPO and cadence set; POL-RPL covers RPL-RRO",
+          "observed": "0 gap(s)",
+          "findings": []
+        },
+        {
+          "method_id": "rpl-rro-live",
+          "kind": "live",
+          "source": "environment/recovery-objectives.json",
+          "description": "The last review of the recovery objectives is inside the review cadence",
+          "status": "pass",
+          "expected": "<= 90 days since last review",
+          "observed": "0 days",
+          "findings": []
+        }
+      ]
     },
     {
       "id": "KSI-RPL-TRC",

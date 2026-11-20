@@ -7,6 +7,7 @@ static, one live), then register them here. KSIs with no entry are reported as
 from . import methods as m
 from . import methods_tech as t
 from . import methods_ops as o
+from . import methods_grc as g
 
 KSI_METHODS = {
     "KSI-CNA-RNT": [m.rnt_static, m.rnt_live],
@@ -45,6 +46,7 @@ KSI_METHODS = {
     "KSI-RPL-TRC": [o.trc_static, o.trc_live],
     "KSI-SCR-MIT": [o.mit_static, o.mit_live],
     "KSI-SCR-MON": [o.mon_static, o.mon_live],
+    "KSI-RPL-RRO": [g.rpl_rro_static, g.rpl_rro_live],
 }
 
 # Known gaps between what the methods check and the OFFICIAL Class C KSI statement

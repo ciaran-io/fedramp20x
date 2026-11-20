@@ -13,7 +13,7 @@ Version 0.1, effective 2026-11-19. Approver: CISO. Generated from `policies/poli
 | [Incident response policy](policies/POL-INR.md) | INR | CISO | Annual, and after every incident | 3 | 0 |
 | [Monitoring, logging and auditing policy](policies/POL-MLA.md) | MLA | Security Operations Lead | Annual | 5 | 5 |
 | [Policy and inventory policy](policies/POL-PIY.md) | PIY | GRC Lead | Annual | 5 | 2 |
-| [Recovery planning policy](policies/POL-RPL.md) | RPL | Platform Lead | Every 90 days, and after any recovery test | 4 | 3 |
+| [Recovery planning policy](policies/POL-RPL.md) | RPL | Platform Lead | Every 90 days, and after any recovery test | 4 | 4 |
 | [Supply chain risk policy](policies/POL-SCR.md) | SCR | GRC Lead | Annual | 2 | 2 |
 | [Service configuration policy](policies/POL-SVC.md) | SVC | Platform Lead | Annual | 8 | 7 |
 
