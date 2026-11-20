@@ -10,6 +10,14 @@ This repository shows how a small, invented SaaS company could meet FedRAMP 20x 
 - a set of **documents** a provider would maintain, including ten policies that map to all 46 KSIs
 - a **trust center** that reads the JSON from this repository and displays the current posture
 
+## Trust center
+
+The trust center shows the validator results for the fictional service. It reads `evidence/latest.json` from this repository.
+
+![Trust center overview](docs/images/trust-center-overview.png)
+
+Open [`trust-center/index.html`](trust-center/index.html) in a browser for the full page. The page and its data are fictional.
+
 ## The fictional company
 
 **Orrinwick Beacon** is a cloud service that receives security alerts from an agency's tools, decides who should act, reaches that person (app push, email, SMS, voice), and keeps an audit trail. It holds federal employee contact details and alert information, which is why the company is going through FedRAMP. Read [`docs/company-and-offering.md`](docs/company-and-offering.md) first.
@@ -39,17 +47,57 @@ The three diagrams below come from the scope record and the pretend Terraform pl
 
 ![Authorization boundary and trust zones](docs/diagrams/mas-boundary.svg)
 
-## Trust center
+## Persistent validation
 
-The trust center shows the validator results for the fictional service. It reads `evidence/latest.json` from this repository.
+FedRAMP 20x expects a provider to keep validating its KSIs and to show the results over time. At Class C, machine-based resources must be validated at least every 3 days (VDR-TFR-MVX) and non-machine resources at least every 3 months (VDR-TFR-NMV). This project copies that with `.github/workflows/scheduled-validation.yml`. It runs every day at 06:17 UTC, and anyone with write access can also start it from the Actions tab. Each run does the following:
 
-![Trust center overview](docs/images/trust-center-overview.png)
+1. GitHub starts a short-lived Linux machine.
+2. It downloads the repository and the FedRAMP rules data.
+3. It runs the same checks as CI: the rules data schema, the unit tests and `make all`, which runs every KSI validator against the fictional environment.
+4. It writes the results to `evidence/latest.json`, adds a file for the day in `evidence/history/` and rebuilds the trust center page.
+5. It commits those files to `main` with the date and the result counts, for example `Scheduled validation 2026-11-21: 35 pass, 2 fail, 0 partial, 9 not implemented`.
 
-Open [`trust-center/index.html`](trust-center/index.html) in a browser for the full page. The page and its data are fictional.
+The daily history files are the source for the historical KSI metrics that the Security Decision Record needs (SDR-CSX-KMT). The environment is fictional, so most runs give the same results. For a real provider, the live methods would call the cloud and system APIs, and a daily run would find drift such as an expired key or a backup that stopped.
+
+## Automatic checks on GitHub
+
+`.github/workflows/ci.yml` runs on every push to `main` and on every pull request. It does not use any cloud account. It checks the FedRAMP data against its schema, runs the unit tests, validates the scope record and rebuilds everything. A green tick next to a commit means the JSON is valid and consistent.
+
+## Honest status model
+
+Each KSI is rolled up as `pass` (two or more automated methods, all passing, no known gap), `fail`, `partial` (passing but fewer than two methods or a known gap against the official statement) or `not_implemented`. Nothing passes by default. Class C requires at least two automated methods per KSI (rule `FRC-CSX-VVK`). Current counts are in [`evidence/latest.json`](evidence/latest.json).
+
+## What is real and what is not
+
+| Piece | Status |
+|---|---|
+| KSI text, class variants, rules | Real: downloaded from [FedRAMP/rules](https://github.com/FedRAMP/rules) at a pinned commit and schema-checked by `make check`. Outputs keep IDs and names only; read the statement text upstream |
+| Check logic | My interpretation of each KSI. My design for each check, and where it proves less than the official statement, is in [`docs/validator-design/`](docs/validator-design/). Read the official statement in FedRAMP/rules before trusting a check. Where a check is narrower than the official statement, `validators/registry.py` records a coverage note (shown on the indicator). A known gap in the same file holds a KSI at `partial` |
+| Environment data | Fictional. The validators read simulated files, not a real cloud account |
+| Validator output and history | Generated from the fictional data. History starts at the first run and grows with each run |
+| Documents | Written for the fictional company. `TODO` marks sections still to be written |
+| Cloud platform | AWS and Terraform are a design assumption for the fictional company. The scope record itself is vendor-neutral |
 
 ## How this project was built
 
 An AI assistant (Claude) wrote much of the scaffolding and drafts the validator designs and the check code. I make the scope decisions, write the policies, decide what each KSI check must prove, and review, correct and test every design and check before I commit it. The design reviews are where my judgement shows: for example, my review of RPL-ABO found two checks that were weaker than the policy.
+
+## Roadmap
+
+1. Move access control from the demo (browser storage or Claude sign-in) to a real server.
+2. Build the checks for my remaining nine GRC KSIs.
+3. Write the validator design for all 46 KSIs in `docs/validator-design/` and close the gaps the reviews find.
+4. Write the remaining documents: incident response plan, cryptographic modules, significant change log and secure configuration guide. Rewrite the vulnerability report and publish it as JSON.
+5. Assemble an example FedRAMP Certification Package, the final submission to FedRAMP (FRC-CSO-PKG). It has three parts, each in Markdown and in JSON that validates against FedRAMP's published schema (FRC-CSO-JSN):
+   - **Certification Package Overview** (CPO-CSO-OVR): metadata and the accountable official (CPO-CSO-MTD), public information and service list (CDS-CSO-PUB, CDS-CSO-SVC), relevant policies (CDS-CSO-IRP), the scope (MAS-CSO-IIR, MAS-CSO-FLO, MAS-CSO-TPR), cryptographic modules (CMU-CSO-CMD) and the independent assessment results (IVV-CSO-ICP, CPO-CSO-OSA).
+   - **Security Decision Record** (SDR-CSO-FRR): for each applicable rule, how it is met, its verification, validation and artifacts, plus a summary (SDR-CSX-KSI) and historical metrics (SDR-CSX-KMT) for each KSI.
+   - **An example Ongoing Certification Report** (CCM-OCR-AVL).
+
+   A real package needs an independent assessment by a FedRAMP Recognized assessor within the previous 3 months (FRC-APP-FIA). This project includes only a labelled, empty template for the assessor's summary. A check will confirm that the package reflects validation within the previous 7 days (FRC-APP-FCP) and is updated at least every 2 weeks (CPO-CSX-CPM). The Marketplace listing (FRC-APP-MLF) and the application form (FRC-APP-AFC) are real-world steps and are out of scope.
+
+## Visibility
+
+This repository is public. Every document in it is readable by anyone, so the trust center's access gate is a demonstration only. GitHub Pages is not used. `trust-center/index.html` is a snapshot of the trust center as one HTML file. Download it and open it in a browser.
 
 ## Folder guide
 
@@ -104,54 +152,6 @@ pip install jsonschema
 If PowerShell blocks the script, run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once. If you run the Python scripts yourself, set `$env:PYTHONUTF8 = "1"` first. Some scripts read files without naming UTF-8, and Windows then fails on characters such as curly quotes. `build.ps1` sets this for you. You can also install `make` (for example `winget install GnuWin32.Make`) or use WSL.
 
 Then open `trust-center/index.html` in a browser.
-
-## What is real and what is not
-
-| Piece | Status |
-|---|---|
-| KSI text, class variants, rules | Real: downloaded from [FedRAMP/rules](https://github.com/FedRAMP/rules) at a pinned commit and schema-checked by `make check`. Outputs keep IDs and names only; read the statement text upstream |
-| Check logic | My interpretation of each KSI. My design for each check, and where it proves less than the official statement, is in [`docs/validator-design/`](docs/validator-design/). Read the official statement in FedRAMP/rules before trusting a check. Where a check is narrower than the official statement, `validators/registry.py` records a coverage note (shown on the indicator). A known gap in the same file holds a KSI at `partial` |
-| Environment data | Fictional. The validators read simulated files, not a real cloud account |
-| Validator output and history | Generated from the fictional data. History starts at the first run and grows with each run |
-| Documents | Written for the fictional company. `TODO` marks sections still to be written |
-| Cloud platform | AWS and Terraform are a design assumption for the fictional company. The scope record itself is vendor-neutral |
-
-## Honest status model
-
-Each KSI is rolled up as `pass` (two or more automated methods, all passing, no known gap), `fail`, `partial` (passing but fewer than two methods or a known gap against the official statement) or `not_implemented`. Nothing passes by default. Class C requires at least two automated methods per KSI (rule `FRC-CSX-VVK`). Current counts are in [`evidence/latest.json`](evidence/latest.json).
-
-## Automatic checks on GitHub
-
-`.github/workflows/ci.yml` runs on every push to `main` and on every pull request. It does not use any cloud account. It checks the FedRAMP data against its schema, runs the unit tests, validates the scope record and rebuilds everything. A green tick next to a commit means the JSON is valid and consistent.
-
-## Persistent validation
-
-FedRAMP 20x expects a provider to keep validating its KSIs and to show the results over time. At Class C, machine-based resources must be validated at least every 3 days (VDR-TFR-MVX) and non-machine resources at least every 3 months (VDR-TFR-NMV). This project copies that with `.github/workflows/scheduled-validation.yml`. It runs every day at 06:17 UTC, and anyone with write access can also start it from the Actions tab. Each run does the following:
-
-1. GitHub starts a short-lived Linux machine.
-2. It downloads the repository and the FedRAMP rules data.
-3. It runs the same checks as CI: the rules data schema, the unit tests and `make all`, which runs every KSI validator against the fictional environment.
-4. It writes the results to `evidence/latest.json`, adds a file for the day in `evidence/history/` and rebuilds the trust center page.
-5. It commits those files to `main` with the date and the result counts, for example `Scheduled validation 2026-11-21: 35 pass, 2 fail, 0 partial, 9 not implemented`.
-
-The daily history files are the source for the historical KSI metrics that the Security Decision Record needs (SDR-CSX-KMT). The environment is fictional, so most runs give the same results. For a real provider, the live methods would call the cloud and system APIs, and a daily run would find drift such as an expired key or a backup that stopped.
-
-## Roadmap
-
-1. Move access control from the demo (browser storage or Claude sign-in) to a real server.
-2. Build the checks for my remaining nine GRC KSIs.
-3. Write the validator design for all 46 KSIs in `docs/validator-design/` and close the gaps the reviews find.
-4. Write the remaining documents: incident response plan, cryptographic modules, significant change log and secure configuration guide. Rewrite the vulnerability report and publish it as JSON.
-5. Assemble an example FedRAMP Certification Package, the final submission to FedRAMP (FRC-CSO-PKG). It has three parts, each in Markdown and in JSON that validates against FedRAMP's published schema (FRC-CSO-JSN):
-   - **Certification Package Overview** (CPO-CSO-OVR): metadata and the accountable official (CPO-CSO-MTD), public information and service list (CDS-CSO-PUB, CDS-CSO-SVC), relevant policies (CDS-CSO-IRP), the scope (MAS-CSO-IIR, MAS-CSO-FLO, MAS-CSO-TPR), cryptographic modules (CMU-CSO-CMD) and the independent assessment results (IVV-CSO-ICP, CPO-CSO-OSA).
-   - **Security Decision Record** (SDR-CSO-FRR): for each applicable rule, how it is met, its verification, validation and artifacts, plus a summary (SDR-CSX-KSI) and historical metrics (SDR-CSX-KMT) for each KSI.
-   - **An example Ongoing Certification Report** (CCM-OCR-AVL).
-
-   A real package needs an independent assessment by a FedRAMP Recognized assessor within the previous 3 months (FRC-APP-FIA). This project includes only a labelled, empty template for the assessor's summary. A check will confirm that the package reflects validation within the previous 7 days (FRC-APP-FCP) and is updated at least every 2 weeks (CPO-CSX-CPM). The Marketplace listing (FRC-APP-MLF) and the application form (FRC-APP-AFC) are real-world steps and are out of scope.
-
-## Visibility
-
-This repository is public. Every document in it is readable by anyone, so the trust center's access gate is a demonstration only. GitHub Pages is not used. `trust-center/index.html` is a snapshot of the trust center as one HTML file. Download it and open it in a browser.
 
 ## License
 
