@@ -2,17 +2,17 @@
 
 > **FICTIONAL.** Orrinwick Labs, Inc. and the Orrinwick Beacon product are invented. All environment data is made up and the validator outputs are simulated. This is a learning and portfolio project. It is **not** a FedRAMP certification, assessment or advice, and a passing check here is not proof of compliance.
 
-This repository shows what a FedRAMP 20x Class C package could look like for a small, invented SaaS company. It combines:
+This repository shows how a small, invented SaaS company could meet FedRAMP 20x Class C. It combines:
 
 - the **official FedRAMP rules and Key Security Indicators (KSIs)**, read from FedRAMP's public data, which `make frmr` downloads at a pinned commit (the data is not stored in this repository)
 - a **scope record** (the Minimum Assessment Scope) written as JSON, with documents and diagrams generated from it
-- **simulated validator output** (JSON files) that shows what continuous validation results could look like
+- **validator results** (JSON files) from real checks run against the fictional data, which show what continuous validation results could look like
 - a set of **documents** a provider would maintain, including ten policies that map to all 46 KSIs
 - a **trust center** that reads the JSON from this repository and displays the current posture
 
 ## The fictional company
 
-**Orrinwick Beacon** is a cloud service that receives security alerts from an agency's tools, decides who should act, reaches that person (app push, email, SMS, voice), and keeps an audit trail. It holds federal employee contact details and alert information, which is why the company is going through FedRAMP. Read `docs/company-and-offering.md` first.
+**Orrinwick Beacon** is a cloud service that receives security alerts from an agency's tools, decides who should act, reaches that person (app push, email, SMS, voice), and keeps an audit trail. It holds federal employee contact details and alert information, which is why the company is going through FedRAMP. Read [`docs/company-and-offering.md`](docs/company-and-offering.md) first.
 
 ## System description
 
@@ -77,7 +77,7 @@ Each row reads left to right: the source files, the script that reads them, and 
 | `mas/mas-record.json` | `tools/build_mas.py` | `docs/minimum-assessment-scope.md`, diagrams, `evidence/mas-summary.json` |
 | `policies/policy-set.json` | `tools/build_policies.py` | `docs/policies/`, `docs/policies-index.md` |
 | `environment/`, `mas/`, `validators/` | `tools/check_environment.py` | A pass or fail on whether the fictional environment matches the scope record |
-| `environment/`, `mas/`, `validators/` | `tools/run_validators.py` | `evidence/latest.json` (simulated validation result) |
+| `environment/`, `mas/`, `validators/` | `tools/run_validators.py` | `evidence/latest.json` (validation result for the fictional data) |
 | All of the above | `tools/build_trust_center.py` | `trust-center/index.html` |
 
 Edit the source files, run `make all`, and every generated file is refreshed.
@@ -113,7 +113,7 @@ Then open `trust-center/index.html` in a browser.
 | Check logic | My interpretation of each KSI. My design for each check, and where it proves less than the official statement, is in [`docs/validator-design/`](docs/validator-design/). Read the official statement in FedRAMP/rules before trusting a check. Where a check is narrower than the official statement, `validators/registry.py` records a coverage note (shown on the indicator). A known gap in the same file holds a KSI at `partial` |
 | Environment data | Fictional. The validators read simulated files, not a real cloud account |
 | Validator output and history | Generated from the fictional data. History starts at the first run and grows with each run |
-| Documents | Templates with fictional content. `TODO` marks what is still to be written |
+| Documents | Written for the fictional company. `TODO` marks sections still to be written |
 | Cloud platform | AWS and Terraform are a design assumption for the fictional company. The scope record itself is vendor-neutral |
 
 ## Honest status model
@@ -122,7 +122,7 @@ Each KSI is rolled up as `pass` (two or more automated methods, all passing, no 
 
 ## Automatic checks on GitHub
 
-`.github/workflows/ci.yml` runs on every push. It does not use any cloud account. It checks the FedRAMP data against its schema, validates the scope record, and rebuilds everything. A green tick next to a commit means the JSON is valid and consistent.
+`.github/workflows/ci.yml` runs on every push to `main` and on every pull request. It does not use any cloud account. It checks the FedRAMP data against its schema, runs the unit tests, validates the scope record and rebuilds everything. A green tick next to a commit means the JSON is valid and consistent.
 
 ## Persistent validation
 
@@ -135,6 +135,7 @@ FedRAMP 20x expects a provider to keep validating its KSIs and to show the resul
 5. It commits those files to `main` with the date and the result counts, for example `Scheduled validation 2026-11-21: 35 pass, 2 fail, 0 partial, 9 not implemented`.
 
 The daily history files are the source for the historical KSI metrics that the Security Decision Record needs (SDR-CSX-KMT). The environment is fictional, so most runs give the same results. For a real provider, the live methods would call the cloud and system APIs, and a daily run would find drift such as an expired key or a backup that stopped.
+
 ## Roadmap
 
 1. Move access control from the demo (browser storage or Claude sign-in) to a real server.
