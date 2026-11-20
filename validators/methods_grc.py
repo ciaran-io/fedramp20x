@@ -26,6 +26,25 @@ def _load(rel: str) -> dict:
     return json.loads((ROOT / rel).read_text(encoding="utf-8"))
 
 
+def _covering_requirements(policy_id: str, ksi: str) -> list[dict]:
+    """Return the requirements of one policy that list the KSI (short form, e.g. "INR-RIR")."""
+    pol = next((p for p in _load("policies/policy-set.json")["policies"] if p["id"] == policy_id), None)
+    if pol is None:
+        return []
+    return [r for r in pol.get("requirements", []) if ksi in r.get("ksis", [])]
+
+
+def _age_days(date_text: str | None, as_of: datetime.date) -> int | None:
+    """Days from a YYYY-MM-DD date to as_of. None when no date is recorded."""
+    if not date_text:
+        return None
+    return (as_of - datetime.date.fromisoformat(date_text)).days
+
+
+def _is_positive_number(value) -> bool:
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and value > 0
+
+
 def ced_rat_static(env: Env) -> MethodResult:
     """KSI-CED-RAT Reviewing All Training (static).
 
@@ -78,7 +97,19 @@ def inr_rir_static(env: Env) -> MethodResult:
     Check to write: POL-INR requires an annual plan review, and ir_plan.review_cadence_days is 365 or less.
     Suggested method_id: "inr-rir-static"
     """
-    raise NotImplementedError("Author to write: KSI-INR-RIR static")
+    findings: list[str] = []
+    if not _covering_requirements("POL-INR", "INR-RIR"):
+        findings.append("No POL-INR requirement covers KSI INR-RIR")
+    plan = env.grc.get("ir_plan", {})
+    cadence = plan.get("review_cadence_days")
+    if not _is_positive_number(cadence) or cadence > 365:
+        findings.append(f"ir_plan.review_cadence_days must be a positive number of 365 or less (found {cadence!r})")
+    doc = plan.get("doc")
+    if not doc or not (ROOT / doc).exists():
+        findings.append(f"The incident response plan document is missing (found {doc!r})")
+    return result("inr-rir-static", STATIC, "environment/grc-records.json#ir_plan",
+                  "POL-INR requires a plan review, the review cadence is set to 365 days or less, and the plan exists",
+                  "POL-INR covers INR-RIR; cadence <= 365 days; plan present", f"{len(findings)} gap(s)", findings)
 
 
 def inr_rir_live(env: Env) -> MethodResult:
@@ -89,7 +120,20 @@ def inr_rir_live(env: Env) -> MethodResult:
     Check to write: ir_plan.last_reviewed is within review_cadence_days of as_of.
     Suggested method_id: "inr-rir-live"
     """
-    raise NotImplementedError("Author to write: KSI-INR-RIR live")
+    findings: list[str] = []
+    plan = env.grc.get("ir_plan", {})
+    cadence = plan.get("review_cadence_days")
+    as_of = datetime.date.fromisoformat(env.grc["as_of"])
+    age = _age_days(plan.get("last_reviewed"), as_of)
+    if age is None:
+        findings.append("No review of the incident response plan is recorded")
+    elif age < 0:
+        findings.append(f"ir_plan.last_reviewed {plan['last_reviewed']} is after the as_of date {as_of}")
+    elif _is_positive_number(cadence) and age > cadence:
+        findings.append(f"Last plan review was {age} days ago, cadence is {cadence} days")
+    return result("inr-rir-live", LIVE, "environment/grc-records.json#ir_plan",
+                  "The last review of the incident response plan is inside the review cadence",
+                  f"<= {cadence} days since last review", f"{age} days" if age is not None else "no review recorded", findings)
 
 
 def inr_rpi_static(env: Env) -> MethodResult:

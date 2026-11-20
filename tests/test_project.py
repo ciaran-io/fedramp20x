@@ -6,6 +6,7 @@ from pathlib import Path
 
 from tools import check_scope_changes as scl
 from validators import methods as m
+from validators import methods_grc as g
 from validators import methods_ops as o
 from validators.base import Env
 from validators.registry import KSI_METHODS, KSI_GAPS, KSI_NOTES
@@ -91,6 +92,11 @@ class Methods(unittest.TestCase):
                 v["lock_mode"] = "governance"
         self.assertEqual(m.abo_static(e).status, "fail")
         self.assertEqual(m.abo_live(e).status, "fail")
+
+    def test_overdue_ir_plan_review_fails_inr_rir(self):
+        e = env()
+        e.grc["ir_plan"]["last_reviewed"] = "2024-01-01"
+        self.assertEqual(g.inr_rir_live(e).status, "fail")
 
     def test_password_only_user_fails_apm(self):
         e = env()

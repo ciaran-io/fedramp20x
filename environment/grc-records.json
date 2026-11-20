@@ -23,7 +23,7 @@
   "ir_plan": {
     "doc": "docs/incident-response-plan.md",
     "review_cadence_days": 365,
-    "last_reviewed": null
+    "last_reviewed": "2026-08-04"
   },
   "incidents": [
     {
