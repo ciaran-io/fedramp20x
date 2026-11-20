@@ -17,9 +17,20 @@ do not change any result.
 """
 from __future__ import annotations
 
+import datetime
+import json
+from pathlib import Path
+
 from .base import Env, MethodResult, result  # noqa: F401  (used once you write the methods)
 
 STATIC, LIVE = "static", "live"
+
+ROOT = Path(__file__).resolve().parent.parent
+
+
+def _load(rel: str) -> dict:
+    """Read a JSON file from the repository, by path relative to the repo root."""
+    return json.loads((ROOT / rel).read_text(encoding="utf-8"))
 
 
 def ced_rat_static(env: Env) -> MethodResult:
