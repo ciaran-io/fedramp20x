@@ -127,10 +127,16 @@ Each KSI is rolled up as `pass` (two or more automated methods, all passing, no 
 ## Roadmap
 
 1. Move access control from the demo (browser storage or Claude sign-in) to a real server.
-2. Build methods for the remaining KSIs, including recovery objectives and restore tests.
-3. Add third-party entries for hosted tools (source control, identity provider, endpoint management), a recovery environment resource, and a scope change log with a CI check.
-4. Write the remaining documents: incident response plan, cryptographic modules, significant change log, secure configuration guide.
-5. Complete the CPO including SDR. 
+2. Build the checks for my remaining nine GRC KSIs.
+3. Run the validators every day on a schedule, so the results stay current without a push (VDR-TFR-MVX requires at least every 3 days for machine-based resources at Class C).
+4. Write the validator design for all 46 KSIs in `docs/validator-design/` and close the gaps the reviews find.
+5. Write the remaining documents: incident response plan, cryptographic modules, significant change log and secure configuration guide. Rewrite the vulnerability report and publish it as JSON.
+6. Assemble an example FedRAMP Certification Package, the final submission to FedRAMP (FRC-CSO-PKG). It has three parts, each in Markdown and in JSON that validates against FedRAMP's published schema (FRC-CSO-JSN):
+   - **Certification Package Overview** (CPO-CSO-OVR): metadata and the accountable official (CPO-CSO-MTD), public information and service list (CDS-CSO-PUB, CDS-CSO-SVC), relevant policies (CDS-CSO-IRP), the scope (MAS-CSO-IIR, MAS-CSO-FLO, MAS-CSO-TPR), cryptographic modules (CMU-CSO-CMD) and the independent assessment results (IVV-CSO-ICP, CPO-CSO-OSA).
+   - **Security Decision Record** (SDR-CSO-FRR): for each applicable rule, how it is met, its verification, validation and artifacts, plus a summary (SDR-CSX-KSI) and historical metrics (SDR-CSX-KMT) for each KSI.
+   - **An example Ongoing Certification Report** (CCM-OCR-AVL).
+
+   A real package needs an independent assessment by a FedRAMP Recognized assessor within the previous 3 months (FRC-APP-FIA). This project includes only a labelled, empty template for the assessor's summary. A check will confirm that the package reflects validation within the previous 7 days (FRC-APP-FCP) and is updated at least every 2 weeks (CPO-CSX-CPM). The Marketplace listing (FRC-APP-MLF) and the application form (FRC-APP-AFC) are real-world steps and are out of scope.
 
 ## Visibility
 
