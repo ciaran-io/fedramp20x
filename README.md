@@ -124,14 +124,24 @@ Each KSI is rolled up as `pass` (two or more automated methods, all passing, no 
 
 `.github/workflows/ci.yml` runs on every push. It does not use any cloud account. It checks the FedRAMP data against its schema, validates the scope record, and rebuilds everything. A green tick next to a commit means the JSON is valid and consistent.
 
+## Persistent validation
+
+FedRAMP 20x expects a provider to keep validating its KSIs and to show the results over time. At Class C, machine-based resources must be validated at least every 3 days (VDR-TFR-MVX) and non-machine resources at least every 3 months (VDR-TFR-NMV). This project copies that with `.github/workflows/scheduled-validation.yml`. It runs every day at 06:17 UTC, and anyone with write access can also start it from the Actions tab. Each run does the following:
+
+1. GitHub starts a short-lived Linux machine.
+2. It downloads the repository and the FedRAMP rules data.
+3. It runs the same checks as CI: the rules data schema, the unit tests and `make all`, which runs every KSI validator against the fictional environment.
+4. It writes the results to `evidence/latest.json`, adds a file for the day in `evidence/history/` and rebuilds the trust center page.
+5. It commits those files to `main` with the date and the result counts, for example `Scheduled validation 2026-11-21: 35 pass, 2 fail, 0 partial, 9 not implemented`.
+
+The daily history files are the source for the historical KSI metrics that the Security Decision Record needs (SDR-CSX-KMT). The environment is fictional, so most runs give the same results. For a real provider, the live methods would call the cloud and system APIs, and a daily run would find drift such as an expired key or a backup that stopped.
 ## Roadmap
 
 1. Move access control from the demo (browser storage or Claude sign-in) to a real server.
 2. Build the checks for my remaining nine GRC KSIs.
-3. Run the validators every day on a schedule, so the results stay current without a push (VDR-TFR-MVX requires at least every 3 days for machine-based resources at Class C).
-4. Write the validator design for all 46 KSIs in `docs/validator-design/` and close the gaps the reviews find.
-5. Write the remaining documents: incident response plan, cryptographic modules, significant change log and secure configuration guide. Rewrite the vulnerability report and publish it as JSON.
-6. Assemble an example FedRAMP Certification Package, the final submission to FedRAMP (FRC-CSO-PKG). It has three parts, each in Markdown and in JSON that validates against FedRAMP's published schema (FRC-CSO-JSN):
+3. Write the validator design for all 46 KSIs in `docs/validator-design/` and close the gaps the reviews find.
+4. Write the remaining documents: incident response plan, cryptographic modules, significant change log and secure configuration guide. Rewrite the vulnerability report and publish it as JSON.
+5. Assemble an example FedRAMP Certification Package, the final submission to FedRAMP (FRC-CSO-PKG). It has three parts, each in Markdown and in JSON that validates against FedRAMP's published schema (FRC-CSO-JSN):
    - **Certification Package Overview** (CPO-CSO-OVR): metadata and the accountable official (CPO-CSO-MTD), public information and service list (CDS-CSO-PUB, CDS-CSO-SVC), relevant policies (CDS-CSO-IRP), the scope (MAS-CSO-IIR, MAS-CSO-FLO, MAS-CSO-TPR), cryptographic modules (CMU-CSO-CMD) and the independent assessment results (IVV-CSO-ICP, CPO-CSO-OSA).
    - **Security Decision Record** (SDR-CSO-FRR): for each applicable rule, how it is met, its verification, validation and artifacts, plus a summary (SDR-CSX-KSI) and historical metrics (SDR-CSX-KMT) for each KSI.
    - **An example Ongoing Certification Report** (CCM-OCR-AVL).
