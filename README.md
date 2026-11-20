@@ -69,25 +69,49 @@ An AI assistant (Claude, made by Anthropic) wrote much of the scaffolding: the b
 
 ## How the pieces connect
 
-```
-frmr/ (downloaded rules) --->  tools/build_registry.py  --->  evidence/ksi-registry.json
-mas/mas-record.json     --->  tools/build_mas.py       --->  docs/minimum-assessment-scope.md, diagrams, evidence/mas-summary.json
-environment/ + mas/ + validators/ -> tools/check_environment.py (does the fictional environment match the scope record?)
-environment/ + mas/ + validators/ -> tools/run_validators.py  --->  evidence/latest.json (simulated validation result)
-all of the above        --->  tools/build_trust_center.py ---> trust-center/index.html
-```
+Each row reads left to right: the source files, the script that reads them, and the files it creates.
 
-Edit the source files, run `make all`, and everything generated is refreshed.
+| Source | Script | Output |
+|---|---|---|
+| Downloaded FedRAMP rules (`frmr/`) | `tools/build_registry.py` | `evidence/ksi-registry.json` |
+| `mas/mas-record.json` | `tools/build_mas.py` | `docs/minimum-assessment-scope.md`, diagrams, `evidence/mas-summary.json` |
+| `policies/policy-set.json` | `tools/build_policies.py` | `docs/policies/`, `docs/policies-index.md` |
+| `environment/`, `mas/`, `validators/` | `tools/check_environment.py` | A pass or fail on whether the fictional environment matches the scope record |
+| `environment/`, `mas/`, `validators/` | `tools/run_validators.py` | `evidence/latest.json` (simulated validation result) |
+| All of the above | `tools/build_trust_center.py` | `trust-center/index.html` |
+
+Edit the source files, run `make all`, and every generated file is refreshed.
 
 ## Running it on your own computer
 
-You need Python 3.10 or newer.
+You need Python 3.10 or newer and an internet connection. The first run downloads FedRAMP's rules data from GitHub (`make frmr`).
 
 ```bash
 pip install jsonschema
-make all      # validates the scope record and rebuilds all generated files
-make serve    # preview the static site at http://localhost:8000
+make all      # downloads the FedRAMP data, validates the scope record and rebuilds all generated files
+make test     # runs the unit tests
+make serve    # previews the trust center at http://localhost:8000
 ```
+
+**Windows.** Windows does not include `make`. Use one of these:
+- Install it with a package manager (for example `winget install GnuWin32.Make` or `choco install make`), or run the commands in WSL.
+- Or run the scripts one at a time. This is the same order as `make all`:
+
+```powershell
+pip install jsonschema
+python tools/fetch_frmr.py
+python tools/check_environment.py
+python tools/check_scope_changes.py
+python tools/build_registry.py c
+python tools/run_validators.py
+python tools/check_evidence.py
+python tools/build_mas.py
+python tools/build_policies.py
+python tools/build_docs.py
+python tools/build_trust_center.py
+```
+
+Then open `trust-center/index.html` in a browser.
 
 ## What is real and what is not
 
