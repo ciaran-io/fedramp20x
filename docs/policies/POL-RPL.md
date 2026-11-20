@@ -7,7 +7,7 @@
 | Owner | Platform Lead |
 | Approver | CISO |
 | Version | 0.1, effective 2026-11-19 |
-| Review cadence | Annual, and after any recovery test |
+| Review cadence | Every 90 days, and after any recovery test |
 | Theme | RPL: Recovery Planning |
 
 ## Purpose
@@ -32,7 +32,7 @@ This policy covers these information resources from the scope record:
 
 | ID | Requirement | KSIs |
 |---|---|---|
-| RPL-1 | The recovery objectives are a recovery time of 8 hours and a recovery point of 4 hours. The Platform Lead reviews them each year and records the result in environment/recovery-objectives.json. | KSI-RPL-RRO |
+| RPL-1 | The recovery objectives are a recovery time of 8 hours and a recovery point of 4 hours. The Platform Lead reviews them at least every 90 days and records the result in environment/recovery-objectives.json. | KSI-RPL-RRO |
 | RPL-2 | Backups run at least every 2 hours, are encrypted and are copied to a second US region (P12) into a vault that has a compliance-mode lock. Backup jobs and copy jobs are monitored and a failed job raises an alert. | KSI-RPL-ABO |
 | RPL-3 | The recovery plan describes how a recovery environment is built from infrastructure code and how data is restored into it. It is kept in step with the architecture. | KSI-RPL-ARP |
 | RPL-4 | A restore test runs at least every 6 months. It records the time taken, the data age restored and any failure. | KSI-RPL-TRC |

@@ -107,11 +107,11 @@
     },
     {
       "id": "POL-RPL", "theme": "RPL", "title": "Recovery planning policy",
-      "owner": "Platform Lead", "review_cadence": "Annual, and after any recovery test",
+      "owner": "Platform Lead", "review_cadence": "Every 90 days, and after any recovery test",
       "purpose": "Orrinwick can restore the offering and its data within its stated objectives.",
       "resources": ["P3", "P4", "P12", "E3", "P1"],
       "requirements": [
-        {"id": "RPL-1", "text": "The recovery objectives are a recovery time of 8 hours and a recovery point of 4 hours. The Platform Lead reviews them each year and records the result in environment/recovery-objectives.json.", "ksis": ["RPL-RRO"]},
+        {"id": "RPL-1", "text": "The recovery objectives are a recovery time of 8 hours and a recovery point of 4 hours. The Platform Lead reviews them at least every 90 days and records the result in environment/recovery-objectives.json.", "ksis": ["RPL-RRO"]},
         {"id": "RPL-2", "text": "Backups run at least every 2 hours, are encrypted and are copied to a second US region (P12) into a vault that has a compliance-mode lock. Backup jobs and copy jobs are monitored and a failed job raises an alert.", "ksis": ["RPL-ABO"]},
         {"id": "RPL-3", "text": "The recovery plan describes how a recovery environment is built from infrastructure code and how data is restored into it. It is kept in step with the architecture.", "ksis": ["RPL-ARP"]},
         {"id": "RPL-4", "text": "A restore test runs at least every 6 months. It records the time taken, the data age restored and any failure.", "ksis": ["RPL-TRC"]},

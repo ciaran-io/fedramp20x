@@ -675,7 +675,7 @@
       "title": "Recovery planning policy",
       "theme": "RPL",
       "owner": "Platform Lead",
-      "review_cadence": "Annual, and after any recovery test",
+      "review_cadence": "Every 90 days, and after any recovery test",
       "version": "0.1",
       "effective": "2026-11-19",
       "document": "documents/policies/POL-RPL.md",
@@ -689,7 +689,7 @@
       "requirements": [
         {
           "id": "RPL-1",
-          "text": "The recovery objectives are a recovery time of 8 hours and a recovery point of 4 hours. The Platform Lead reviews them each year and records the result in environment/recovery-objectives.json.",
+          "text": "The recovery objectives are a recovery time of 8 hours and a recovery point of 4 hours. The Platform Lead reviews them at least every 90 days and records the result in environment/recovery-objectives.json.",
           "ksis": [
             "KSI-RPL-RRO"
           ]
