@@ -1,0 +1,45 @@
+name: scheduled-validation
+
+# Runs the full validation without a push and commits the results.
+# Class C needs machine-based resources validated at least every 3 days
+# (VDR-TFR-MVX) and non-machine resources at least every 3 months (VDR-TFR-NMV).
+# It does NOT touch any cloud account. The validators read the fictional data
+# in environment/.
+
+on:
+  workflow_dispatch:   # start it by hand from the Actions tab
+
+permissions:
+  contents: write      # needed to commit the new evidence
+
+concurrency:
+  group: scheduled-validation
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install jsonschema
+      - name: Check the downloaded FedRAMP data against its schema
+        run: make check
+      - name: Run unit tests
+        run: make test
+      - name: Run the validators and rebuild everything
+        run: make all
+      - name: Commit the new evidence
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add evidence trust-center docs
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            summary=$(python -c "import json; s=json.load(open('evidence/latest.json'))['summary']; print(f\"{s['pass']} pass, {s['fail']} fail, {s['partial']} partial, {s['not_implemented']} not implemented\")")
+            git commit -m "Scheduled validation $(date -u +%Y-%m-%d): $summary"
+            git push
+          fi
