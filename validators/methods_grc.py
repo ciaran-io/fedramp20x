@@ -1,25 +1,29 @@
-"""Author-owned validation methods for GRC-type KSIs (stubs).
+"""Validation methods for my ten GRC-type KSIs.
 
-These ten KSIs are assigned to the project author. Each
-KSI needs two automated methods (rule FRC-CSX-VVK, Class C):
-  static - checks what the policy or configuration SAYS must happen
-  live   - checks the records that show it DID happen
+Each KSI needs two automated methods (rule FRC-CSX-VVK, Class C):
+  static - checks what the policy or configuration says must happen
+  live   - checks the records that show it did happen
 
-How to finish one stub:
-  1. Fill in the matching data in environment/grc-records.json.
-  2. Replace `raise NotImplementedError` with code. Copy the pattern of abo_static
-     and abo_live in validators/methods.py. Use env.grc for the records.
-  3. Add the two functions to KSI_METHODS in validators/registry.py.
-  4. Run `make all` and read the result for your KSI in evidence/latest.json.
-
-This module is not imported anywhere until you register a method, so the stubs
-do not change any result.
+I write the design for each KSI in docs/validator-design/ first. A KSI counts
+only after both methods are registered in validators/registry.py. Functions that
+still raise NotImplementedError are not registered, so they change no result.
 """
 from __future__ import annotations
 
-from .base import Env, MethodResult, result  # noqa: F401  (used once you write the methods)
+import datetime
+import json
+from pathlib import Path
+
+from .base import Env, MethodResult, result
 
 STATIC, LIVE = "static", "live"
+
+ROOT = Path(__file__).resolve().parent.parent
+
+
+def _load(rel: str) -> dict:
+    """Read a JSON file from the repository, by path relative to the repo root."""
+    return json.loads((ROOT / rel).read_text(encoding="utf-8"))
 
 
 def ced_rat_static(env: Env) -> MethodResult:
@@ -225,10 +229,24 @@ def rpl_rro_static(env: Env) -> MethodResult:
 
     Official statement: see FedRAMP/rules (after `make frmr`, also frmr/fedramp-consolidated-rules.json).
 
-    Check to write: environment/recovery-objectives.json defines rto_hours, rpo_hours and review_cadence_days, and POL-RPL requires an annual review.
+    Check to write: environment/recovery-objectives.json defines rto_hours, rpo_hours and review_cadence_days, and a POL-RPL requirement covers RPL-RRO.
     Suggested method_id: "rpl-rro-static"
     """
-    raise NotImplementedError("Author to write: KSI-RPL-RRO static")
+    findings: list[str] = []
+    obj = _load("environment/recovery-objectives.json")
+    for key in ("rto_hours", "rpo_hours", "review_cadence_days"):
+        value = obj.get(key)
+        if not isinstance(value, (int, float)) or value <= 0:
+            findings.append(f"{key} is missing or not a positive number (found {value!r})")
+    policies = _load("policies/policy-set.json")["policies"]
+    pol = next((p for p in policies if p["id"] == "POL-RPL"), None)
+    if pol is None:
+        findings.append("POL-RPL is missing from policies/policy-set.json")
+    elif not any("RPL-RRO" in req.get("ksis", []) for req in pol.get("requirements", [])):
+        findings.append("No POL-RPL requirement covers KSI RPL-RRO")
+    return result("rpl-rro-static", STATIC, "environment/recovery-objectives.json",
+                  "Recovery time, recovery point and review cadence are defined, and policy POL-RPL requires the review",
+                  "RTO, RPO and cadence set; POL-RPL covers RPL-RRO", f"{len(findings)} gap(s)", findings)
 
 
 def rpl_rro_live(env: Env) -> MethodResult:
@@ -239,4 +257,20 @@ def rpl_rro_live(env: Env) -> MethodResult:
     Check to write: last_reviewed in recovery-objectives.json is within review_cadence_days of the as_of date.
     Suggested method_id: "rpl-rro-live"
     """
-    raise NotImplementedError("Author to write: KSI-RPL-RRO live")
+    findings: list[str] = []
+    obj = _load("environment/recovery-objectives.json")
+    cadence = obj.get("review_cadence_days")
+    as_of = datetime.date.fromisoformat(env.grc["as_of"])
+    last = obj.get("last_reviewed")
+    age = None
+    if not last:
+        findings.append("No last_reviewed date is recorded")
+    else:
+        age = (as_of - datetime.date.fromisoformat(last)).days
+        if age < 0:
+            findings.append(f"last_reviewed {last} is after the as_of date {as_of}")
+        elif isinstance(cadence, (int, float)) and age > cadence:
+            findings.append(f"Last review was {age} days ago, cadence is {cadence} days")
+    return result("rpl-rro-live", LIVE, "environment/recovery-objectives.json",
+                  "The last review of the recovery objectives is inside the review cadence",
+                  f"<= {cadence} days since last review", f"{age} days" if age is not None else "no review recorded", findings)

@@ -207,6 +207,7 @@ def _objectives() -> dict:
 def abo_static(env: Env) -> MethodResult:
     o = _objectives()
     region, rpo = o["recovery_region"], o["rpo_hours"]
+    interval = o.get("backup_interval_hours_max", rpo)
     findings = []
     vaults = {v["name"]: v for v in env.iac_resources("aws_backup_vault")}
     locks = {v["values"]["vault"]: v["values"] for v in env.iac_resources("aws_backup_vault_lock_configuration")}
@@ -218,8 +219,8 @@ def abo_static(env: Env) -> MethodResult:
         covered |= set(sel["values"]["resources"])
     for pl in plans:
         for rule in pl["values"]["rules"]:
-            if rule["schedule_interval_hours"] > rpo:
-                findings.append(f"Rule '{rule['name']}' runs every {rule['schedule_interval_hours']}h (RPO {rpo}h)")
+            if rule["schedule_interval_hours"] > interval:
+                findings.append(f"Rule '{rule['name']}' runs every {rule['schedule_interval_hours']}h (maximum {interval}h)")
             if rule["delete_after_days"] < o["backup_retention_days_min"]:
                 findings.append(f"Rule '{rule['name']}' keeps recovery points {rule['delete_after_days']}d < {o['backup_retention_days_min']}d")
             copies = [c for c in rule.get("copy_actions", []) if c["destination_region"] == region]
@@ -228,6 +229,8 @@ def abo_static(env: Env) -> MethodResult:
             for c in copies:
                 if c["destination_vault"] not in locks:
                     findings.append(f"Destination vault '{c['destination_vault']}' has no vault lock")
+                elif locks[c["destination_vault"]].get("mode") != "compliance":
+                    findings.append(f"Destination vault '{c['destination_vault']}' lock is not in compliance mode")
                 if c["delete_after_days"] < o["backup_retention_days_min"]:
                     findings.append(f"Copy to '{c['destination_vault']}' keeps recovery points {c['delete_after_days']}d < {o['backup_retention_days_min']}d")
     for name, v in vaults.items():
@@ -237,8 +240,8 @@ def abo_static(env: Env) -> MethodResult:
     for n in sorted(needed - covered):
         findings.append(f"{n} is not in any AWS Backup selection")
     return result("abo-iac-backup-policy", STATIC, "environment/iac-plan.json",
-                  f"Backup plan runs at least every {rpo}h, keeps {o['backup_retention_days_min']}+ days, copies to a locked vault in {region} and covers every protected data store",
-                  f"<= {rpo}h interval, >= {o['backup_retention_days_min']}d, locked copy in {region}", f"{len(findings)} gap(s)", findings)
+                  f"Backup plan runs at least every {interval}h, keeps {o['backup_retention_days_min']}+ days, copies to a locked vault in {region} and covers every protected data store",
+                  f"<= {interval}h interval, >= {o['backup_retention_days_min']}d, locked copy in {region}", f"{len(findings)} gap(s)", findings)
 
 
 def abo_live(env: Env) -> MethodResult:
@@ -259,6 +262,8 @@ def abo_live(env: Env) -> MethodResult:
     for v in ab.get("vaults", []):
         if v["region"] == region and not v.get("lock_enabled"):
             findings.append(f"Vault '{v['name']}' in {region} has no vault lock")
+        elif v["region"] == region and v.get("lock_mode") != "compliance":
+            findings.append(f"Vault '{v['name']}' in {region} lock is not in compliance mode")
     return result("abo-live-backup-currency", LIVE, "environment/live-state.json#aws_backup",
                   f"Newest recovery point and its cross-region copy are within the {rpo}h recovery point objective",
                   f"<= {rpo}h, copy to {region}", f"{len(findings)} breaching", findings)
