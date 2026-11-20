@@ -49,7 +49,7 @@ Open [`trust-center/index.html`](trust-center/index.html) in a browser for the f
 
 ## How this project was built
 
-An AI assistant (Claude) wrote much of the scaffolding: the build tools, the diagram generators, the generated documents and the trust center page. I make the scope decisions, write the policies and the validator designs, and decide what each check must prove. Claude writes the Python for the checks from my designs, and I review and test each one.
+An AI assistant (Claude) wrote much of the scaffolding and drafts the validator designs and the check code. I make the scope decisions, write the policies, decide what each KSI check must prove, and review, correct and test every design and check before I commit it. The design reviews are where my judgement shows: for example, my review of RPL-ABO found two checks that were weaker than the policy.
 
 ## Folder guide
 
