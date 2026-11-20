@@ -10,6 +10,17 @@ This repository shows how a small, invented SaaS company could meet FedRAMP 20x 
 - a set of **documents** a provider would maintain, including ten policies that map to all 46 KSIs
 - a **trust center** that reads the JSON from this repository and displays the current posture
 
+## What this shows
+
+[![ci](https://github.com/ciaran-io/fedramp20x/actions/workflows/ci.yml/badge.svg)](https://github.com/ciaran-io/fedramp20x/actions/workflows/ci.yml) [![scheduled-validation](https://github.com/ciaran-io/fedramp20x/actions/workflows/scheduled-validation.yml/badge.svg)](https://github.com/ciaran-io/fedramp20x/actions/workflows/scheduled-validation.yml)
+
+- **Scoping.** A Minimum Assessment Scope written as one JSON record, with every information resource, third party and data flow identified (MAS-CSO-IIR, MAS-CSO-FLO, MAS-CSO-TPR). Documents and diagrams are generated from it, and CI fails when they drift. See [`mas/mas-record.json`](mas/mas-record.json) and [`docs/minimum-assessment-scope.md`](docs/minimum-assessment-scope.md).
+- **KSI validation.** Each of the 46 Class C KSIs is checked by at least two automated methods (FRC-CSX-VVK): a static check of what is declared and a live check of what the records show. See [`validators/registry.py`](validators/registry.py).
+- **Persistent validation.** The validators run every day and commit dated evidence, which meets the 3-day and 3-month validation rules (VDR-TFR-MVX, VDR-TFR-NMV) and builds the history the Security Decision Record needs. See [Persistent validation](#persistent-validation) and [`evidence/history/`](evidence/history/).
+- **Design reviews against policy.** Each check has a written design that states what it proves and where it falls short of the KSI. My review of RPL-ABO found two checks that were weaker than the policy, and I fixed both. See [`docs/validator-design/`](docs/validator-design/).
+- **Trust center and the certification package.** A trust center with access logging and an access inventory (CDS rules), and an example FedRAMP Certification Package as the end goal. See [Trust center](#trust-center) and the [Roadmap](#roadmap).
+
+The latest result for every KSI is in [`evidence/latest.json`](evidence/latest.json). The scheduled run updates it every day.
 ## Trust center
 
 The trust center shows the validator results for the fictional service. It reads `evidence/latest.json` from this repository.
