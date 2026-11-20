@@ -81,6 +81,17 @@ class Methods(unittest.TestCase):
                 r["values"]["rules"][0]["schedule_interval_hours"] = 3
         self.assertEqual(m.abo_static(e).status, "fail")
 
+    def test_governance_mode_vault_lock_fails(self):
+        e = env()
+        for r in e.iac["resources"]:
+            if r["type"] == "aws_backup_vault_lock_configuration":
+                r["values"]["mode"] = "governance"
+        for v in e.live["aws_backup"]["vaults"]:
+            if v.get("lock_enabled"):
+                v["lock_mode"] = "governance"
+        self.assertEqual(m.abo_static(e).status, "fail")
+        self.assertEqual(m.abo_live(e).status, "fail")
+
     def test_password_only_user_fails_apm(self):
         e = env()
         e.live["identity"]["users_password_only"] = 1
