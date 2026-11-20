@@ -93,23 +93,15 @@ make test     # runs the unit tests
 make serve    # previews the trust center at http://localhost:8000
 ```
 
-**Windows.** Windows does not include `make`. Use one of these:
-- Install it with a package manager (for example `winget install GnuWin32.Make` or `choco install make`), or run the commands in WSL.
-- Or run the scripts one at a time. This is the same order as `make all`:
+**Windows.** Windows does not include `make`. Run `build.ps1` from the repository folder instead. It runs the same steps as `make all`, then the unit tests, and stops at the first step that fails:
 
 ```powershell
 pip install jsonschema
-python tools/fetch_frmr.py
-python tools/check_environment.py
-python tools/check_scope_changes.py
-python tools/build_registry.py c
-python tools/run_validators.py
-python tools/check_evidence.py
-python tools/build_mas.py
-python tools/build_policies.py
-python tools/build_docs.py
-python tools/build_trust_center.py
+.\build.ps1          # build and test
+.\build.ps1 -NoTest  # build only
 ```
+
+If PowerShell blocks the script, run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once. If you run the Python scripts yourself, set `$env:PYTHONUTF8 = "1"` first. Some scripts read files without naming UTF-8, and Windows then fails on characters such as curly quotes. `build.ps1` sets this for you. You can also install `make` (for example `winget install GnuWin32.Make`) or use WSL.
 
 Then open `trust-center/index.html` in a browser.
 
@@ -118,7 +110,7 @@ Then open `trust-center/index.html` in a browser.
 | Piece | Status |
 |---|---|
 | KSI text, class variants, rules | Real: downloaded from [FedRAMP/rules](https://github.com/FedRAMP/rules) at a pinned commit and schema-checked by `make check`. Outputs keep IDs and names only; read the statement text upstream |
-| Check logic | My interpretation of each KSI. Read the official statement in FedRAMP/rules before trusting a check. Where a check is narrower than the official statement, `validators/registry.py` records a coverage note (shown on the indicator). A known gap in the same file holds a KSI at `partial` |
+| Check logic | My interpretation of each KSI. My design for each check, and where it proves less than the official statement, is in [`docs/validator-design/`](docs/validator-design/). Read the official statement in FedRAMP/rules before trusting a check. Where a check is narrower than the official statement, `validators/registry.py` records a coverage note (shown on the indicator). A known gap in the same file holds a KSI at `partial` |
 | Environment data | Fictional. The validators read simulated files, not a real cloud account |
 | Validator output and history | Generated from the fictional data. History starts at the first run and grows with each run |
 | Documents | Templates with fictional content. `TODO` marks what is still to be written |
