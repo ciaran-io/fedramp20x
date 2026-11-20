@@ -7,6 +7,8 @@ name: scheduled-validation
 # in environment/.
 
 on:
+  schedule:
+    - cron: "17 6 * * *"   # every day at 06:17 UTC
   workflow_dispatch:   # start it by hand from the Actions tab
 
 permissions:
