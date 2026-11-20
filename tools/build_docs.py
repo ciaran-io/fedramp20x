@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Generate docs/rules-matrix.md: every FedRAMP Consolidated Rule (FRR) that
-applies to a 20x Class C certification, with the party each rule addresses, straight from the vendored FRMR data.
+applies to a 20x Class C certification, with the party each rule addresses, straight from the downloaded FRMR data.
 
 Each row gets a response status from docs/rule-responses.json when that file exists
 (rule id -> {status, owner, doc}). Unlisted rules show as `unassessed`, never as

@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install jsonschema
-      - name: Check the vendored FedRAMP data against its schema
+      - name: Check the downloaded FedRAMP data against its schema
         run: make check
       - name: Run unit tests
         run: make test

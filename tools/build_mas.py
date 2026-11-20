@@ -55,7 +55,7 @@ def check(rec):
         warn(f"record pinned to FRMR {rec['frmr_version']} but frmr/ holds {frmr['info']['version']}; review for rule changes")
     for rid in ("MAS-CSO-IIR", "MAS-CSO-FLO", "MAS-CSO-TPR", "MAS-CSO-MDI", "MAS-CSO-SUP"):
         if rid not in json.dumps(frmr["FRR"]["MAS"]):
-            err(f"{rid} not found in vendored FRMR data")
+            err(f"{rid} not found in the downloaded FRMR data")
 
     zones = {z["id"]: z for z in rec["trust_zones"]}
     ext = {e["id"]: e for e in rec["external_entities"]}

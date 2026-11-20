@@ -14,7 +14,7 @@ envcheck:   ## check the fictional environment against the scope record
 scopelog:   ## check that scope record changes have a log entry
 	$(PY) tools/check_scope_changes.py
 
-registry:   ## resolve KSIs from the vendored FRMR data
+registry:   ## resolve KSIs from the downloaded FRMR data
 	$(PY) tools/build_registry.py $(CLASS)
 
 validate:   ## run all automated validation methods, write evidence/
