@@ -264,4 +264,20 @@ def rpl_rro_live(env: Env) -> MethodResult:
     Check to write: last_reviewed in recovery-objectives.json is within review_cadence_days of the as_of date.
     Suggested method_id: "rpl-rro-live"
     """
-    raise NotImplementedError("Author to write: KSI-RPL-RRO live")
+    findings: list[str] = []
+    obj = _load("environment/recovery-objectives.json")
+    cadence = obj.get("review_cadence_days")
+    as_of = datetime.date.fromisoformat(env.grc["as_of"])
+    last = obj.get("last_reviewed")
+    age = None
+    if not last:
+        findings.append("No last_reviewed date is recorded")
+    else:
+        age = (as_of - datetime.date.fromisoformat(last)).days
+        if age < 0:
+            findings.append(f"last_reviewed {last} is after the as_of date {as_of}")
+        elif isinstance(cadence, (int, float)) and age > cadence:
+            findings.append(f"Last review was {age} days ago, cadence is {cadence} days")
+    return result("rpl-rro-live", LIVE, "environment/recovery-objectives.json",
+                  "The last review of the recovery objectives is inside the review cadence",
+                  f"<= {cadence} days since last review", f"{age} days" if age is not None else "no review recorded", findings)
