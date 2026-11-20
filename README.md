@@ -49,11 +49,11 @@ Open [`trust-center/index.html`](trust-center/index.html) in a browser for the f
 
 ## How this project was built
 
-An AI assistant (Claude, made by Anthropic) wrote much of the scaffolding: the build tools, the diagram generators, the generated documents and the trust center page. The project author, Ciaran, makes the scope decisions and writes the policies, the GRC validators and the documents marked as author tasks.
+An AI assistant (Claude) wrote much of the scaffolding: the build tools, the diagram generators, the generated documents and the trust center page. Manual work includes, making the scope decisions and writing the policies, the GRC validators and the documents related to reasoning, to help describe the decisions behind the fake company data. 
 
 ## Folder guide
 
-| Folder | What is in it | Edit by hand? |
+| Folder | What is in it | Human Yes or Claude No? |
 |---|---|---|
 | `docs/` | The written documents: company overview, data and resource inventory, scope document, security decision record, templates. `docs/diagrams/` holds the diagrams (`.drawio` files open in diagrams.net) | Yes, except `minimum-assessment-scope.md`, `rules-matrix.md`, `policies-index.md` and `policies/`, which are generated |
 | `policies/` | `policy-set.json`: the ten policies, one per KSI theme. `make policies` renders `docs/policies/` and `docs/policies-index.md` from it | Yes (this is the file to edit) |
@@ -138,6 +138,7 @@ Each KSI is rolled up as `pass` (two or more automated methods, all passing, no 
 2. Build methods for the remaining KSIs, including recovery objectives and restore tests.
 3. Add third-party entries for hosted tools (source control, identity provider, endpoint management), a recovery environment resource, and a scope change log with a CI check.
 4. Write the remaining documents: incident response plan, cryptographic modules, significant change log, secure configuration guide.
+5. Complete the CPO including SDR. 
 
 ## Visibility
 
