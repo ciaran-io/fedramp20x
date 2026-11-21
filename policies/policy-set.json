@@ -68,6 +68,7 @@
     },
     {
       "id": "POL-INR", "theme": "INR", "title": "Incident response policy",
+      "approval": {"version": "1.0", "approved_by": "CISO", "date": "2026-11-21"},
       "owner": "CISO", "review_cadence": "Annual, and when an after action report or a quarterly incident review finds that the plan needs to change",
       "purpose": "Staff detect, classify, report and learn from security incidents in the time the rules require.",
       "resources": ["N3", "N7", "E4"],
@@ -107,6 +108,7 @@
     },
     {
       "id": "POL-RPL", "theme": "RPL", "title": "Recovery planning policy",
+      "approval": {"version": "1.0", "approved_by": "CISO", "date": "2026-11-21"},
       "owner": "Platform Lead", "review_cadence": "Every 90 days, and after any recovery test",
       "purpose": "Orrinwick can restore the offering and its data within its stated objectives.",
       "resources": ["P3", "P4", "P12", "E3", "P1"],

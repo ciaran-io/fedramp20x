@@ -22,7 +22,7 @@ DOC_NOTES = {
     "federal-data-and-information-resources": "Federal customer data categories and the decision for each information resource.",
     "security-decision-record": "Recorded security decisions with verification and validation links.",
     "vdr-report": "Vulnerability detection and response findings.",
-    "incident-response-plan": "Roles, severity levels and communication steps.",
+    "incident-response-plan": "Roles, PAIN ratings and reporting steps.",
     "cryptographic-modules": "Cryptographic modules in use.",
     "significant-change-log": "Significant changes and their notices.",
     "secure-configuration-guide": "Recommended secure configuration for agencies.",
