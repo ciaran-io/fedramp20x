@@ -98,6 +98,17 @@ class Methods(unittest.TestCase):
         e.grc["ir_plan"]["last_reviewed"] = "2024-01-01"
         self.assertEqual(g.inr_rir_live(e).status, "fail")
 
+    def test_plan_change_without_later_review_fails_inr_rir(self):
+        e = env()
+        e.grc["incidents"] = [{"id": "INC-T", "pain_rating": 3, "reportable": True, "opened": "2026-10-01", "closed": "2026-10-02",
+                               "aar_completed": "2026-10-09", "lessons_incorporated": True, "plan_change_required": True}]
+        self.assertEqual(g.inr_rir_live(e).status, "fail")
+
+    def test_unrated_reportable_incident_counts_as_n5(self):
+        self.assertEqual(g._effective_pain({"reportable": True, "pain_rating": None}), 5)
+        self.assertTrue(g._needs_after_action_report({"reportable": True, "pain_rating": None}))
+        self.assertFalse(g._needs_after_action_report({"reportable": False, "pain_rating": 1}))
+
     def test_password_only_user_fails_apm(self):
         e = env()
         e.live["identity"]["users_password_only"] = 1
