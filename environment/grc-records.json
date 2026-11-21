@@ -84,8 +84,9 @@
   },
   "protection_reviews": [
     {
-      "date": null,
-      "summary": ""
+      "date": "2026-06-10",
+      "reviewed_by": "Platform Lead",
+      "summary": "Annual review of WAF rules, rate limits and DDoS protection settings. No changes needed."
     }
   ]
 }

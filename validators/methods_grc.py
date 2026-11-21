@@ -45,6 +45,43 @@ def _is_positive_number(value) -> bool:
     return isinstance(value, (int, float)) and not isinstance(value, bool) and value > 0
 
 
+def _newest(records: list[dict], key: str = "date") -> dict | None:
+    """The record with the latest date in `key`, ignoring records with no date."""
+    dated = [r for r in records if r.get(key)]
+    return max(dated, key=lambda r: r[key]) if dated else None
+
+
+def _business_days(start_text: str, end_text: str) -> int:
+    """Weekdays after start up to and including end. Holidays are not counted."""
+    start = datetime.date.fromisoformat(start_text)
+    end = datetime.date.fromisoformat(end_text)
+    days, d = 0, start
+    while d < end:
+        d += datetime.timedelta(days=1)
+        if d.weekday() < 5:
+            days += 1
+    return days
+
+
+def _review_age_findings(label: str, record: dict | None, as_of: datetime.date, max_days: int) -> tuple[list[str], int | None]:
+    """Findings for the newest dated review: none recorded, dated in the future, or too old."""
+    if record is None:
+        return [f"No {label} is recorded"], None
+    age = _age_days(record["date"], as_of)
+    if age < 0:
+        return [f"{label} dated {record['date']} is after the as_of date {as_of}"], age
+    if age > max_days:
+        return [f"Newest {label} was {age} days ago, the limit is {max_days} days"], age
+    return [], age
+
+
+def _reviewer_findings(label: str, record: dict | None, expected: str) -> list[str]:
+    """A review must be recorded by the role the policy names."""
+    if record is None or record.get("reviewed_by") == expected:
+        return []
+    return [f"{label} dated {record.get('date')} was recorded by {record.get('reviewed_by')!r}, the policy names {expected!r}"]
+
+
 def _policy(policy_id: str) -> dict | None:
     return next((p for p in _load("policies/policy-set.json")["policies"] if p["id"] == policy_id), None)
 
@@ -287,7 +324,15 @@ def cna_rvp_static(env: Env) -> MethodResult:
     Check to write: POL-CNA requires an annual review of protections.
     Suggested method_id: "cna-rvp-static"
     """
-    raise NotImplementedError("Author to write: KSI-CNA-RVP static")
+    findings: list[str] = []
+    reqs = _covering_requirements("POL-CNA", "CNA-RVP")
+    if not reqs:
+        findings.append("No POL-CNA requirement covers KSI CNA-RVP")
+    elif not any(w in r["text"].lower() for r in reqs for w in ("each year", "every", "quarter")):
+        findings.append("The POL-CNA requirement for CNA-RVP states no review interval")
+    return result("cna-rvp-static", STATIC, "policies/policy-set.json#POL-CNA",
+                  "POL-CNA requires a periodic review of protections",
+                  "POL-CNA covers CNA-RVP with a review interval", f"{len(findings)} gap(s)", findings)
 
 
 def cna_rvp_live(env: Env) -> MethodResult:
@@ -298,7 +343,15 @@ def cna_rvp_live(env: Env) -> MethodResult:
     Check to write: The newest protection_reviews date is within 365 days of as_of.
     Suggested method_id: "cna-rvp-live"
     """
-    raise NotImplementedError("Author to write: KSI-CNA-RVP live")
+    as_of = datetime.date.fromisoformat(env.grc["as_of"])
+    newest = _newest(env.grc.get("protection_reviews", []))
+    findings, age = _review_age_findings("protection review", newest, as_of, 365)
+    if newest is not None and not newest.get("summary"):
+        findings.append(f"Protection review dated {newest['date']} has no summary")
+    findings += _reviewer_findings("Protection review", newest, "Platform Lead")
+    return result("cna-rvp-live", LIVE, "environment/grc-records.json#protection_reviews",
+                  "The newest review of protections is no older than 365 days, records what was reviewed and was done by the Platform Lead",
+                  "<= 365 days, summary present, Platform Lead", f"{age} days" if age is not None else "no review recorded", findings)
 
 
 def rpl_rro_static(env: Env) -> MethodResult:

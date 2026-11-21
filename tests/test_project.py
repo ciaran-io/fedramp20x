@@ -109,6 +109,11 @@ class Methods(unittest.TestCase):
         self.assertTrue(g._needs_after_action_report({"reportable": True, "pain_rating": None}))
         self.assertFalse(g._needs_after_action_report({"reportable": False, "pain_rating": 1}))
 
+    def test_old_protection_review_fails_cna_rvp(self):
+        e = env()
+        e.grc["protection_reviews"] = [{"date": "2024-05-01", "summary": "old"}]
+        self.assertEqual(g.cna_rvp_live(e).status, "fail")
+
     def test_password_only_user_fails_apm(self):
         e = env()
         e.live["identity"]["users_password_only"] = 1
