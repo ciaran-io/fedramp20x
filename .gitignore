@@ -12,3 +12,10 @@ trust-center/documents/
 
 # FedRAMP rules data is downloaded by `make frmr`, never committed (upstream has no licence file).
 frmr/*.json
+
+# Local files that must never be committed
+*.patch
+.env
+.env.*
+*.pem
+*.key
