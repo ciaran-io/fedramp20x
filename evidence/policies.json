@@ -419,7 +419,7 @@
       "title": "Incident response policy",
       "theme": "INR",
       "owner": "CISO",
-      "review_cadence": "Annual, and after every incident",
+      "review_cadence": "Annual, and when an after action report or a quarterly incident review finds that the plan needs to change",
       "version": "0.1",
       "effective": "2026-11-19",
       "document": "documents/policies/POL-INR.md",
@@ -431,21 +431,21 @@
       "requirements": [
         {
           "id": "INR-1",
-          "text": "The incident response plan defines roles, severity levels, evaluation steps and the communication timelines in the ICP rules.",
+          "text": "The incident response plan defines roles, evaluation steps and the communication timelines for the IEC rules. Each incident is rated with the Potential Agency Impact N-rating (PAIN, N0 to N5) and marked as reportable or not reportable to FedRAMP.",
           "ksis": [
             "KSI-INR-RIR"
           ]
         },
         {
           "id": "INR-2",
-          "text": "Each incident of severity moderate or above ends with an after action report within 10 business days.",
+          "text": "Each FedRAMP Reportable Incident, and each incident rated N2 or above, ends with an after action report within 10 business days. A reportable incident with no rating is treated as N5 (IEC-CSO-DPR).",
           "ksis": [
             "KSI-INR-AAR"
           ]
         },
         {
           "id": "INR-3",
-          "text": "The CISO reviews the plan each year against the previous year's incidents.",
+          "text": "The CISO reviews the plan each year, and when an after action report or a quarterly incident review finds that the plan needs to change.",
           "ksis": [
             "KSI-INR-RIR",
             "KSI-INR-RPI"
@@ -453,7 +453,7 @@
         },
         {
           "id": "INR-4",
-          "text": "The security team reviews past incidents every quarter for repeated causes and records the findings.",
+          "text": "The security team reviews all past incidents and near misses, of any rating, every quarter for repeated causes. The review lists the incidents it covered and records its findings.",
           "ksis": [
             "KSI-INR-RPI"
           ]
@@ -467,8 +467,11 @@
         },
         {
           "ksi": "KSI-INR-RIR",
-          "methods": [],
-          "status": "not_implemented"
+          "methods": [
+            "inr-rir-static",
+            "inr-rir-live"
+          ],
+          "status": "pass"
         },
         {
           "ksi": "KSI-INR-RPI",

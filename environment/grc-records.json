@@ -1,5 +1,5 @@
 {
-  "_notice": "FICTIONAL. GRC records for Orrinwick Beacon. The author fills this file in by hand. Dates use YYYY-MM-DD. null means not done yet, so the matching check fails until you enter a date.",
+  "_notice": "FICTIONAL. GRC records for Orrinwick Beacon. The author fills this file in by hand. Dates use YYYY-MM-DD. null means not done yet, so the matching check fails until you enter a date. Incidents are rated with the Potential Agency Impact N-rating (pain_rating, 0 to 5) and marked reportable to FedRAMP or not.",
   "as_of": "2026-11-19",
   "training": {
     "cadence_days": 365,
@@ -23,16 +23,19 @@
   "ir_plan": {
     "doc": "docs/incident-response-plan.md",
     "review_cadence_days": 365,
-    "last_reviewed": null
+    "last_reviewed": "2026-08-04",
+    "reviewed_by": "CISO"
   },
   "incidents": [
     {
       "id": "INC-001",
-      "severity": "moderate",
+      "pain_rating": null,
+      "reportable": null,
       "opened": null,
       "closed": null,
       "aar_completed": null,
-      "lessons_incorporated": null
+      "lessons_incorporated": null,
+      "plan_change_required": null
     }
   ],
   "incident_pattern_reviews": [

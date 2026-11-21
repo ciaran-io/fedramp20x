@@ -26,6 +26,43 @@ def _load(rel: str) -> dict:
     return json.loads((ROOT / rel).read_text(encoding="utf-8"))
 
 
+def _covering_requirements(policy_id: str, ksi: str) -> list[dict]:
+    """Return the requirements of one policy that list the KSI (short form, e.g. "INR-RIR")."""
+    pol = next((p for p in _load("policies/policy-set.json")["policies"] if p["id"] == policy_id), None)
+    if pol is None:
+        return []
+    return [r for r in pol.get("requirements", []) if ksi in r.get("ksis", [])]
+
+
+def _age_days(date_text: str | None, as_of: datetime.date) -> int | None:
+    """Days from a YYYY-MM-DD date to as_of. None when no date is recorded."""
+    if not date_text:
+        return None
+    return (as_of - datetime.date.fromisoformat(date_text)).days
+
+
+def _is_positive_number(value) -> bool:
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and value > 0
+
+
+def _policy(policy_id: str) -> dict | None:
+    return next((p for p in _load("policies/policy-set.json")["policies"] if p["id"] == policy_id), None)
+
+
+def _effective_pain(incident: dict) -> int | None:
+    """The incident's PAIN rating. A reportable incident with no rating counts as N5 (IEC-CSO-DPR)."""
+    rating = incident.get("pain_rating")
+    if rating is None and incident.get("reportable") is True:
+        return 5
+    return rating
+
+
+def _needs_after_action_report(incident: dict) -> bool:
+    """POL-INR INR-2: every FedRAMP Reportable Incident, and every incident rated N2 or above."""
+    rating = _effective_pain(incident)
+    return incident.get("reportable") is True or (rating is not None and rating >= 2)
+
+
 def ced_rat_static(env: Env) -> MethodResult:
     """KSI-CED-RAT Reviewing All Training (static).
 
@@ -75,22 +112,62 @@ def inr_rir_static(env: Env) -> MethodResult:
 
     Official statement: see FedRAMP/rules (after `make frmr`, also frmr/fedramp-consolidated-rules.json).
 
-    Check to write: POL-INR requires an annual plan review, and ir_plan.review_cadence_days is 365 or less.
+    Check: POL-INR covers INR-RIR and names an owner, ir_plan.review_cadence_days is 365 or less, and the plan has no TODO lines.
     Suggested method_id: "inr-rir-static"
     """
-    raise NotImplementedError("Author to write: KSI-INR-RIR static")
-
+    findings: list[str] = []
+    if not _covering_requirements("POL-INR", "INR-RIR"):
+        findings.append("No POL-INR requirement covers KSI INR-RIR")
+    pol = _policy("POL-INR") or {}
+    if not pol.get("owner"):
+        findings.append("POL-INR names no owner for the plan review")
+    plan = env.grc.get("ir_plan", {})
+    cadence = plan.get("review_cadence_days")
+    if not _is_positive_number(cadence) or cadence > 365:
+        findings.append(f"ir_plan.review_cadence_days must be a positive number of 365 or less (found {cadence!r})")
+    doc = plan.get("doc")
+    if not doc or not (ROOT / doc).exists():
+        findings.append(f"The incident response plan document is missing (found {doc!r})")
+    else:
+        todo = [n for n, line in enumerate((ROOT / doc).read_text(encoding="utf-8").splitlines(), 1) if "TODO" in line]
+        if todo:
+            findings.append(f"The incident response plan is not finished: TODO on line(s) {', '.join(map(str, todo))}")
+    return result("inr-rir-static", STATIC, "environment/grc-records.json#ir_plan",
+                  "POL-INR requires a plan review with a named owner, the cadence is 365 days or less, and the plan is written",
+                  "POL-INR covers INR-RIR; owner named; cadence <= 365 days; plan with no TODO", f"{len(findings)} gap(s)", findings)
 
 def inr_rir_live(env: Env) -> MethodResult:
     """KSI-INR-RIR Reviewing Incident Response Procedures (live).
 
     Official statement: see FedRAMP/rules (after `make frmr`, also frmr/fedramp-consolidated-rules.json).
 
-    Check to write: ir_plan.last_reviewed is within review_cadence_days of as_of.
+    Check: ir_plan.last_reviewed is inside the cadence, reviewed_by matches the POL-INR owner, and the review follows every report or review with plan_change_required.
     Suggested method_id: "inr-rir-live"
     """
-    raise NotImplementedError("Author to write: KSI-INR-RIR live")
-
+    findings: list[str] = []
+    plan = env.grc.get("ir_plan", {})
+    cadence = plan.get("review_cadence_days")
+    as_of = datetime.date.fromisoformat(env.grc["as_of"])
+    last = plan.get("last_reviewed")
+    age = _age_days(last, as_of)
+    if age is None:
+        findings.append("No review of the incident response plan is recorded")
+    elif age < 0:
+        findings.append(f"ir_plan.last_reviewed {last} is after the as_of date {as_of}")
+    elif _is_positive_number(cadence) and age > cadence:
+        findings.append(f"Last plan review was {age} days ago, cadence is {cadence} days")
+    owner = (_policy("POL-INR") or {}).get("owner")
+    if last and plan.get("reviewed_by") != owner:
+        findings.append(f"The plan review was recorded by {plan.get('reviewed_by')!r}, POL-INR names {owner!r}")
+    for inc in env.grc.get("incidents", []):
+        if inc.get("plan_change_required") is True and inc.get("aar_completed") and (not last or last < inc["aar_completed"]):
+            findings.append(f"After action report for {inc['id']} on {inc['aar_completed']} requires a plan change, and no plan review follows it")
+    for rev in env.grc.get("incident_pattern_reviews", []):
+        if rev.get("plan_change_required") is True and rev.get("date") and (not last or last < rev["date"]):
+            findings.append(f"Incident pattern review on {rev['date']} requires a plan change, and no plan review follows it")
+    return result("inr-rir-live", LIVE, "environment/grc-records.json#ir_plan",
+                  "The plan was reviewed by its owner inside the cadence, and after every report or review that required a plan change",
+                  f"<= {cadence} days; reviewed by {owner}; review after each required change", f"{age} days" if age is not None else "no review recorded", findings)
 
 def inr_rpi_static(env: Env) -> MethodResult:
     """KSI-INR-RPI Reviewing Past Incidents (static).

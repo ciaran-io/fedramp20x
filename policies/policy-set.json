@@ -68,14 +68,14 @@
     },
     {
       "id": "POL-INR", "theme": "INR", "title": "Incident response policy",
-      "owner": "CISO", "review_cadence": "Annual, and after every incident",
+      "owner": "CISO", "review_cadence": "Annual, and when an after action report or a quarterly incident review finds that the plan needs to change",
       "purpose": "Staff detect, classify, report and learn from security incidents in the time the rules require.",
       "resources": ["N3", "N7", "E4"],
       "requirements": [
-        {"id": "INR-1", "text": "The incident response plan defines roles, severity levels, evaluation steps and the communication timelines in the ICP rules.", "ksis": ["INR-RIR"]},
-        {"id": "INR-2", "text": "Each incident of severity moderate or above ends with an after action report within 10 business days.", "ksis": ["INR-AAR"]},
-        {"id": "INR-3", "text": "The CISO reviews the plan each year against the previous year's incidents.", "ksis": ["INR-RIR", "INR-RPI"]},
-        {"id": "INR-4", "text": "The security team reviews past incidents every quarter for repeated causes and records the findings.", "ksis": ["INR-RPI"]}
+        {"id": "INR-1", "text": "The incident response plan defines roles, evaluation steps and the communication timelines for the IEC rules. Each incident is rated with the Potential Agency Impact N-rating (PAIN, N0 to N5) and marked as reportable or not reportable to FedRAMP.", "ksis": ["INR-RIR"]},
+        {"id": "INR-2", "text": "Each FedRAMP Reportable Incident, and each incident rated N2 or above, ends with an after action report within 10 business days. A reportable incident with no rating is treated as N5 (IEC-CSO-DPR).", "ksis": ["INR-AAR"]},
+        {"id": "INR-3", "text": "The CISO reviews the plan each year, and when an after action report or a quarterly incident review finds that the plan needs to change.", "ksis": ["INR-RIR", "INR-RPI"]},
+        {"id": "INR-4", "text": "The security team reviews all past incidents and near misses, of any rating, every quarter for repeated causes. The review lists the incidents it covered and records its findings.", "ksis": ["INR-RPI"]}
       ]
     },
     {
