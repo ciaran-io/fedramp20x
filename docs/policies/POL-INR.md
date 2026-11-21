@@ -7,7 +7,7 @@
 | Owner | CISO |
 | Approver | CISO |
 | Version | 0.1, effective 2026-11-19 |
-| Review cadence | Annual, and after every incident |
+| Review cadence | Annual, and when an after action report or a quarterly incident review finds that the plan needs to change |
 | Theme | INR: Incident Response |
 
 ## Purpose
@@ -30,17 +30,17 @@ This policy covers these information resources from the scope record:
 
 | ID | Requirement | KSIs |
 |---|---|---|
-| INR-1 | The incident response plan defines roles, severity levels, evaluation steps and the communication timelines in the ICP rules. | KSI-INR-RIR |
-| INR-2 | Each incident of severity moderate or above ends with an after action report within 10 business days. | KSI-INR-AAR |
-| INR-3 | The CISO reviews the plan each year against the previous year's incidents. | KSI-INR-RIR, KSI-INR-RPI |
-| INR-4 | The security team reviews past incidents every quarter for repeated causes and records the findings. | KSI-INR-RPI |
+| INR-1 | The incident response plan defines roles, evaluation steps and the communication timelines for the IEC rules. Each incident is rated with the Potential Agency Impact N-rating (PAIN, N0 to N5) and marked as reportable or not reportable to FedRAMP. | KSI-INR-RIR |
+| INR-2 | Each FedRAMP Reportable Incident, and each incident rated N2 or above, ends with an after action report within 10 business days. A reportable incident with no rating is treated as N5 (IEC-CSO-DPR). | KSI-INR-AAR |
+| INR-3 | The CISO reviews the plan each year, and when an after action report or a quarterly incident review finds that the plan needs to change. | KSI-INR-RIR, KSI-INR-RPI |
+| INR-4 | The security team reviews all past incidents and near misses, of any rating, every quarter for repeated causes. The review lists the incidents it covered and records its findings. | KSI-INR-RPI |
 
 ## Indicators and validation
 
 | KSI | Name | Automated methods | Current status |
 |---|---|---|---|
 | KSI-INR-AAR | Generating After Action Reports | none yet | not_implemented |
-| KSI-INR-RIR | Reviewing Incident Response Procedures | none yet | not_implemented |
+| KSI-INR-RIR | Reviewing Incident Response Procedures | `inr-rir-static`, `inr-rir-live` | pass |
 | KSI-INR-RPI | Reviewing Past Incidents | none yet | not_implemented |
 
 Status is a simulated validator result. Class C needs at least two automated methods per KSI (`FRC-CSX-VVK`).

@@ -22,7 +22,7 @@
     "KSI-IAM-SNU": "fail",
     "KSI-IAM-SUS": "pass",
     "KSI-INR-AAR": "not_implemented",
-    "KSI-INR-RIR": "not_implemented",
+    "KSI-INR-RIR": "pass",
     "KSI-INR-RPI": "not_implemented",
     "KSI-MLA-ALA": "pass",
     "KSI-MLA-EVC": "pass",

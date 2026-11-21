@@ -4,13 +4,13 @@
   "cso": "Orrinwick Beacon",
   "class": "c",
   "frmr_version": "2026.11.02.01",
-  "generated_at": "2026-11-21T07:20:25+00:00",
+  "generated_at": "2026-11-21T15:43:28+00:00",
   "summary": {
     "total": 46,
-    "pass": 35,
+    "pass": 36,
     "partial": 0,
     "fail": 2,
-    "not_implemented": 9
+    "not_implemented": 8
   },
   "ksis": [
     {
@@ -891,10 +891,31 @@
         "ir-9.3",
         "si-4.5"
       ],
-      "status": "not_implemented",
+      "status": "pass",
       "coverage_gap": null,
       "coverage_note": null,
-      "methods": []
+      "methods": [
+        {
+          "method_id": "inr-rir-static",
+          "kind": "static",
+          "source": "environment/grc-records.json#ir_plan",
+          "description": "POL-INR requires a plan review with a named owner, the cadence is 365 days or less, and the plan is written",
+          "status": "pass",
+          "expected": "POL-INR covers INR-RIR; owner named; cadence <= 365 days; plan with no TODO",
+          "observed": "0 gap(s)",
+          "findings": []
+        },
+        {
+          "method_id": "inr-rir-live",
+          "kind": "live",
+          "source": "environment/grc-records.json#ir_plan",
+          "description": "The plan was reviewed by its owner inside the cadence, and after every report or review that required a plan change",
+          "status": "pass",
+          "expected": "<= 365 days; reviewed by CISO; review after each required change",
+          "observed": "107 days",
+          "findings": []
+        }
+      ]
     },
     {
       "id": "KSI-INR-RPI",
