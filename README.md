@@ -25,7 +25,9 @@ The latest result for every KSI is in [`evidence/latest.json`](evidence/latest.j
 
 The trust center shows the validator results for the fictional service. It reads `evidence/latest.json` from this repository.
 
-![Trust center overview](docs/images/trust-center-overview.png)
+![Trust center overview, 2026-11-21](docs/images/trust-center-2026-11-21.png)
+
+Earlier screenshots in [`docs/images/`](docs/images/) show the progress over time. Each file name has the date it was taken.
 
 Open [`trust-center/index.html`](trust-center/index.html) in a browser for the full page. The page and its data are fictional.
 
@@ -96,6 +98,7 @@ The main decisions and the reasons for them are in the [security decision record
 - **[SD-003: backup and restore for recovery](docs/security-decision-record.md#sd-003-recovery-uses-backup-and-restore-with-cross-region-encrypted-backups).** I chose cross-region encrypted backups with no standing recovery environment. A warm standby or pilot light would add a second environment to the assessment scope. Multi-AZ alone gives no protection from a regional failure.
 - **[SD-004: scope questions OQ1 to OQ10](docs/security-decision-record.md#sd-004-scope-decisions-accepted-oq1-to-oq10).** Billing, error tracking and support tooling stay out of scope only under stated conditions, for example that no identifiers leave in error reports. Each condition is a prohibited flow in the scope record.
 - **[SD-001: passwordless workforce sign-in](docs/security-decision-record.md#sd-001-workforce-authentication-is-passwordless-first).** Phishing-resistant authenticators only, with no password-only path. The IAM checks test both the policy and each user's enrolled factors.
+- **[SD-006: incident rating and the reporting clock](docs/security-decision-record.md#sd-006-incidents-are-rated-with-pain-and-the-reporting-clock-starts-at-the-reportability-decision).** Incidents use the same PAIN scale (N0 to N5) as vulnerabilities, an unrated reportable incident counts as N5, and the reporting clock starts at the reportability decision, not at detection.
 - **[A 90-day review of the recovery objectives](docs/validator-design/RPL.md#ksi-rpl-rro-reviewing-recovery-objectives).** FedRAMP leaves the review interval to the provider. I set 90 days, and the design records why VDR-TFR-NMV does not require it.
 ## How this project was built
 
@@ -103,11 +106,30 @@ An AI assistant (Claude) wrote much of the scaffolding and drafts the validator 
 
 ## Roadmap
 
-1. Move access control from the demo (browser storage or Claude sign-in) to a real server.
-2. Build the checks for my remaining nine GRC KSIs.
-3. Write the validator design for all 46 KSIs in `docs/validator-design/` and close the gaps the reviews find.
-4. Write the remaining documents: incident response plan, cryptographic modules, significant change log and secure configuration guide. Rewrite the vulnerability report and publish it as JSON.
-5. Assemble an example FedRAMP Certification Package, the final submission to FedRAMP (FRC-CSO-PKG). It has three parts, each in Markdown and in JSON that validates against FedRAMP's published schema (FRC-CSO-JSN):
+### Done
+
+| Date | Work | Rules or KSIs | Pull request |
+|---|---|---|---|
+| 2026-11-19 | Scope record with third parties, a recovery environment and a scope change log that CI checks | MAS-CSO-IIR, MAS-CSO-FLO, MAS-CSO-TPR | Initial commit |
+| 2026-11-19 | Two automated methods for 36 KSIs, run against the fictional environment | FRC-CSX-VVK | Initial commit |
+| 2026-11-20 | Checks for KSI-RPL-RRO. Design review of KSI-RPL-ABO, which found and fixed two checks weaker than the policy | KSI-RPL-RRO, KSI-RPL-ABO | #1 |
+| 2026-11-20 | README rework and a Windows build script | | #2, #5 |
+| 2026-11-20 | Daily persistent validation that commits dated evidence | VDR-TFR-MVX, VDR-TFR-NMV | #3, #4 |
+| 2026-11-21 | KSI-INR-RIR verified. Incidents rated with PAIN. Incident response plan written and approved | KSI-INR-RIR, IEC-CSO-EFR, IEC-CSO-EFI, IEC-CSO-DPR | #6 |
+
+### To do
+
+| Work | Rules or KSIs |
+|---|---|
+| Checks for the rest of my GRC KSIs: CNA-RVP, CMT-RVP, INR-RPI, INR-AAR, PIY-RIS, PIY-RES, PIY-RVD, CED-RAT | FRC-CSX-VVK |
+| Validator design for all 46 KSIs in `docs/validator-design/`, closing the gaps the reviews find | |
+| Remaining documents: cryptographic modules, significant change log, secure configuration guide | CMU-CSO-CMD, SCN-CSO-MAR, SCG-CSO-RSC |
+| Rewrite the vulnerability report and publish it as JSON | VDR-CSO-RES, VER-TFR-MRH |
+| Move access control from the demo (browser storage or Claude sign-in) to a real server | CDS rules |
+| Assemble an example FedRAMP Certification Package (below) | FRC-CSO-PKG |
+
+**The Certification Package** is the final submission to FedRAMP (FRC-CSO-PKG). It has three parts, each in Markdown and in JSON that validates against FedRAMP's published schema (FRC-CSO-JSN):
+
    - **Certification Package Overview** (CPO-CSO-OVR): metadata and the accountable official (CPO-CSO-MTD), public information and service list (CDS-CSO-PUB, CDS-CSO-SVC), relevant policies (CDS-CSO-IRP), the scope (MAS-CSO-IIR, MAS-CSO-FLO, MAS-CSO-TPR), cryptographic modules (CMU-CSO-CMD) and the independent assessment results (IVV-CSO-ICP, CPO-CSO-OSA).
    - **Security Decision Record** (SDR-CSO-FRR): for each applicable rule, how it is met, its verification, validation and artifacts, plus a summary (SDR-CSX-KSI) and historical metrics (SDR-CSX-KMT) for each KSI.
    - **An example Ongoing Certification Report** (CCM-OCR-AVL).
@@ -119,7 +141,7 @@ An AI assistant (Claude) wrote much of the scaffolding and drafts the validator 
 - **Fictional data.** The company, the environment and every record are invented. The fixtures were set to show a mostly healthy service with two open findings (KSI-IAM-SNU and KSI-SVC-EIS), so that the failure path is visible.
 - **No real cloud account.** The live methods read snapshot files in `environment/`. With a real AWS account, I would replace each snapshot with API calls (for example AWS Backup, IAM and AWS Config), run them under a read-only role with short-lived credentials, and keep the daily schedule.
 - **Checks narrower than the KSI.** Some checks prove less than the official statement. Each one has a coverage note in `validators/registry.py` and a gap entry in its design. For example, no check yet confirms the alert for a failed backup job (KSI-RPL-ABO).
-- **Not finished.** Nine of my GRC KSIs have no checks yet, and several documents still have `TODO` sections.
+- **Not finished.** Some of my GRC KSIs have no checks yet (they show as `not_implemented` in [`evidence/latest.json`](evidence/latest.json)), and four documents still have `TODO` sections. See the [Roadmap](#roadmap).
 - **No independent assessment.** A real Class C package needs a FedRAMP Recognized assessor. Nothing here has been assessed.
 - **Access gate.** The trust center's access control is a demonstration only (see [Visibility](#visibility)).
 ## Visibility
