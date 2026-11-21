@@ -6,7 +6,7 @@
 |---|---|
 | Owner | Security Operations Lead |
 | Approver | CISO |
-| Version | 0.1, effective 2026-11-19 |
+| Version | 0.1 draft, effective 2026-11-19 |
 | Review cadence | Annual |
 | Theme | MLA: Monitoring, Logging, and Auditing |
 

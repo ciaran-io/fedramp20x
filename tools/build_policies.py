@@ -48,7 +48,8 @@ def main() -> int:
         L = [f"# {p['title']} ({p['id']})", "", NOTICE, "",
              "| | |", "|---|---|",
              f"| Owner | {p['owner']} |", f"| Approver | {ps['approver']} |",
-             f"| Version | {ps['version']}, effective {ps['effective']} |",
+             (f"| Version | {p['approval']['version']}, approved by the {p['approval']['approved_by']} on {p['approval']['date']} |"
+              if p.get("approval") else f"| Version | {ps['version']} draft, effective {ps['effective']} |"),
              f"| Review cadence | {p['review_cadence']} |",
              f"| Theme | {p['theme']}: {next(t['name'] for t in reg['themes'] if t['key'] == p['theme'])} |", "",
              "## Purpose", "", p["purpose"], "",

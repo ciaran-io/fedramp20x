@@ -6,7 +6,7 @@
 |---|---|
 | Owner | Platform Lead |
 | Approver | CISO |
-| Version | 0.1, effective 2026-11-19 |
+| Version | 0.1 draft, effective 2026-11-19 |
 | Review cadence | Annual, and after any architecture change |
 | Theme | CNA: Cloud Native Architecture |
 

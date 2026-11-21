@@ -5,7 +5,7 @@
 | | |
 |---|---|
 | Owner | CISO (fictional) |
-| Version | 1.0, draft for review |
+| Version | 1.0, approved by the CISO on 2026-11-21 |
 | Last reviewed | 2026-08-04, by the CISO (recorded in `environment/grc-records.json`) |
 | Rules | `IEC-CSO-*`, `VER-TFR-IRI`, `VER-TFR-NRI` in `rules-matrix.md` |
 | KSIs | KSI-INR-AAR, KSI-INR-RIR, KSI-INR-RPI |
