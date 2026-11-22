@@ -10,6 +10,7 @@ Each KSI gets one static (IaC) method and one live (API snapshot) method.
 """
 from __future__ import annotations
 
+import datetime
 import json
 from pathlib import Path
 
@@ -267,6 +268,43 @@ def abo_live(env: Env) -> MethodResult:
     return result("abo-live-backup-currency", LIVE, "environment/live-state.json#aws_backup",
                   f"Newest recovery point and its cross-region copy are within the {rpo}h recovery point objective",
                   f"<= {rpo}h, copy to {region}", f"{len(findings)} breaching", findings)
+
+
+def _timestamp(text: str) -> datetime.datetime:
+    """An ISO 8601 UTC time such as 2026-11-17T03:09:00Z."""
+    return datetime.datetime.fromisoformat(text.replace("Z", "+00:00"))
+
+
+def abo_alert(env: Env) -> MethodResult:
+    """KSI-RPL-ABO (live): backup and copy jobs ran in the last day, and every failed job in the window raised an alert
+    in time that a person acknowledged (POL-RPL RPL-2). Only jobs on or before the run date count."""
+    o = _objectives()
+    limit = o.get("failed_job_alert_minutes_max", 60)
+    window = o.get("job_history_window_days", 30)
+    today = env.as_of
+    past = [j for j in env.backup_jobs.get("jobs", []) if _timestamp(j["finished"]).date() <= today]
+    findings = []
+    for kind in ("backup", "copy"):
+        newest = max((_timestamp(j["finished"]).date() for j in past if j.get("type") == kind and j.get("status") == "COMPLETED"), default=None)
+        if newest is None or (today - newest).days > 1:
+            findings.append(f"No completed {kind} job since {newest} (run date {today})")
+    recent = [j for j in past if (today - _timestamp(j["finished"]).date()).days <= window]
+    failed = [j for j in recent if j.get("status") == "FAILED"]
+    for j in failed:
+        label = f"Failed {j.get('type')} job {j.get('job_id')}"
+        alert = j.get("alert") or {}
+        if not alert.get("raised"):
+            findings.append(f"{label} raised no alert")
+            continue
+        delay = (_timestamp(alert["raised"]) - _timestamp(j["finished"])).total_seconds() / 60
+        if delay < 0 or delay > limit:
+            findings.append(f"{label}: alert {alert.get('id')} raised {delay:.0f} minutes after the failure (limit {limit})")
+        if not alert.get("acknowledged_by"):
+            findings.append(f"{label}: alert {alert.get('id')} was not acknowledged")
+    return result("abo-live-failed-job-alerts", LIVE, "environment/backup-jobs.json",
+                  f"Backup and copy jobs completed in the last day, and every failed job in the last {window} days raised an alert within {limit} minutes that a person acknowledged",
+                  f"jobs in the last day; alert <= {limit} min, acknowledged",
+                  f"{len(recent)} job(s) in {window} days, {len(failed)} failed, {len(findings)} finding(s)", findings)
 
 
 # ---- KSI-SVC-VCM  Validating Communications ----------------------------------

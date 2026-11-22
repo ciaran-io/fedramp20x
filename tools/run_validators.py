@@ -45,6 +45,7 @@ def main() -> int:
     env = Env(company=load("environment/company.json"),
               iac=load("environment/iac-plan.json"),
               live=load("environment/live-state.json"),
+              backup_jobs=load("environment/backup-jobs.json"),
               mas=load("mas/mas-record.json"),
               grc=load("environment/grc-records.json"))
     now = datetime.now(timezone.utc)
