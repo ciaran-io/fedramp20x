@@ -179,6 +179,35 @@ class Methods(unittest.TestCase):
         finally:
             g._load = original
 
+    def test_overdue_or_wrong_person_change_procedure_review_fails_cmt_rvp(self):
+        e = env()
+        self.assertEqual(g.cmt_rvp_live(e).status, "pass")
+        e.as_of = datetime.date(2027, 10, 3)
+        self.assertEqual(g.cmt_rvp_live(e).status, "fail")
+        e = env()
+        e.grc["change_procedure"]["reviews"].append({"date": "2026-11-20", "reviewed_by": "GRC Lead"})
+        self.assertEqual(g.cmt_rvp_live(e).status, "fail")
+
+    def test_failed_change_needs_a_review_within_10_business_days(self):
+        e = env()
+        self.assertEqual(g.cmt_rvp_change(e).status, "pass")
+        e.grc["change_procedure"]["failed_or_emergency_changes"].append({"id": "CHG-T", "date": "2026-11-16", "type": "emergency"})
+        r = g.cmt_rvp_change(e)
+        self.assertEqual(r.status, "pass")
+        self.assertIn("due by 2026-11-30", r.observed)
+        e.as_of = datetime.date(2026, 12, 1)
+        self.assertEqual(g.cmt_rvp_change(e).status, "fail")
+
+    def test_untyped_or_unknown_change_type_fails_lmc(self):
+        from validators import methods_tech as t
+        e = env()
+        self.assertEqual(t.lmc_change_types(e).status, "pass")
+        e.live["change_events"]["last_30_days"]["pipeline_changes_typed"] = 210
+        self.assertEqual(t.lmc_change_types(e).status, "fail")
+        e = env()
+        e.live["change_events"]["last_30_days"]["change_types"]["not_applicable"] = 0
+        self.assertEqual(t.lmc_change_types(e).status, "fail")
+
     def test_change_review_deadlines_by_type(self):
         as_of = g.datetime.date(2026, 11, 19)
         late = [{"id": "SC-T1", "date": "2026-10-01", "scn_category": "adaptive"}]
