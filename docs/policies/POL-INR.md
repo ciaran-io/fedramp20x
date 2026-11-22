@@ -6,8 +6,8 @@
 |---|---|
 | Owner | CISO |
 | Approver | CISO |
-| Version | 1.0, approved by the CISO on 2026-11-21 |
-| Review cadence | Annual, and when an after action report or a quarterly incident review finds that the plan needs to change |
+| Version | 1.1, approved by the CISO on 2026-11-21 |
+| Review cadence | Annual |
 | Theme | INR: Incident Response |
 
 ## Purpose

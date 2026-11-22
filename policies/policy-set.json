@@ -11,7 +11,7 @@
   "policies": [
     {
       "id": "POL-CED", "theme": "CED", "title": "Cybersecurity education policy",
-      "owner": "GRC Lead", "review_cadence": "Annual, and after any significant change",
+      "owner": "GRC Lead", "review_cadence": "Annual",
       "purpose": "Staff know the security duties of their role and the company checks that the training works.",
       "resources": ["N1", "N2", "N3", "N5"],
       "requirements": [
@@ -37,17 +37,19 @@
     },
     {
       "id": "POL-CNA", "theme": "CNA", "title": "Cloud-native architecture policy",
-      "owner": "Platform Lead", "review_cadence": "Annual, and after any architecture change",
+      "approval": {"version": "1.0", "approved_by": "CISO", "date": "2026-11-21"},
+      "owner": "Platform Lead", "review_cadence": "Annual",
       "purpose": "The architecture limits who and what can reach each resource and keeps the service available during component loss.",
       "resources": ["P1", "P2", "P3", "P4", "P8", "P12", "E3"],
       "requirements": [
-        {"id": "CNA-1", "text": "Each resource has a documented function and the minimum privileges needed for it.", "ksis": ["CNA-DFP"]},
+        {"id": "CNA-1", "text": "Each resource has a documented function in the scope record and its own role declared in code. A role grants only the named actions its function needs: no wildcard actions, no role shared between services, and permissions unused for 90 days are removed (POL-IAM IAM-3). Network access follows CNA-6, and data access follows SVC-6.", "ksis": ["CNA-DFP"]},
         {"id": "CNA-2", "text": "Infrastructure is declared in code. A resource that exists outside the code is a defect and is removed or brought into the code within 5 business days.", "ksis": ["CNA-EIS"]},
-        {"id": "CNA-3", "text": "Hardening baselines from the secure configuration guide apply to every resource type.", "ksis": ["CNA-IBP"]},
+        {"id": "CNA-3", "text": "Each third-party machine-based resource is compared with its provider's best-practice guidance on every validation run, and at least every 3 days: the CIS AWS Foundations Benchmark for the AWS account, and the vendor's security baseline for each SaaS tool (E1, E7, E9). Failed controls are fixed or accepted as exceptions under the policy exception process.", "ksis": ["CNA-IBP"]},
         {"id": "CNA-4", "text": "Public exposure is limited to the load balancer, gateway and web application firewall (P8). Each open port and public endpoint is justified in the scope record.", "ksis": ["CNA-MAT"]},
         {"id": "CNA-5", "text": "Production runs in more than one availability zone. Cross-region encrypted backups meet the recovery objectives in policy POL-RPL.", "ksis": ["CNA-OFA"]},
         {"id": "CNA-6", "text": "Inbound and outbound traffic is denied by default. Allowed flows match the flows in the scope record.", "ksis": ["CNA-RNT"]},
-        {"id": "CNA-7", "text": "The Platform Lead reviews protections each year and after any significant change.", "ksis": ["CNA-RVP"]},
+        {"id": "CNA-7a", "text": "The Platform Lead reviews protections at least once a year.", "ksis": ["CNA-RVP"]},
+        {"id": "CNA-7b", "text": "The Platform Lead also reviews protections after each change recorded in mas/scope-changes.json. The deadline depends on the change type in the SCN rules. Transformative: before the change starts, and again within 5 business days after it is finished. Adaptive: within 10 business days after the change is finished, before the notice under SCN-ADP-NTF. Not significant: within 20 business days after the change is finished. Routine recurring: no separate review, because the annual review covers these changes.", "ksis": ["CNA-RVP"]},
         {"id": "CNA-8", "text": "Production uses logical networks and security groups to separate tenants' workloads from operations tooling and from other trust zones.", "ksis": ["CNA-ULN"]}
       ]
     },
@@ -68,8 +70,8 @@
     },
     {
       "id": "POL-INR", "theme": "INR", "title": "Incident response policy",
-      "approval": {"version": "1.0", "approved_by": "CISO", "date": "2026-11-21"},
-      "owner": "CISO", "review_cadence": "Annual, and when an after action report or a quarterly incident review finds that the plan needs to change",
+      "approval": {"version": "1.1", "approved_by": "CISO", "date": "2026-11-21"},
+      "owner": "CISO", "review_cadence": "Annual",
       "purpose": "Staff detect, classify, report and learn from security incidents in the time the rules require.",
       "resources": ["N3", "N7", "E4"],
       "requirements": [
@@ -108,8 +110,8 @@
     },
     {
       "id": "POL-RPL", "theme": "RPL", "title": "Recovery planning policy",
-      "approval": {"version": "1.0", "approved_by": "CISO", "date": "2026-11-21"},
-      "owner": "Platform Lead", "review_cadence": "Every 90 days, and after any recovery test",
+      "approval": {"version": "1.1", "approved_by": "CISO", "date": "2026-11-21"},
+      "owner": "Platform Lead", "review_cadence": "Annual",
       "purpose": "Orrinwick can restore the offering and its data within its stated objectives.",
       "resources": ["P3", "P4", "P12", "E3", "P1"],
       "requirements": [
