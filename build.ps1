@@ -19,6 +19,7 @@ $steps = @(
     @("tools/build_mas.py"),
     @("tools/build_policies.py"),
     @("tools/build_docs.py"),
+    @("tools/build_change_log.py"),
     @("tools/build_trust_center.py")
 )
 
