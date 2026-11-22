@@ -1,6 +1,5 @@
 {
   "_notice": "FICTIONAL. GRC records for Orrinwick Beacon. The author fills this file in by hand. Dates use YYYY-MM-DD. null means not done yet, so the matching check fails until you enter a date. Incidents are rated with the Potential Agency Impact N-rating (pain_rating, 0 to 5) and marked reportable to FedRAMP or not.",
-  "as_of": "2026-11-19",
   "training": {
     "cadence_days": 365,
     "people": [
@@ -87,6 +86,21 @@
       "date": "2026-06-10",
       "reviewed_by": "Platform Lead",
       "summary": "Annual review of WAF rules, rate limits and DDoS protection settings. No changes needed.",
+      "resources_covered": [
+        "aws_wafv2_web_acl.edge",
+        "aws_lb_listener.https",
+        "aws_lb_listener.webhooks",
+        "aws_guardduty_detector.main"
+      ]
+    },
+    {
+      "date": "2026-11-22",
+      "reviewed_by": "Platform Lead",
+      "changes_reviewed": [
+        "SC-001",
+        "SC-002"
+      ],
+      "summary": "Review of protections after scope changes SC-001 (cross-region backup vault and on-demand recovery environment) and SC-002 (support-derived data on managed endpoints). Neither change adds an internet-facing entry point. The recovery environment has no standing resources and falls under the same protections when it is built (POL-RPL RPL-5). WAF rules, rate limits, load balancer listeners and threat detection stay as they are. No changes needed.",
       "resources_covered": [
         "aws_wafv2_web_acl.edge",
         "aws_lb_listener.https",

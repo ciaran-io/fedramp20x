@@ -1,5 +1,7 @@
 """Unit tests. Run with `make test` (python -m unittest)."""
 import copy
+import datetime
+import os
 import json
 import unittest
 from pathlib import Path
@@ -8,7 +10,7 @@ from tools import check_scope_changes as scl
 from validators import methods as m
 from validators import methods_grc as g
 from validators import methods_ops as o
-from validators.base import Env
+from validators.base import AS_OF_VARIABLE, Env, run_date
 from validators.registry import KSI_METHODS, KSI_GAPS, KSI_NOTES
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -18,10 +20,14 @@ def load(p):
     return json.loads((ROOT / p).read_text())
 
 
+# Tests use a fixed date so their results do not change as the records age.
+TEST_DATE = datetime.date(2026, 11, 22)
+
+
 def env():
     return Env(company=load("environment/company.json"), iac=load("environment/iac-plan.json"),
                live=load("environment/live-state.json"), mas=load("mas/mas-record.json"),
-               grc=load("environment/grc-records.json"))
+               grc=load("environment/grc-records.json"), as_of=TEST_DATE)
 
 
 class Registry(unittest.TestCase):
@@ -116,8 +122,26 @@ class Methods(unittest.TestCase):
 
     def test_review_missing_a_protection_resource_fails_cna_rvp(self):
         e = env()
-        e.grc["protection_reviews"][0]["resources_covered"] = ["aws_wafv2_web_acl.edge"]
+        e.grc["protection_reviews"][-1]["resources_covered"] = ["aws_wafv2_web_acl.edge"]
         self.assertEqual(g.cna_rvp_live(e).status, "fail")
+
+    def test_run_date_is_today_unless_pinned(self):
+        saved = os.environ.pop(AS_OF_VARIABLE, None)
+        try:
+            self.assertEqual(run_date(), datetime.datetime.now(datetime.timezone.utc).date())
+            os.environ[AS_OF_VARIABLE] = "2027-03-01"
+            self.assertEqual(run_date(), datetime.date(2027, 3, 1))
+        finally:
+            os.environ.pop(AS_OF_VARIABLE, None)
+            if saved:
+                os.environ[AS_OF_VARIABLE] = saved
+
+    def test_records_go_overdue_as_the_run_date_moves(self):
+        e = env()
+        e.as_of = datetime.date(2028, 1, 1)
+        self.assertEqual(g.inr_rir_live(e).status, "fail")
+        self.assertEqual(g.cna_rvp_live(e).status, "fail")
+        self.assertEqual(g.rpl_rro_live(e).status, "fail")
 
     def test_change_review_deadlines_by_type(self):
         as_of = g.datetime.date(2026, 11, 19)

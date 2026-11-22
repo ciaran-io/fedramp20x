@@ -13,6 +13,8 @@ lets the demo show *disagreement* (e.g., IaC says closed, live says open).
 """
 from __future__ import annotations
 
+import datetime
+import os
 from dataclasses import dataclass, field, asdict
 from typing import Callable
 
@@ -34,6 +36,21 @@ class MethodResult:
         return asdict(self)
 
 
+AS_OF_VARIABLE = "FEDRAMP20X_AS_OF"
+
+
+def run_date() -> datetime.date:
+    """The date the GRC checks measure record ages against.
+
+    It is the real run date (UTC), so reviews go overdue as time passes. Tests and break tests
+    can fix it with the FEDRAMP20X_AS_OF environment variable (YYYY-MM-DD) or by passing as_of to Env.
+    """
+    pinned = os.environ.get(AS_OF_VARIABLE)
+    if pinned:
+        return datetime.date.fromisoformat(pinned)
+    return datetime.datetime.now(datetime.timezone.utc).date()
+
+
 @dataclass
 class Env:
     """Everything a method may read. Swap fixtures for real collectors later."""
@@ -43,6 +60,7 @@ class Env:
     live: dict
     mas: dict = field(default_factory=dict)  # scope record (mas/mas-record.json), used by flow-aware checks
     grc: dict = field(default_factory=dict)  # GRC records (environment/grc-records.json): training, incidents, reviews
+    as_of: datetime.date = field(default_factory=run_date)  # the date record ages are measured against
 
     def iac_resources(self, rtype: str) -> list[dict]:
         return [r for r in self.iac.get("resources", []) if r["type"] == rtype]
