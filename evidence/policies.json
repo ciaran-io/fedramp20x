@@ -97,7 +97,7 @@
         },
         {
           "id": "CMT-3",
-          "text": "The Platform Lead reviews the change procedure each year and after any failed or emergency change.",
+          "text": "The Platform Lead reviews the change procedure each year, and within 10 business days after any failed or emergency change. Each review is recorded as a new entry in environment/grc-records.json.",
           "ksis": [
             "KSI-CMT-RVP"
           ]
@@ -116,6 +116,18 @@
             "KSI-CMT-LMC",
             "KSI-CMT-RVP"
           ]
+        },
+        {
+          "id": "CMT-6",
+          "text": "Every change made through the pipeline is assessed for its change type before release: routine recurring, adaptive, transformative or not significant. Every change gets one of these four types, so no change skips the assessment. Routine recurring and not significant changes need no notice. The type is recorded with the change in the pipeline log (CMT-1), and a change that alters the scope record is also logged in mas/scope-changes.json.",
+          "ksis": [
+            "KSI-CMT-LMC"
+          ]
+        },
+        {
+          "id": "CMT-7",
+          "text": "A change of certification class is not a significant change. It needs a new certification before the offering operates at the new class (FRC-CCL-UCC, FRC-CCL-DCC).",
+          "ksis": []
         }
       ],
       "indicators": [
@@ -123,7 +135,8 @@
           "ksi": "KSI-CMT-LMC",
           "methods": [
             "lmc-iac-change-logging",
-            "lmc-live-change-coverage"
+            "lmc-live-change-coverage",
+            "lmc-live-change-types"
           ],
           "status": "pass"
         },
@@ -137,8 +150,12 @@
         },
         {
           "ksi": "KSI-CMT-RVP",
-          "methods": [],
-          "status": "not_implemented"
+          "methods": [
+            "cmt-rvp-static",
+            "cmt-rvp-live",
+            "cmt-rvp-change"
+          ],
+          "status": "pass"
         },
         {
           "ksi": "KSI-CMT-VTD",
@@ -710,7 +727,7 @@
         },
         {
           "id": "RPL-2",
-          "text": "Backups run at least every 2 hours, are encrypted and are copied to a second US region (P12) into a vault that has a compliance-mode lock. Backup jobs and copy jobs are monitored and a failed job raises an alert.",
+          "text": "Backups run at least every 2 hours, are encrypted and are copied to a second US region (P12) into a vault that has a compliance-mode lock. Backup jobs and copy jobs are monitored every day. A failed job raises an alert within 60 minutes, and a named person acknowledges it.",
           "ksis": [
             "KSI-RPL-ABO"
           ]
@@ -742,7 +759,8 @@
           "ksi": "KSI-RPL-ABO",
           "methods": [
             "abo-iac-backup-policy",
-            "abo-live-backup-currency"
+            "abo-live-backup-currency",
+            "abo-live-failed-job-alerts"
           ],
           "status": "pass"
         },

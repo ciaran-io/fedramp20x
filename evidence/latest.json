@@ -4,13 +4,13 @@
   "cso": "Orrinwick Beacon",
   "class": "c",
   "frmr_version": "2026.11.02.01",
-  "generated_at": "2026-11-22T07:21:06+00:00",
+  "generated_at": "2026-11-22T17:22:41+00:00",
   "summary": {
     "total": 46,
-    "pass": 37,
+    "pass": 38,
     "partial": 0,
     "fail": 2,
-    "not_implemented": 7
+    "not_implemented": 6
   },
   "ksis": [
     {
@@ -83,6 +83,16 @@
           "expected": "100% logged, 100% of manual changes alerted",
           "observed": "212/212 logged, 2/2 manual alerted",
           "findings": []
+        },
+        {
+          "method_id": "lmc-live-change-types",
+          "kind": "live",
+          "source": "environment/live-state.json#change_events",
+          "description": "Every pipeline change in the last 30 days was assessed and given one of the four change types",
+          "status": "pass",
+          "expected": "100% typed: routine recurring, not significant, adaptive or transformative",
+          "observed": "212/212 typed: routine_recurring 190, not_significant 22, adaptive 0, transformative 0",
+          "findings": []
         }
       ]
     },
@@ -139,10 +149,41 @@
         "cm-7.1",
         "cm-9"
       ],
-      "status": "not_implemented",
+      "status": "pass",
       "coverage_gap": null,
       "coverage_note": null,
-      "methods": []
+      "methods": [
+        {
+          "method_id": "cmt-rvp-static",
+          "kind": "static",
+          "source": "environment/grc-records.json#change_procedure",
+          "description": "POL-CMT requires a yearly review of the change procedure and a review after failed or emergency changes, and the procedure exists",
+          "status": "pass",
+          "expected": "POL-CMT CMT-3 covers CMT-RVP; cadence <= 365 days; procedure present",
+          "observed": "0 gap(s)",
+          "findings": []
+        },
+        {
+          "method_id": "cmt-rvp-live",
+          "kind": "live",
+          "source": "environment/grc-records.json#change_procedure",
+          "description": "The newest review of the change procedure is inside the cadence and was recorded by the POL-CMT owner",
+          "status": "pass",
+          "expected": "<= 365 days; reviewed by Platform Lead",
+          "observed": "51 days",
+          "findings": []
+        },
+        {
+          "method_id": "cmt-rvp-change",
+          "kind": "live",
+          "source": "environment/grc-records.json#change_procedure.failed_or_emergency_changes",
+          "description": "Every failed or emergency change has a review of the change procedure within 10 business days",
+          "status": "pass",
+          "expected": "review within 10 business days of each failed or emergency change",
+          "observed": "1 failed or emergency change(s), 0 overdue",
+          "findings": []
+        }
+      ]
     },
     {
       "id": "KSI-CMT-VTD",
@@ -465,7 +506,7 @@
           "description": "The newest review of protections is no older than 365 days, was done by the Platform Lead and covers every protection resource",
           "status": "pass",
           "expected": "<= 365 days, Platform Lead, all protection resources covered",
-          "observed": "162 days",
+          "observed": "0 days",
           "findings": []
         },
         {
@@ -475,7 +516,7 @@
           "description": "Every recorded change has a protection review inside the deadline for its SCN change type",
           "status": "pass",
           "expected": "review before the deadline for each change",
-          "observed": "2 change(s), 0 overdue; SC-001: protection review due by 2026-12-17; SC-002: protection review due by 2026-12-18",
+          "observed": "2 change(s), 0 overdue",
           "findings": []
         }
       ]
@@ -943,7 +984,7 @@
           "description": "The plan was reviewed by its owner inside the cadence, and after every report or review that required a plan change",
           "status": "pass",
           "expected": "<= 365 days; reviewed by CISO; review after each required change",
-          "observed": "107 days",
+          "observed": "1 days",
           "findings": []
         }
       ]
@@ -1363,6 +1404,16 @@
           "expected": "<= 4h, copy to us-west-2",
           "observed": "0 breaching",
           "findings": []
+        },
+        {
+          "method_id": "abo-live-failed-job-alerts",
+          "kind": "live",
+          "source": "environment/backup-jobs.json",
+          "description": "Backup and copy jobs completed in the last day, and every failed job in the last 30 days raised an alert within 60 minutes that a person acknowledged",
+          "status": "pass",
+          "expected": "jobs in the last day; alert <= 60 min, acknowledged",
+          "observed": "15 job(s) in 30 days, 1 failed, 0 finding(s)",
+          "findings": []
         }
       ]
     },
@@ -1442,9 +1493,9 @@
           "method_id": "rpl-rro-live",
           "kind": "live",
           "source": "environment/recovery-objectives.json",
-          "description": "The last review of the recovery objectives is inside the review cadence",
+          "description": "The newest review of the recovery objectives is inside the review cadence and was recorded by the POL-RPL owner",
           "status": "pass",
-          "expected": "<= 90 days since last review",
+          "expected": "<= 90 days since last review; reviewed by Platform Lead",
           "observed": "0 days",
           "findings": []
         }

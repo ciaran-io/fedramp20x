@@ -5,7 +5,7 @@
     "KSI-CED-RAT": "not_implemented",
     "KSI-CMT-LMC": "pass",
     "KSI-CMT-RMV": "pass",
-    "KSI-CMT-RVP": "not_implemented",
+    "KSI-CMT-RVP": "pass",
     "KSI-CMT-VTD": "pass",
     "KSI-CNA-DFP": "pass",
     "KSI-CNA-EIS": "pass",
