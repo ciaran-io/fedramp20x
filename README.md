@@ -68,9 +68,9 @@ FedRAMP 20x expects a provider to keep validating its KSIs and to show the resul
 2. It downloads the repository and the FedRAMP rules data.
 3. It runs the same checks as CI: the rules data schema, the unit tests and `make all`, which runs every KSI validator against the fictional environment.
 4. It writes the results to `evidence/latest.json`, adds a file for the day in `evidence/history/` and rebuilds the trust center page.
-5. It commits those files to `main` with the date and the result counts, for example `Scheduled validation 2026-11-21: 35 pass, 2 fail, 0 partial, 9 not implemented`.
+5. It commits those files to `main` with the date and the result counts, for example `Scheduled validation 2026-11-22: 37 pass, 2 fail, 0 partial, 7 not implemented`.
 
-The daily history files are the source for the historical KSI metrics that the Security Decision Record needs (SDR-CSX-KMT). The environment is fictional, so most runs give the same results. For a real provider, the live methods would call the cloud and system APIs, and a daily run would find drift such as an expired key or a backup that stopped.
+The daily history files are the source for the historical KSI metrics that the Security Decision Record needs (SDR-CSX-KMT). The GRC checks measure each review and record against the run date, so a review that is not repeated on time goes overdue and its KSI fails. The technical environment is fictional and static, so those checks give the same results on most runs. For a real provider, the live methods would call the cloud and system APIs, and a daily run would find drift such as an expired key or a backup that stopped.
 
 ## Automatic checks on GitHub
 
@@ -118,6 +118,7 @@ An AI assistant (Claude) wrote much of the scaffolding and drafts the validator 
 | 2026-11-21 | KSI-INR-RIR verified. Incidents rated with PAIN. Incident response plan written and approved | KSI-INR-RIR, IEC-CSO-EFR, IEC-CSO-EFI, IEC-CSO-DPR | #6 |
 | 2026-11-21 | KSI-CNA-RVP built with an annual review and a review after each change, with deadlines by SCN change type. POL-CNA rewritten and approved | KSI-CNA-RVP, SCN-ADP-NTF, SCN-TRF-NFP | #10 |
 | 2026-11-21 | Scope gap closed: support-derived data (D8) recorded on managed endpoints with a conditional flow, logged as scope change SC-002 | MAS-CSO-IIR, MAS-CSO-FLO, SCN-CSO-EVA | #12 |
+| 2026-11-22 | GRC checks measure record ages against the real run date, so reviews go overdue like real records. Protection review recorded after scope changes SC-001 and SC-002 | VDR-TFR-NMV, KSI-CNA-RVP | #32 |
 
 ### To do
 
@@ -146,6 +147,7 @@ An AI assistant (Claude) wrote much of the scaffolding and drafts the validator 
 - **Not finished.** Some of my GRC KSIs have no checks yet (they show as `not_implemented` in [`evidence/latest.json`](evidence/latest.json)), and four documents still have `TODO` sections. See the [Roadmap](#roadmap).
 - **No independent assessment.** A real Class C package needs a FedRAMP Recognized assessor. Nothing here has been assessed.
 - **Access gate.** The trust center's access control is a demonstration only (see [Visibility](#visibility)).
+- **Records kept by hand.** I update the GRC records (`environment/grc-records.json` and `environment/recovery-objectives.json`) by hand, standing in for the GRC tool a real provider would use. The checks measure them against the real run date, so a missed review shows as a failed KSI on the trust center until I record it. Tests fix the date with `FEDRAMP20X_AS_OF` so their results do not change.
 ## Visibility
 
 This repository is public. Every document in it is readable by anyone, so the trust center's access gate is a demonstration only. GitHub Pages is not used. `trust-center/index.html` is a snapshot of the trust center as one HTML file. Download it and open it in a browser.
