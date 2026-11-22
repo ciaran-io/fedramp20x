@@ -117,6 +117,7 @@ An AI assistant (Claude) wrote much of the scaffolding and drafts the validator 
 | 2026-11-20 | Daily persistent validation that commits dated evidence | VDR-TFR-MVX, VDR-TFR-NMV | #3, #4 |
 | 2026-11-21 | KSI-INR-RIR verified. Incidents rated with PAIN. Incident response plan written and approved | KSI-INR-RIR, IEC-CSO-EFR, IEC-CSO-EFI, IEC-CSO-DPR | #6 |
 | 2026-11-21 | KSI-CNA-RVP built with an annual review and a review after each change, with deadlines by SCN change type. POL-CNA rewritten and approved | KSI-CNA-RVP, SCN-ADP-NTF, SCN-TRF-NFP | #10 |
+| 2026-11-21 | Scope gap closed: support-derived data (D8) recorded on managed endpoints with a conditional flow, logged as scope change SC-002 | MAS-CSO-IIR, MAS-CSO-FLO, SCN-CSO-EVA | #12 |
 
 ### To do
 
