@@ -369,6 +369,12 @@
       "protocol": "TLSv1.2",
       "certificate_valid": true,
       "observed_by": "restore test telemetry (simulated)"
+    },
+    {
+      "flow": "F45",
+      "protocol": "TLSv1.3",
+      "certificate_valid": true,
+      "observed_by": "workforce proxy telemetry (simulated)"
     }
   ],
   "identity": {

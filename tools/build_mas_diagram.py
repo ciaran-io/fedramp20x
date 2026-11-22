@@ -120,7 +120,7 @@ PAGES = [
             Z("Prohibited flows (from the record)", 1320, 70, 600, 940, "panel"),
         ],
         "nodes": [
-            N("P2", "P2", 90, 140, "system"), N("P3", "P3", 90, 380, "system"), N("E6", "E6", 90, 880, "system"),
+            N("P2", "P2", 90, 140, "system"), N("P3", "P3", 90, 380, "system"), N("E8", "E8", 90, 630, "system"), N("E6", "E6", 90, 880, "system"),
             N("T123", None, 810, 110, "third", w=400, label="T1 to T3 Notification providers"),
             N("T4", "T4", 810, 310, "cond", w=400), N("S123", None, 810, 430, "cond", w=400, label="S1 to S3 Support ticketing, email, chat"),
             N("C5", "C5", 810, 550, "cond", w=400), N("C4", "C4", 810, 670, "cond", w=400),
@@ -132,6 +132,7 @@ PAGES = [
             E("PF1", "P2", "S123", kind="proh", frac=0.55), E("PF7", "P2", "C5", kind="proh", frac=0.55),
             E("F41", "P3", "C4", [("off", 16)], kind="cond", frac=0.6), E("PF6", "P3", "C4", [("off", -16)], kind="proh", frac=0.45),
             E("PF2", "P3", "E10", kind="proh", frac=0.55), E("PF5", "E11", "E6", kind="proh", frac=0.5),
+            E("F45", "S123", "E8", [(700, 470), (700, 670)], kind="cond", frac=0.5),
         ],
         "panel": (1340, 110),
     },

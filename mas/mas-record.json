@@ -558,17 +558,16 @@
       "zone": "Z-ENG",
       "purpose": "Company-managed laptops used to administer production or to handle customer data.",
       "decision": "in_scope",
-      "handles": [],
+      "handles": [
+        "D8"
+      ],
       "rationale": "Any device that can reach production or customer data is in scope; holds admin sessions and cached credentials.",
       "security_category": {
         "confidentiality": "Moderate",
         "integrity": "Moderate",
         "availability": "Low"
       },
-      "category_rationale": "No stored federal data by policy, but a compromised endpoint holds privileged sessions.",
-      "may_hold": [
-        "D8"
-      ],
+      "category_rationale": "Support staff view tickets and notes (D8) on these devices. D8 holds no federal customer data while the S1 intake and redaction conditions hold. A compromised endpoint also holds privileged sessions.",
       "impact_on_fcd": "Compromise hands an attacker an operator's access."
     },
     {
@@ -1702,6 +1701,24 @@
       "authentication": "Restore role assumed by the recovery pipeline",
       "encryption_in_transit": "TLS 1.2 or higher",
       "description": "Recovery points copied to the recovery vault are restored into the on-demand environment during a recovery or a restore test."
+    },
+    {
+      "id": "F45",
+      "name": "Support staff view tickets on managed endpoints",
+      "type": "data",
+      "source": "S1",
+      "destination": "E8",
+      "data_classes": [
+        "D8"
+      ],
+      "protocol": "HTTPS 443 (support ticketing web app)",
+      "authentication": "Workforce SSO with a phishing-resistant factor",
+      "encryption_in_transit": "TLS 1.2 or higher",
+      "conditional_on": [
+        "COND-S1-1",
+        "COND-S1-2"
+      ],
+      "description": "Support staff open tickets, notes and screenshots from the ticketing tool on company-managed endpoints. The S1 conditions keep federal customer data out of D8, so this flow carries company data only while they hold."
     }
   ],
   "prohibited_flows": [
