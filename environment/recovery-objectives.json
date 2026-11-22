@@ -9,7 +9,17 @@
   "rpo_hours": 4,
   "backup_retention_days_min": 14,
   "restore_test_cadence_days": 90,
-  "last_reviewed": "2026-11-19",
+  "reviews": [
+    {
+      "date": "2026-11-19",
+      "reviewed_by": null
+    },
+    {
+      "date": "2026-11-22",
+      "reviewed_by": "Platform Lead",
+      "summary": "Reviewed the 8-hour RTO and 4-hour RPO against the backup and restore model (SD-003) and scope changes SC-001 and SC-002. Backups every 2 hours keep the RPO with margin, and an on-demand build of the recovery environment fits inside the RTO. No change."
+    }
+  ],
   "review_cadence_days": 90,
   "data_classes_in_backups": [
     "D1",

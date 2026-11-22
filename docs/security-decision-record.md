@@ -33,8 +33,8 @@ Class C replaces the narrative SSP with a persistently maintained record of secu
 - **Options considered:** warm standby (rejected: doubles the assessed environment), pilot light (rejected: still a standing replica database and network to assess), backup and restore (chosen), multi-AZ only (rejected: no protection from a regional failure).
 - **Scope consequences:** Backups hold every category of federal customer data (D10), so P12 is in scope. Using a recovery environment may be a significant change (OQ9). Agency data removal requests must reach backups in both regions (OQ10).
 - **Related KSIs:** KSI-RPL-RRO, KSI-RPL-ABO, KSI-RPL-ARP, KSI-RPL-TRC, KSI-CNA-OFA, KSI-SVC-RUD
-- **Verification:** `abo-iac-backup-policy` (static), `abo-live-backup-currency` (live). Since 2026-11-20 both check the 2-hour backup interval and a compliance-mode vault lock. Restore tests are checked under KSI-RPL-TRC.
-- **Known gaps:** no check confirms the alert for a failed backup or copy job (POL-RPL RPL-2). The restore test interval differs between `environment/recovery-objectives.json` (90 days) and POL-RPL RPL-4 (6 months); I will decide it in the RPL design review.
+- **Verification:** `abo-iac-backup-policy` (static), `abo-live-backup-currency` (live) and `abo-live-failed-job-alerts` (live). Since 2026-11-20 the first two check the 2-hour backup interval and a compliance-mode vault lock. Since 2026-11-22 the third checks that backup and copy jobs ran in the last day and that each failed job raised an alert within 60 minutes (POL-RPL RPL-2). Restore tests are checked under KSI-RPL-TRC.
+- **Known gaps:** the restore test interval differs between `environment/recovery-objectives.json` (90 days) and POL-RPL RPL-4 (6 months); I will decide it in the RPL design review.
 - **Status:** partial
 
 ### SD-004: Scope decisions accepted (OQ1 to OQ10)

@@ -6,7 +6,7 @@
 |---|---|
 | Owner | CISO (fictional) |
 | Version | 1.0, approved by the CISO on 2026-11-21 |
-| Last reviewed | 2026-08-04, by the CISO (recorded in `environment/grc-records.json`) |
+| Last reviewed | 2026-11-21, by the CISO, when version 1.0 was approved (recorded in `environment/grc-records.json`) |
 | Rules | `IEC-CSO-*`, `VER-TFR-IRI`, `VER-TFR-NRI` in `rules-matrix.md` |
 | KSIs | KSI-INR-AAR, KSI-INR-RIR, KSI-INR-RPI |
 | Policy | `POL-INR` |
@@ -127,7 +127,7 @@ A lesson without a ticket or change reference is not complete. When the report f
 
 | Review | Owner | When | Recorded in |
 |---|---|---|---|
-| Plan review | CISO | Each year, and when an after action report or a quarterly incident review finds that the plan needs to change | `ir_plan.last_reviewed` and `ir_plan.reviewed_by` |
+| Plan review | CISO | Each year, and when an after action report or a quarterly incident review finds that the plan needs to change | `ir_plan.reviews`, one new entry for each review with its date and reviewer | |
 | Past incident review | Security team, led by the Security Operations Lead | At least every 90 days. Covers all incidents and near misses of any rating since the previous review, and lists each incident covered | `incident_pattern_reviews` |
 | Tabletop exercise | Security Operations Lead | At least once a year, with the incident and recovery roster (POL-CED CED-4) | Training records |
 

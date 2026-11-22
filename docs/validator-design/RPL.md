@@ -13,14 +13,16 @@ Policy: [POL-RPL](../policies/POL-RPL.md). Recovery strategy: backup and restore
 | Resource type | Non-machine (a review process owned by the Platform Lead) |
 | Validation cadence | Every build. VDR-TFR-NMV requires at least every 3 months |
 | Static method | `rpl-rro-static`. Reads `environment/recovery-objectives.json` and `policies/policy-set.json`. Passes when `rto_hours`, `rpo_hours` and `review_cadence_days` are positive numbers and a POL-RPL requirement lists RPL-RRO |
-| Live method | `rpl-rro-live`. Reads `last_reviewed` from `environment/recovery-objectives.json` and measures its age against the run date. Passes when the review is no older than `review_cadence_days` |
-| Fails when | An objective or the cadence is missing, zero or not a number. No POL-RPL requirement covers RPL-RRO. No review date exists, the review date is after the run date, or the review is older than the cadence |
-| Break test | Live: I set `last_reviewed` to 2024-11-19. The method failed with "Last review was 730 days ago, cadence is 90 days". Static: not yet run |
+| Live method | `rpl-rro-live`. Reads `reviews` from `environment/recovery-objectives.json` and measures the newest review's age against the run date. Passes when that review is no older than `review_cadence_days` and its `reviewed_by` matches the POL-RPL owner (Platform Lead) |
+| Fails when | An objective or the cadence is missing, zero or not a number. No POL-RPL requirement covers RPL-RRO. No review exists, the newest review is dated after the run date or is older than the cadence, or a person other than the Platform Lead recorded it |
+| Break test | Live: I set `last_reviewed` to 2024-11-19. The method failed with "Last review was 730 days ago, cadence is 90 days". A unit test covers a review recorded by the wrong person. Static: not yet run |
 | Production source | The review record in the GRC tool or change ticket system, with the Platform Lead's approval and date. The RTO and RPO values from the recovery plan |
 | Gap | The methods prove that the objectives exist and that a review took place inside the cadence. They do not prove what the review concluded, or that the objectives still match the architecture and the restore test results (RPL-TRC) |
 | Status | Built |
 
 **Decision.** I set the review cadence to 90 days. This is my choice as the provider and is stricter than the annual review the policy first stated. VDR-TFR-NMV sets how often the status of a non-machine resource must be validated. It does not set how often the review itself must happen.
+
+**Decision.** The review must be recorded by the POL-RPL owner (Platform Lead), as for INR-RIR and CNA-RVP. Reviews are a list, and each review is added as a new entry. The review on 2026-11-19 had no reviewer recorded. I left it as it was and recorded a new review by the Platform Lead on 2026-11-22.
 
 ## KSI-RPL-ABO Aligning Backups with Objectives
 

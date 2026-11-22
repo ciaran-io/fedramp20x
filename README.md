@@ -120,6 +120,7 @@ An AI assistant (Claude) wrote much of the scaffolding and drafts the validator 
 | 2026-11-21 | Scope gap closed: support-derived data (D8) recorded on managed endpoints with a conditional flow, logged as scope change SC-002 | MAS-CSO-IIR, MAS-CSO-FLO, SCN-CSO-EVA | #12 |
 | 2026-11-22 | GRC checks measure record ages against the real run date, so reviews go overdue like real records. Protection review recorded after scope changes SC-001 and SC-002 | VDR-TFR-NMV, KSI-CNA-RVP | #32 |
 | 2026-11-22 | KSI-RPL-ABO: a third method reads a year of prefilled backup job history and checks that jobs ran in the last day and that every failed job raised an alert within 60 minutes that a person acknowledged. POL-RPL 1.2 approved | KSI-RPL-ABO | #33 |
+| 2026-11-22 | Plan reviews for KSI-INR-RIR and KSI-RPL-RRO kept as lists that only grow. The approval of the incident response plan recorded as a review, and KSI-RPL-RRO checks who reviewed | KSI-INR-RIR, KSI-RPL-RRO | #34 |
 
 ### To do
 

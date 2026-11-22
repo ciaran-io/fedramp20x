@@ -122,13 +122,18 @@ class Methods(unittest.TestCase):
 
     def test_overdue_ir_plan_review_fails_inr_rir(self):
         e = env()
-        e.grc["ir_plan"]["last_reviewed"] = "2024-01-01"
+        e.grc["ir_plan"]["reviews"] = [{"date": "2024-01-01", "reviewed_by": "CISO"}]
+        self.assertEqual(g.inr_rir_live(e).status, "fail")
+
+    def test_plan_review_by_wrong_person_fails_inr_rir(self):
+        e = env()
+        e.grc["ir_plan"]["reviews"].append({"date": "2026-11-22", "reviewed_by": "GRC Lead"})
         self.assertEqual(g.inr_rir_live(e).status, "fail")
 
     def test_plan_change_without_later_review_fails_inr_rir(self):
         e = env()
-        e.grc["incidents"] = [{"id": "INC-T", "pain_rating": 3, "reportable": True, "opened": "2026-10-01", "closed": "2026-10-02",
-                               "aar_completed": "2026-10-09", "lessons_incorporated": True, "plan_change_required": True}]
+        e.grc["incidents"] = [{"id": "INC-T", "pain_rating": 3, "reportable": True, "opened": "2026-11-20", "closed": "2026-11-21",
+                               "aar_completed": "2026-11-22", "lessons_incorporated": True, "plan_change_required": True}]
         self.assertEqual(g.inr_rir_live(e).status, "fail")
 
     def test_unrated_reportable_incident_counts_as_n5(self):
@@ -163,6 +168,16 @@ class Methods(unittest.TestCase):
         self.assertEqual(g.inr_rir_live(e).status, "fail")
         self.assertEqual(g.cna_rvp_live(e).status, "fail")
         self.assertEqual(g.rpl_rro_live(e).status, "fail")
+
+    def test_recovery_objectives_review_by_wrong_person_fails_rpl_rro(self):
+        obj = g._load("environment/recovery-objectives.json")
+        obj["reviews"] = [{"date": "2026-11-22", "reviewed_by": "GRC Lead"}]
+        original = g._load
+        g._load = lambda rel: obj if rel == "environment/recovery-objectives.json" else original(rel)
+        try:
+            self.assertEqual(g.rpl_rro_live(env()).status, "fail")
+        finally:
+            g._load = original
 
     def test_change_review_deadlines_by_type(self):
         as_of = g.datetime.date(2026, 11, 19)
