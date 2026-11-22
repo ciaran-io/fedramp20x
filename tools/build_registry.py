@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate evidence/ksi-registry.json from the vendored FRMR dataset.
+"""Generate evidence/ksi-registry.json from the downloaded FRMR dataset.
 
 Resolves the statement for the target class (default: c), applying class
 variants where present. The statement text is read here to resolve class variants but is not written out:
