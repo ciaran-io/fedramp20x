@@ -35,7 +35,7 @@ def _covering_requirements(policy_id: str, ksi: str) -> list[dict]:
 
 
 def _age_days(date_text: str | None, as_of: datetime.date) -> int | None:
-    """Days from a YYYY-MM-DD date to as_of. None when no date is recorded."""
+    """Days from a YYYY-MM-DD date to as_of (the run date). None when no date is recorded."""
     if not date_text:
         return None
     return (as_of - datetime.date.fromisoformat(date_text)).days
@@ -115,7 +115,7 @@ def _review_age_findings(label: str, record: dict | None, as_of: datetime.date, 
         return [f"No {label} is recorded"], None
     age = _age_days(record["date"], as_of)
     if age < 0:
-        return [f"{label} dated {record['date']} is after the as_of date {as_of}"], age
+        return [f"{label} dated {record['date']} is after the run date {as_of}"], age
     if age > max_days:
         return [f"Newest {label} was {age} days ago, the limit is {max_days} days"], age
     return [], age
@@ -230,13 +230,13 @@ def inr_rir_live(env: Env) -> MethodResult:
     findings: list[str] = []
     plan = env.grc.get("ir_plan", {})
     cadence = plan.get("review_cadence_days")
-    as_of = datetime.date.fromisoformat(env.grc["as_of"])
+    as_of = env.as_of
     last = plan.get("last_reviewed")
     age = _age_days(last, as_of)
     if age is None:
         findings.append("No review of the incident response plan is recorded")
     elif age < 0:
-        findings.append(f"ir_plan.last_reviewed {last} is after the as_of date {as_of}")
+        findings.append(f"ir_plan.last_reviewed {last} is after the run date {as_of}")
     elif _is_positive_number(cadence) and age > cadence:
         findings.append(f"Last plan review was {age} days ago, cadence is {cadence} days")
     owner = (_policy("POL-INR") or {}).get("owner")
@@ -394,7 +394,7 @@ def cna_rvp_live(env: Env) -> MethodResult:
     Check: the newest protection review is within 365 days of as_of, was recorded by the Platform Lead, has a summary, and lists every protection resource in the IaC plan.
     Suggested method_id: "cna-rvp-live"
     """
-    as_of = datetime.date.fromisoformat(env.grc["as_of"])
+    as_of = env.as_of
     newest = _newest(env.grc.get("protection_reviews", []))
     findings, age = _review_age_findings("protection review", newest, as_of, 365)
     if newest is not None:
@@ -419,7 +419,7 @@ def cna_rvp_change(env: Env) -> MethodResult:
 
     Check: every change in mas/scope-changes.json has a protection review inside its deadline (POL-CNA CNA-7b).
     """
-    as_of = datetime.date.fromisoformat(env.grc["as_of"])
+    as_of = env.as_of
     changes = _load("mas/scope-changes.json").get("entries", [])
     dates = [r["date"] for r in env.grc.get("protection_reviews", []) if r.get("date")]
     findings, notes = _change_review_findings("protection review", changes, dates, as_of)
@@ -464,7 +464,7 @@ def rpl_rro_live(env: Env) -> MethodResult:
     findings: list[str] = []
     obj = _load("environment/recovery-objectives.json")
     cadence = obj.get("review_cadence_days")
-    as_of = datetime.date.fromisoformat(env.grc["as_of"])
+    as_of = env.as_of
     last = obj.get("last_reviewed")
     age = None
     if not last:
@@ -472,7 +472,7 @@ def rpl_rro_live(env: Env) -> MethodResult:
     else:
         age = (as_of - datetime.date.fromisoformat(last)).days
         if age < 0:
-            findings.append(f"last_reviewed {last} is after the as_of date {as_of}")
+            findings.append(f"last_reviewed {last} is after the run date {as_of}")
         elif isinstance(cadence, (int, float)) and age > cadence:
             findings.append(f"Last review was {age} days ago, cadence is {cadence} days")
     return result("rpl-rro-live", LIVE, "environment/recovery-objectives.json",

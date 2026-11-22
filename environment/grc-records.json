@@ -1,6 +1,5 @@
 {
   "_notice": "FICTIONAL. GRC records for Orrinwick Beacon. The author fills this file in by hand. Dates use YYYY-MM-DD. null means not done yet, so the matching check fails until you enter a date. Incidents are rated with the Potential Agency Impact N-rating (pain_rating, 0 to 5) and marked reportable to FedRAMP or not.",
-  "as_of": "2026-11-19",
   "training": {
     "cadence_days": 365,
     "people": [
