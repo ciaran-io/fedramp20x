@@ -32,8 +32,9 @@ mas:        ## validate mas/mas-record.json and render the scope document + diag
 policies:   ## render the policy set from policies/policy-set.json
 	$(PY) tools/build_policies.py
 
-docs:       ## generate the rules matrix
+docs:       ## generate the rules matrix and the significant change log
 	$(PY) tools/build_docs.py
+	$(PY) tools/build_change_log.py
 
 site:       ## build the trust center snapshot trust-center/index.html
 	$(PY) tools/build_trust_center.py

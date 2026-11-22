@@ -475,7 +475,7 @@
       "manual_changes_alerted": 2,
       "pipeline_changes_typed": 212,
       "change_types": {
-        "routine_recurring": 190,
+        "routine": 190,
         "not_significant": 22,
         "adaptive": 0,
         "transformative": 0

@@ -110,29 +110,34 @@ An AI assistant (Claude) wrote much of the scaffolding and drafts the validator 
 
 | Date | Work | Rules or KSIs | Pull request |
 |---|---|---|---|
-| 2026-11-19 | Scope record with third parties, a recovery environment and a scope change log that CI checks | MAS-CSO-IIR, MAS-CSO-FLO, MAS-CSO-TPR | Initial commit |
-| 2026-11-19 | Two automated methods for 36 KSIs, run against the fictional environment | FRC-CSX-VVK | Initial commit |
-| 2026-11-20 | Checks for KSI-RPL-RRO. Design review of KSI-RPL-ABO, which found and fixed two checks weaker than the policy | KSI-RPL-RRO, KSI-RPL-ABO | #1 |
-| 2026-11-20 | README rework and a Windows build script | | #2, #5 |
-| 2026-11-20 | Daily persistent validation that commits dated evidence | VDR-TFR-MVX, VDR-TFR-NMV | #3, #4 |
-| 2026-11-21 | KSI-INR-RIR verified. Incidents rated with PAIN. Incident response plan written and approved | KSI-INR-RIR, IEC-CSO-EFR, IEC-CSO-EFI, IEC-CSO-DPR | #6 |
-| 2026-11-21 | KSI-CNA-RVP built with an annual review and a review after each change, with deadlines by SCN change type. POL-CNA rewritten and approved | KSI-CNA-RVP, SCN-ADP-NTF, SCN-TRF-NFP | #10 |
-| 2026-11-21 | Scope gap closed: support-derived data (D8) recorded on managed endpoints with a conditional flow, logged as scope change SC-002 | MAS-CSO-IIR, MAS-CSO-FLO, SCN-CSO-EVA | #12 |
-| 2026-11-22 | GRC checks measure record ages against the real run date, so reviews go overdue like real records. Protection review recorded after scope changes SC-001 and SC-002 | VDR-TFR-NMV, KSI-CNA-RVP | #32 |
-| 2026-11-22 | KSI-RPL-ABO: a third method reads a year of prefilled backup job history and checks that jobs ran in the last day and that every failed job raised an alert within 60 minutes that a person acknowledged. POL-RPL 1.2 approved | KSI-RPL-ABO | #33 |
-| 2026-11-22 | Plan reviews for KSI-INR-RIR and KSI-RPL-RRO kept as lists that only grow. The approval of the incident response plan recorded as a review, and KSI-RPL-RRO checks who reviewed | KSI-INR-RIR, KSI-RPL-RRO | #34 |
-| 2026-11-22 | KSI-CMT-RVP built: a yearly review of the change procedure by its owner, and a review within 10 business days of each failed or emergency change. KSI-CMT-LMC checks that every pipeline change has a change type. POL-CMT 1.0 approved | KSI-CMT-RVP, KSI-CMT-LMC, SCN-CSO-EVA, FRC-CCL-UCC | #35 |
+| 2026-11-19 | Scope record with third parties, a recovery environment and a scope change log that CI checks | MAS-CSO-IIR, MAS-CSO-FLO, MAS-CSO-TPR | [Initial commit](https://github.com/ciaran-io/fedramp20x/commit/976266e) |
+| 2026-11-19 | Two automated methods for 36 KSIs, run against the fictional environment | FRC-CSX-VVK | [Initial commit](https://github.com/ciaran-io/fedramp20x/commit/976266e) |
+| 2026-11-20 | Checks for KSI-RPL-RRO. Design review of KSI-RPL-ABO, which found and fixed two checks weaker than the policy | KSI-RPL-RRO, KSI-RPL-ABO | [#1](https://github.com/ciaran-io/fedramp20x/pull/1) |
+| 2026-11-20 | README rework and a Windows build script | | [#2](https://github.com/ciaran-io/fedramp20x/pull/2), [#5](https://github.com/ciaran-io/fedramp20x/pull/5) |
+| 2026-11-20 | Daily persistent validation that commits dated evidence | VDR-TFR-MVX, VDR-TFR-NMV | [#3](https://github.com/ciaran-io/fedramp20x/pull/3), [#4](https://github.com/ciaran-io/fedramp20x/pull/4) |
+| 2026-11-21 | KSI-INR-RIR verified. Incidents rated with PAIN. Incident response plan written and approved | KSI-INR-RIR, IEC-CSO-EFR, IEC-CSO-EFI, IEC-CSO-DPR | [#6](https://github.com/ciaran-io/fedramp20x/pull/6) |
+| 2026-11-21 | KSI-CNA-RVP built with an annual review and a review after each change, with deadlines by SCN change type. POL-CNA rewritten and approved | KSI-CNA-RVP, SCN-ADP-NTF, SCN-TRF-NFP | [#10](https://github.com/ciaran-io/fedramp20x/pull/10) |
+| 2026-11-21 | Scope gap closed: support-derived data (D8) recorded on managed endpoints with a conditional flow, logged as scope change SC-002 | MAS-CSO-IIR, MAS-CSO-FLO, SCN-CSO-EVA | [#12](https://github.com/ciaran-io/fedramp20x/pull/12) |
+| 2026-11-22 | GRC checks measure record ages against the real run date, so reviews go overdue like real records. Protection review recorded after scope changes SC-001 and SC-002 | VDR-TFR-NMV, KSI-CNA-RVP | [#32](https://github.com/ciaran-io/fedramp20x/pull/32) |
+| 2026-11-22 | KSI-RPL-ABO: a third method reads a year of prefilled backup job history and checks that jobs ran in the last day and that every failed job raised an alert within 60 minutes that a person acknowledged. POL-RPL 1.2 approved | KSI-RPL-ABO | [#33](https://github.com/ciaran-io/fedramp20x/pull/33) |
+| 2026-11-22 | Plan reviews for KSI-INR-RIR and KSI-RPL-RRO kept as lists that only grow. The approval of the incident response plan recorded as a review, and KSI-RPL-RRO checks who reviewed | KSI-INR-RIR, KSI-RPL-RRO | [#34](https://github.com/ciaran-io/fedramp20x/pull/34) |
+| 2026-11-22 | KSI-CMT-RVP built: a yearly review of the change procedure by its owner, and a review within 10 business days of each failed or emergency change. KSI-CMT-LMC checks that every pipeline change has a change type. POL-CMT 1.0 approved | KSI-CMT-RVP, KSI-CMT-LMC, SCN-CSO-EVA, FRC-CCL-UCC | [#35](https://github.com/ciaran-io/fedramp20x/pull/35) |
+| 2026-11-22 | Significant change log generated from the scope change log, with the notice each change type needs, the protection review after each change and the pipeline changes by type | SCN-CSO-HRM, SCN-CSO-EVA | [#37](https://github.com/ciaran-io/fedramp20x/pull/37) |
 
 ### To do
 
-| Work | Rules or KSIs |
-|---|---|
-| Checks for the rest of my GRC KSIs: CMT-RVP, INR-RPI, INR-AAR, PIY-RIS, PIY-RES, PIY-RVD, CED-RAT | FRC-CSX-VVK |
-| Validator design for all 46 KSIs in `docs/validator-design/`, closing the gaps the reviews find | |
-| Remaining documents: cryptographic modules, significant change log, secure configuration guide | CMU-CSO-CMD, SCN-CSO-MAR, SCG-CSO-RSC |
-| Rewrite the vulnerability report and publish it as JSON | VDR-CSO-RES, VER-TFR-MRH |
-| Move access control from the demo (browser storage or Claude sign-in) to a real server | CDS rules |
-| Assemble an example FedRAMP Certification Package (below) | FRC-CSO-PKG |
+Each item has a GitHub issue that tracks the work.
+
+| Work | Rules or KSIs | Issue |
+|---|---|---|
+| Checks for the rest of my GRC KSIs: INR-RPI, INR-AAR, PIY-RIS, PIY-RES, PIY-RVD, CED-RAT | FRC-CSX-VVK | [#17](https://github.com/ciaran-io/fedramp20x/issues/17), [#19](https://github.com/ciaran-io/fedramp20x/issues/19), [#13](https://github.com/ciaran-io/fedramp20x/issues/13) |
+| Validator design for all 46 KSIs in `docs/validator-design/`, closing the gaps the reviews find | | [#14](https://github.com/ciaran-io/fedramp20x/issues/14) to [#22](https://github.com/ciaran-io/fedramp20x/issues/22) |
+| Remaining documents: cryptographic modules, secure configuration guide | CMU-CSO-CMD, SCG-CSO-RSC | [#22](https://github.com/ciaran-io/fedramp20x/issues/22), [#16](https://github.com/ciaran-io/fedramp20x/issues/16) |
+| Rewrite the vulnerability report and publish it as JSON | VDR-CSO-RES, VER-TFR-MRH | [#24](https://github.com/ciaran-io/fedramp20x/issues/24) |
+| Quarterly Ongoing Certification Report | CCM-OCR-AVL | [#25](https://github.com/ciaran-io/fedramp20x/issues/25) |
+| Security Decision Record: KSI summaries and historical metrics | SDR-CSX-KSI, SDR-CSX-KMT | [#26](https://github.com/ciaran-io/fedramp20x/issues/26) |
+| Move access control from the demo (browser storage or Claude sign-in) to a real server | CDS rules | [#29](https://github.com/ciaran-io/fedramp20x/issues/29) |
+| Assemble an example FedRAMP Certification Package (below) | FRC-CSO-PKG | [#28](https://github.com/ciaran-io/fedramp20x/issues/28) |
 
 **The Certification Package** is the final submission to FedRAMP (FRC-CSO-PKG). It has three parts, each in Markdown and in JSON that validates against FedRAMP's published schema (FRC-CSO-JSN):
 
@@ -188,7 +193,16 @@ Edit the source files, run `make all`, and every generated file is refreshed.
 
 ## Running it on your own computer
 
-You need Python 3.10 or newer and an internet connection. The first run downloads FedRAMP's rules data from GitHub (`make frmr`).
+You need Git, Python 3.10 or newer and an internet connection. The first build downloads FedRAMP's rules data from GitHub (`make frmr`).
+
+1. Copy the repository to your computer and open its folder:
+
+```bash
+git clone https://github.com/ciaran-io/fedramp20x.git
+cd fedramp20x
+```
+
+2. Install the one Python package the build needs, then build and test:
 
 ```bash
 pip install jsonschema
@@ -197,7 +211,7 @@ make test     # runs the unit tests
 make serve    # previews the trust center at http://localhost:8000
 ```
 
-**Windows.** Windows does not include `make`. Run `build.ps1` from the repository folder instead. It runs the same steps as `make all`, then the unit tests, and stops at the first step that fails:
+**Windows.** Windows does not include `make`. After step 1, run `build.ps1` from the repository folder instead. It runs the same steps as `make all`, then the unit tests, and stops at the first step that fails:
 
 ```powershell
 pip install jsonschema
@@ -207,7 +221,37 @@ pip install jsonschema
 
 If PowerShell blocks the script, run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once. If you run the Python scripts yourself, set `$env:PYTHONUTF8 = "1"` first. Some scripts read files without naming UTF-8, and Windows then fails on characters such as curly quotes. `build.ps1` sets this for you. You can also install `make` (for example `winget install GnuWin32.Make`) or use WSL.
 
-Then open `trust-center/index.html` in a browser.
+3. Open `trust-center/index.html` in a browser to see the trust center built from your run.
+
+To get the latest results later, run `git pull` in the folder and build again.
+
+### Try it: make a check fail
+
+These three changes show the checks working. Each one takes a minute. Build again after the change (`make all` or `.\build.ps1 -NoTest`), and look at the summary line or the trust center. When you are done, run `git restore .` to undo every change.
+
+**1. The wrong person records a review.** In `environment/grc-records.json`, find `ir_plan`, and in its newest review change `"reviewed_by": "CISO"` to `"reviewed_by": "GRC Lead"`. KSI-INR-RIR fails with:
+
+> Plan review dated 2026-11-21 was recorded by 'GRC Lead', the policy names 'CISO'
+
+POL-INR names the CISO as the owner, so a review by anyone else is not evidence.
+
+**2. Move the clock forward.** The checks measure every record against the run date. Set a future date and build again:
+
+```bash
+FEDRAMP20X_AS_OF=2027-05-22 make all
+```
+
+```powershell
+$env:FEDRAMP20X_AS_OF = "2027-05-22"; .\build.ps1 -NoTest; Remove-Item Env:FEDRAMP20X_AS_OF
+```
+
+On 2027-05-22 a planned backup failure raised no alert, and the quarterly review of the recovery objectives is overdue, so KSI-RPL-ABO and KSI-RPL-RRO fail. Try `2027-12-01` too: the yearly reviews have run out, and seven KSIs fail.
+
+**3. Change the scope without recording it.** In `mas/mas-record.json`, find resource `P11` (the container registry) and change `"decision": "in_scope"` to `"decision": "excluded"`. The build stops before any KSI runs:
+
+> PROBLEM: scope record changed without a log entry
+
+Every change to the assessed boundary must be evaluated and logged in `mas/scope-changes.json` (SCN-CSO-EVA). CI blocks the same change in a pull request.
 
 ## License
 

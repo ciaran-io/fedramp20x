@@ -50,7 +50,8 @@ def lmc_live(env: Env) -> MethodResult:
                 f"{ev['pipeline_changes_logged']}/{ev['pipeline_changes']} logged, {ev['manual_changes_alerted']}/{ev['manual_console_changes']} manual alerted")
 
 
-CHANGE_TYPES = ("routine_recurring", "not_significant", "adaptive", "transformative")
+# The same type names as mas/scope-changes.json and tools/check_scope_changes.py.
+CHANGE_TYPES = ("routine", "not_significant", "adaptive", "transformative")
 
 
 def lmc_change_types(env: Env) -> MethodResult:
