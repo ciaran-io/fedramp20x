@@ -25,7 +25,7 @@ The latest result for every KSI is in [`evidence/latest.json`](evidence/latest.j
 
 The trust center shows the validator results for the fictional service. It reads `evidence/latest.json` from this repository.
 
-![Trust center overview, 2026-11-21](docs/images/trust-center-2026-11-21.png)
+![Trust center overview, 2026-11-22](docs/images/trust-center-2026-11-22.png)
 
 Earlier screenshots in [`docs/images/`](docs/images/) show the progress over time. Each file name has the date it was taken.
 
