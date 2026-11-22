@@ -6,14 +6,14 @@ Version 0.1, effective 2026-11-19. Approver: CISO. Generated from `policies/poli
 
 | Policy | Theme | Owner | Review | KSIs | KSIs passing |
 |---|---|---|---|---|---|
-| [Cybersecurity education policy](policies/POL-CED.md) | CED | GRC Lead | Annual, and after any significant change | 1 | 0 |
+| [Cybersecurity education policy](policies/POL-CED.md) | CED | GRC Lead | Annual | 1 | 0 |
 | [Change management policy](policies/POL-CMT.md) | CMT | Platform Lead | Annual | 4 | 3 |
-| [Cloud-native architecture policy](policies/POL-CNA.md) | CNA | Platform Lead | Annual, and after any architecture change | 8 | 7 |
+| [Cloud-native architecture policy](policies/POL-CNA.md) | CNA | Platform Lead | Annual | 8 | 8 |
 | [Identity and access management policy](policies/POL-IAM.md) | IAM | CISO | Annual | 6 | 5 |
-| [Incident response policy](policies/POL-INR.md) | INR | CISO | Annual, and when an after action report or a quarterly incident review finds that the plan needs to change | 3 | 1 |
+| [Incident response policy](policies/POL-INR.md) | INR | CISO | Annual | 3 | 1 |
 | [Monitoring, logging and auditing policy](policies/POL-MLA.md) | MLA | Security Operations Lead | Annual | 5 | 5 |
 | [Policy and inventory policy](policies/POL-PIY.md) | PIY | GRC Lead | Annual | 5 | 2 |
-| [Recovery planning policy](policies/POL-RPL.md) | RPL | Platform Lead | Every 90 days, and after any recovery test | 4 | 4 |
+| [Recovery planning policy](policies/POL-RPL.md) | RPL | Platform Lead | Annual | 4 | 4 |
 | [Supply chain risk policy](policies/POL-SCR.md) | SCR | GRC Lead | Annual | 2 | 2 |
 | [Service configuration policy](policies/POL-SVC.md) | SVC | Platform Lead | Annual | 8 | 7 |
 

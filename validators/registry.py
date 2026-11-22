@@ -48,6 +48,7 @@ KSI_METHODS = {
     "KSI-SCR-MON": [o.mon_static, o.mon_live],
     "KSI-RPL-RRO": [g.rpl_rro_static, g.rpl_rro_live],
     "KSI-INR-RIR": [g.inr_rir_static, g.inr_rir_live],
+    "KSI-CNA-RVP": [g.cna_rvp_static, g.cna_rvp_live, g.cna_rvp_change],
 }
 
 # Known gaps between what the methods check and the OFFICIAL Class C KSI statement

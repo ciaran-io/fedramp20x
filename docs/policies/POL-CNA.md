@@ -6,8 +6,8 @@
 |---|---|
 | Owner | Platform Lead |
 | Approver | CISO |
-| Version | 0.1 draft, effective 2026-11-19 |
-| Review cadence | Annual, and after any architecture change |
+| Version | 1.0, approved by the CISO on 2026-11-21 |
+| Review cadence | Annual |
 | Theme | CNA: Cloud Native Architecture |
 
 ## Purpose
@@ -34,13 +34,14 @@ This policy covers these information resources from the scope record:
 
 | ID | Requirement | KSIs |
 |---|---|---|
-| CNA-1 | Each resource has a documented function and the minimum privileges needed for it. | KSI-CNA-DFP |
+| CNA-1 | Each resource has a documented function in the scope record and its own role declared in code. A role grants only the named actions its function needs: no wildcard actions, no role shared between services, and permissions unused for 90 days are removed (POL-IAM IAM-3). Network access follows CNA-6, and data access follows SVC-6. | KSI-CNA-DFP |
 | CNA-2 | Infrastructure is declared in code. A resource that exists outside the code is a defect and is removed or brought into the code within 5 business days. | KSI-CNA-EIS |
-| CNA-3 | Hardening baselines from the secure configuration guide apply to every resource type. | KSI-CNA-IBP |
+| CNA-3 | Each third-party machine-based resource is compared with its provider's best-practice guidance on every validation run, and at least every 3 days: the CIS AWS Foundations Benchmark for the AWS account, and the vendor's security baseline for each SaaS tool (E1, E7, E9). Failed controls are fixed or accepted as exceptions under the policy exception process. | KSI-CNA-IBP |
 | CNA-4 | Public exposure is limited to the load balancer, gateway and web application firewall (P8). Each open port and public endpoint is justified in the scope record. | KSI-CNA-MAT |
 | CNA-5 | Production runs in more than one availability zone. Cross-region encrypted backups meet the recovery objectives in policy POL-RPL. | KSI-CNA-OFA |
 | CNA-6 | Inbound and outbound traffic is denied by default. Allowed flows match the flows in the scope record. | KSI-CNA-RNT |
-| CNA-7 | The Platform Lead reviews protections each year and after any significant change. | KSI-CNA-RVP |
+| CNA-7a | The Platform Lead reviews protections at least once a year. | KSI-CNA-RVP |
+| CNA-7b | The Platform Lead also reviews protections after each change recorded in mas/scope-changes.json. The deadline depends on the change type in the SCN rules. Transformative: before the change starts, and again within 5 business days after it is finished. Adaptive: within 10 business days after the change is finished, before the notice under SCN-ADP-NTF. Not significant: within 20 business days after the change is finished. Routine recurring: no separate review, because the annual review covers these changes. | KSI-CNA-RVP |
 | CNA-8 | Production uses logical networks and security groups to separate tenants' workloads from operations tooling and from other trust zones. | KSI-CNA-ULN |
 
 ## Indicators and validation
@@ -53,7 +54,7 @@ This policy covers these information resources from the scope record:
 | KSI-CNA-MAT | Minimizing Attack Surface | `mat-iac-exposure`, `mat-live-exposed-endpoints` | pass |
 | KSI-CNA-OFA | Optimizing for Availability | `ofa-iac-redundancy`, `ofa-live-availability` | pass |
 | KSI-CNA-RNT | Restricting Network Traffic | `rnt-iac-traffic`, `rnt-live-traffic` | pass |
-| KSI-CNA-RVP | Reviewing Protections | none yet | not_implemented |
+| KSI-CNA-RVP | Reviewing Protections | `cna-rvp-static`, `cna-rvp-live`, `cna-rvp-change` | pass |
 | KSI-CNA-ULN | Using Logical Networking | `uln-iac-logical-network`, `uln-live-network-controls` | pass |
 
 Status is a simulated validator result. Class C needs at least two automated methods per KSI (`FRC-CSX-VVK`).

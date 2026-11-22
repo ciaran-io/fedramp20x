@@ -6,8 +6,8 @@
 |---|---|
 | Owner | Platform Lead |
 | Approver | CISO |
-| Version | 1.0, approved by the CISO on 2026-11-21 |
-| Review cadence | Every 90 days, and after any recovery test |
+| Version | 1.1, approved by the CISO on 2026-11-21 |
+| Review cadence | Annual |
 | Theme | RPL: Recovery Planning |
 
 ## Purpose

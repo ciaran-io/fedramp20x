@@ -84,8 +84,15 @@
   },
   "protection_reviews": [
     {
-      "date": null,
-      "summary": ""
+      "date": "2026-06-10",
+      "reviewed_by": "Platform Lead",
+      "summary": "Annual review of WAF rules, rate limits and DDoS protection settings. No changes needed.",
+      "resources_covered": [
+        "aws_wafv2_web_acl.edge",
+        "aws_lb_listener.https",
+        "aws_lb_listener.webhooks",
+        "aws_guardduty_detector.main"
+      ]
     }
   ]
 }

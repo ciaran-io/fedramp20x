@@ -116,12 +116,13 @@ An AI assistant (Claude) wrote much of the scaffolding and drafts the validator 
 | 2026-11-20 | README rework and a Windows build script | | #2, #5 |
 | 2026-11-20 | Daily persistent validation that commits dated evidence | VDR-TFR-MVX, VDR-TFR-NMV | #3, #4 |
 | 2026-11-21 | KSI-INR-RIR verified. Incidents rated with PAIN. Incident response plan written and approved | KSI-INR-RIR, IEC-CSO-EFR, IEC-CSO-EFI, IEC-CSO-DPR | #6 |
+| 2026-11-21 | KSI-CNA-RVP built with an annual review and a review after each change, with deadlines by SCN change type. POL-CNA rewritten and approved | KSI-CNA-RVP, SCN-ADP-NTF, SCN-TRF-NFP | #10 |
 
 ### To do
 
 | Work | Rules or KSIs |
 |---|---|
-| Checks for the rest of my GRC KSIs: CNA-RVP, CMT-RVP, INR-RPI, INR-AAR, PIY-RIS, PIY-RES, PIY-RVD, CED-RAT | FRC-CSX-VVK |
+| Checks for the rest of my GRC KSIs: CMT-RVP, INR-RPI, INR-AAR, PIY-RIS, PIY-RES, PIY-RVD, CED-RAT | FRC-CSX-VVK |
 | Validator design for all 46 KSIs in `docs/validator-design/`, closing the gaps the reviews find | |
 | Remaining documents: cryptographic modules, significant change log, secure configuration guide | CMU-CSO-CMD, SCN-CSO-MAR, SCG-CSO-RSC |
 | Rewrite the vulnerability report and publish it as JSON | VDR-CSO-RES, VER-TFR-MRH |

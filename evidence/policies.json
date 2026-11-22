@@ -8,7 +8,7 @@
       "title": "Cybersecurity education policy",
       "theme": "CED",
       "owner": "GRC Lead",
-      "review_cadence": "Annual, and after any significant change",
+      "review_cadence": "Annual",
       "version": "0.1",
       "effective": "2026-11-19",
       "document": "documents/policies/POL-CED.md",
@@ -155,7 +155,7 @@
       "title": "Cloud-native architecture policy",
       "theme": "CNA",
       "owner": "Platform Lead",
-      "review_cadence": "Annual, and after any architecture change",
+      "review_cadence": "Annual",
       "version": "0.1",
       "effective": "2026-11-19",
       "document": "documents/policies/POL-CNA.md",
@@ -171,7 +171,7 @@
       "requirements": [
         {
           "id": "CNA-1",
-          "text": "Each resource has a documented function and the minimum privileges needed for it.",
+          "text": "Each resource has a documented function in the scope record and its own role declared in code. A role grants only the named actions its function needs: no wildcard actions, no role shared between services, and permissions unused for 90 days are removed (POL-IAM IAM-3). Network access follows CNA-6, and data access follows SVC-6.",
           "ksis": [
             "KSI-CNA-DFP"
           ]
@@ -185,7 +185,7 @@
         },
         {
           "id": "CNA-3",
-          "text": "Hardening baselines from the secure configuration guide apply to every resource type.",
+          "text": "Each third-party machine-based resource is compared with its provider's best-practice guidance on every validation run, and at least every 3 days: the CIS AWS Foundations Benchmark for the AWS account, and the vendor's security baseline for each SaaS tool (E1, E7, E9). Failed controls are fixed or accepted as exceptions under the policy exception process.",
           "ksis": [
             "KSI-CNA-IBP"
           ]
@@ -212,8 +212,15 @@
           ]
         },
         {
-          "id": "CNA-7",
-          "text": "The Platform Lead reviews protections each year and after any significant change.",
+          "id": "CNA-7a",
+          "text": "The Platform Lead reviews protections at least once a year.",
+          "ksis": [
+            "KSI-CNA-RVP"
+          ]
+        },
+        {
+          "id": "CNA-7b",
+          "text": "The Platform Lead also reviews protections after each change recorded in mas/scope-changes.json. The deadline depends on the change type in the SCN rules. Transformative: before the change starts, and again within 5 business days after it is finished. Adaptive: within 10 business days after the change is finished, before the notice under SCN-ADP-NTF. Not significant: within 20 business days after the change is finished. Routine recurring: no separate review, because the annual review covers these changes.",
           "ksis": [
             "KSI-CNA-RVP"
           ]
@@ -277,8 +284,12 @@
         },
         {
           "ksi": "KSI-CNA-RVP",
-          "methods": [],
-          "status": "not_implemented"
+          "methods": [
+            "cna-rvp-static",
+            "cna-rvp-live",
+            "cna-rvp-change"
+          ],
+          "status": "pass"
         },
         {
           "ksi": "KSI-CNA-ULN",
@@ -419,7 +430,7 @@
       "title": "Incident response policy",
       "theme": "INR",
       "owner": "CISO",
-      "review_cadence": "Annual, and when an after action report or a quarterly incident review finds that the plan needs to change",
+      "review_cadence": "Annual",
       "version": "0.1",
       "effective": "2026-11-19",
       "document": "documents/policies/POL-INR.md",
@@ -678,7 +689,7 @@
       "title": "Recovery planning policy",
       "theme": "RPL",
       "owner": "Platform Lead",
-      "review_cadence": "Every 90 days, and after any recovery test",
+      "review_cadence": "Annual",
       "version": "0.1",
       "effective": "2026-11-19",
       "document": "documents/policies/POL-RPL.md",
