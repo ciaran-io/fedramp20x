@@ -8,14 +8,21 @@ Policy: [POL-CNA](../policies/POL-CNA.md).
 
 | Field | Design |
 |---|---|
-| Requirement | Orrinwick must keep reviewing whether its protection against denial of service and other unwanted traffic still works |
-| Policy requirement | POL-CNA / CNA-7 |
-| Resource type | Non-machine (the review of protections, owned by the Platform Lead). The protections themselves are machine-based and are checked by other CNA KSIs |
+| Requirement | Orrinwick must keep reviewing whether its protection against denial of service and other unwanted traffic still works, each year and after the offering changes |
+| Policy requirement | POL-CNA / CNA-7a (annual) and CNA-7b (after each recorded change) |
+| Resource type | Non-machine (the review of protections, owned by the Platform Lead). The protections themselves are machine-based and are checked on every run by other CNA KSIs |
 | Validation cadence | Every build. VDR-TFR-NMV requires at least every 3 months |
-| Static method | `cna-rvp-static`. Reads `policies/policy-set.json`. Passes when a POL-CNA requirement lists CNA-RVP and states how often the review happens |
-| Live method | `cna-rvp-live`. Reads `protection_reviews` and `as_of` in `environment/grc-records.json`. Passes when the newest review is no older than 365 days, has a summary, and was recorded by the Platform Lead, as CNA-7 names |
-| Fails when | No POL-CNA requirement covers CNA-RVP, or it states no interval. No review is recorded, the newest review is after `as_of`, is older than 365 days, has no summary, or was recorded by someone other than the Platform Lead |
-| Break test | Unit test: a review dated 2024-05-01 fails the live method. Manual test not yet run. Planned: set the review date to null and check that the live method fails with "No protection review is recorded" |
-| Production source | The Platform Lead's review record in the GRC tool, with links to the WAF and rate-limit settings that were reviewed |
-| Gap | The methods prove that a dated review with a summary exists. They do not prove that the review judged the protections effective. CNA-7 also asks for a review after any significant change, and no method checks that against the significant change log |
+| Static method | `cna-rvp-static`. Reads `policies/policy-set.json`. Passes when POL-CNA requires an annual review and a review after each change recorded in `mas/scope-changes.json`, with a deadline for each SCN change type |
+| Live method | `cna-rvp-live`. Reads `protection_reviews` and `as_of` in `environment/grc-records.json` and the resources in `environment/iac-plan.json`. Passes when the newest review is no older than 365 days, has a summary, was recorded by the Platform Lead, and lists every WAF, load balancer listener and threat detection resource in the plan |
+| Change method | `cna-rvp-change`. Reads `mas/scope-changes.json` and the review dates. For each change, passes when a review falls between the change date and its deadline: 5 business days for a transformative change (plus a review before it starts), 10 for adaptive, 20 for not significant, and none for routine recurring. A review that is not yet overdue shows as a "due by" note, not a failure |
+| Fails when | POL-CNA lacks the annual review, the change review or a deadline for any change type. No review in 365 days, no summary, a reviewer other than the Platform Lead, or a protection resource missing from the review. A change with no review by its deadline, or a transformative change with no review before it |
+| Break test | Unit tests: a review that leaves out a protection resource fails the live method, and the change function fails an adaptive change with no review in 10 business days, notes a pending one, fails a transformative change with no review before it, and ignores routine recurring changes. Manual test not yet run |
+| Production source | The Platform Lead's review record in the GRC tool, listing the WAF, rate-limit, load balancer and threat detection settings reviewed. The change records from the change management system and the significant change log |
+| Gap | The methods prove that dated reviews by the right person cover every protection resource and follow every recorded change on time. They do not prove that a review judged the protections effective. Changes that are not recorded in `mas/scope-changes.json` cannot trigger a review |
 | Status | Built |
+
+**Decisions.**
+- I split the policy into an annual review (CNA-7a) and a review after each change (CNA-7b), and I check them with separate methods so the evidence shows each one.
+- Deadlines follow FedRAMP's change types. An adaptive change is reviewed within 10 business days, so the review is ready before the notice that SCN-ADP-NTF requires within 10 business days. A transformative change is reviewed before it starts, to inform the final plans notice, and again within 5 business days after. Routine recurring changes need no separate review, because they are frequent and exempt from notices (SCN-RTR-NNR).
+- The change check is a shared function. CMT-RVP, INR-RIR and RPL-RRO will use it for their own triggers.
+- The baseline change SC-001 has no review after it yet, so the change method shows it as due by 2026-12-17. It fails after that date once `as_of` follows the real run date.
