@@ -4,13 +4,13 @@
   "cso": "Orrinwick Beacon",
   "class": "c",
   "frmr_version": "2026.11.02.01",
-  "generated_at": "2026-11-21T16:23:57+00:00",
+  "generated_at": "2026-11-22T02:12:40+00:00",
   "summary": {
     "total": 46,
-    "pass": 36,
+    "pass": 37,
     "partial": 0,
     "fail": 2,
-    "not_implemented": 8
+    "not_implemented": 7
   },
   "ksis": [
     {
@@ -444,10 +444,41 @@
         "si-8",
         "si-8.2"
       ],
-      "status": "not_implemented",
+      "status": "pass",
       "coverage_gap": null,
       "coverage_note": null,
-      "methods": []
+      "methods": [
+        {
+          "method_id": "cna-rvp-static",
+          "kind": "static",
+          "source": "policies/policy-set.json#POL-CNA",
+          "description": "POL-CNA requires an annual review of protections and a review after each change, with a deadline for each SCN change type",
+          "status": "pass",
+          "expected": "CNA-7a annual; CNA-7b deadlines for all four change types",
+          "observed": "0 gap(s)",
+          "findings": []
+        },
+        {
+          "method_id": "cna-rvp-live",
+          "kind": "live",
+          "source": "environment/grc-records.json#protection_reviews",
+          "description": "The newest review of protections is no older than 365 days, was done by the Platform Lead and covers every protection resource",
+          "status": "pass",
+          "expected": "<= 365 days, Platform Lead, all protection resources covered",
+          "observed": "162 days",
+          "findings": []
+        },
+        {
+          "method_id": "cna-rvp-change",
+          "kind": "live",
+          "source": "mas/scope-changes.json",
+          "description": "Every recorded change has a protection review inside the deadline for its SCN change type",
+          "status": "pass",
+          "expected": "review before the deadline for each change",
+          "observed": "1 change(s), 0 overdue; SC-001: protection review due by 2026-12-17",
+          "findings": []
+        }
+      ]
     },
     {
       "id": "KSI-CNA-ULN",

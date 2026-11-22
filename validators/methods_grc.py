@@ -63,6 +63,52 @@ def _business_days(start_text: str, end_text: str) -> int:
     return days
 
 
+def _add_business_days(start_text: str, days: int) -> datetime.date:
+    """The date that is `days` weekdays after start. Holidays are not counted."""
+    d = datetime.date.fromisoformat(start_text)
+    while days > 0:
+        d += datetime.timedelta(days=1)
+        if d.weekday() < 5:
+            days -= 1
+    return d
+
+
+# Review deadlines after a change, by SCN change type (POL-CNA CNA-7b).
+# None means the type needs no separate review. "before" means a review is also needed before the change.
+CHANGE_REVIEW_DAYS = {"transformative": 5, "adaptive": 10, "not_significant": 20, "routine": None}
+
+
+def _change_review_findings(label: str, changes: list[dict], review_dates: list[str], as_of: datetime.date,
+                            deadlines: dict = CHANGE_REVIEW_DAYS) -> tuple[list[str], list[str]]:
+    """Shared change-triggered review check.
+
+    For each change, a review must be dated on or after the change and no later than its deadline in business days.
+    A transformative change also needs a review dated before the change. Returns (findings, notes): findings are
+    overdue or missing reviews; notes are reviews still due, so evidence shows what is pending without failing.
+    """
+    findings: list[str] = []
+    notes: list[str] = []
+    for ch in changes:
+        kind = ch.get("scn_category")
+        if kind not in deadlines:
+            findings.append(f"{ch.get('id')}: unknown change type {kind!r}")
+            continue
+        days = deadlines[kind]
+        if days is None or not ch.get("date"):
+            continue
+        due = _add_business_days(ch["date"], days)
+        after = [d for d in review_dates if ch["date"] <= d <= due.isoformat()]
+        if kind == "transformative" and not any(d < ch["date"] for d in review_dates):
+            findings.append(f"{ch['id']} ({kind}, {ch['date']}) has no {label} before the change")
+        if after:
+            continue
+        if as_of > due:
+            findings.append(f"{ch['id']} ({kind}, {ch['date']}) has no {label} by the deadline {due}")
+        else:
+            notes.append(f"{ch['id']}: {label} due by {due}")
+    return findings, notes
+
+
 def _review_age_findings(label: str, record: dict | None, as_of: datetime.date, max_days: int) -> tuple[list[str], int | None]:
     """Findings for the newest dated review: none recorded, dated in the future, or too old."""
     if record is None:
@@ -321,38 +367,66 @@ def cna_rvp_static(env: Env) -> MethodResult:
 
     Official statement: see FedRAMP/rules (after `make frmr`, also frmr/fedramp-consolidated-rules.json).
 
-    Check to write: POL-CNA requires an annual review of protections.
+    Check: POL-CNA requires an annual review of protections (CNA-7a) and a review after each recorded change, with a deadline by SCN change type (CNA-7b).
     Suggested method_id: "cna-rvp-static"
     """
     findings: list[str] = []
-    reqs = _covering_requirements("POL-CNA", "CNA-RVP")
+    reqs = {r["id"]: r for r in _covering_requirements("POL-CNA", "CNA-RVP")}
     if not reqs:
         findings.append("No POL-CNA requirement covers KSI CNA-RVP")
-    elif not any(w in r["text"].lower() for r in reqs for w in ("each year", "every", "quarter")):
-        findings.append("The POL-CNA requirement for CNA-RVP states no review interval")
+    text = " ".join(r["text"] for r in reqs.values())
+    if reqs and "once a year" not in text:
+        findings.append("No POL-CNA requirement for CNA-RVP sets an annual review")
+    if reqs and "scope-changes.json" not in text:
+        findings.append("No POL-CNA requirement for CNA-RVP sets a review after recorded changes")
+    for kind in ("Transformative", "Adaptive", "Not significant", "Routine recurring"):
+        if reqs and kind not in text:
+            findings.append(f"The POL-CNA requirement for CNA-RVP sets no deadline for {kind.lower()} changes")
     return result("cna-rvp-static", STATIC, "policies/policy-set.json#POL-CNA",
-                  "POL-CNA requires a periodic review of protections",
-                  "POL-CNA covers CNA-RVP with a review interval", f"{len(findings)} gap(s)", findings)
-
+                  "POL-CNA requires an annual review of protections and a review after each change, with a deadline for each SCN change type",
+                  "CNA-7a annual; CNA-7b deadlines for all four change types", f"{len(findings)} gap(s)", findings)
 
 def cna_rvp_live(env: Env) -> MethodResult:
     """KSI-CNA-RVP Reviewing Protections (live).
 
     Official statement: see FedRAMP/rules (after `make frmr`, also frmr/fedramp-consolidated-rules.json).
 
-    Check to write: The newest protection_reviews date is within 365 days of as_of.
+    Check: the newest protection review is within 365 days of as_of, was recorded by the Platform Lead, has a summary, and lists every protection resource in the IaC plan.
     Suggested method_id: "cna-rvp-live"
     """
     as_of = datetime.date.fromisoformat(env.grc["as_of"])
     newest = _newest(env.grc.get("protection_reviews", []))
     findings, age = _review_age_findings("protection review", newest, as_of, 365)
-    if newest is not None and not newest.get("summary"):
-        findings.append(f"Protection review dated {newest['date']} has no summary")
+    if newest is not None:
+        if not newest.get("summary"):
+            findings.append(f"Protection review dated {newest['date']} has no summary")
+        covered = set(newest.get("resources_covered", []))
+        for r in env.iac.get("resources", []):
+            if r["type"] in PROTECTION_RESOURCE_TYPES and f"{r['type']}.{r['name']}" not in covered:
+                findings.append(f"Protection review dated {newest['date']} does not cover {r['type']}.{r['name']}")
     findings += _reviewer_findings("Protection review", newest, "Platform Lead")
     return result("cna-rvp-live", LIVE, "environment/grc-records.json#protection_reviews",
-                  "The newest review of protections is no older than 365 days, records what was reviewed and was done by the Platform Lead",
-                  "<= 365 days, summary present, Platform Lead", f"{age} days" if age is not None else "no review recorded", findings)
+                  "The newest review of protections is no older than 365 days, was done by the Platform Lead and covers every protection resource",
+                  "<= 365 days, Platform Lead, all protection resources covered", f"{age} days" if age is not None else "no review recorded", findings)
 
+
+# Resource types whose protection against denial of service and unwanted traffic the review must cover.
+PROTECTION_RESOURCE_TYPES = ("aws_wafv2_web_acl", "aws_lb_listener", "aws_guardduty_detector")
+
+
+def cna_rvp_change(env: Env) -> MethodResult:
+    """KSI-CNA-RVP Reviewing Protections (change-triggered, live).
+
+    Check: every change in mas/scope-changes.json has a protection review inside its deadline (POL-CNA CNA-7b).
+    """
+    as_of = datetime.date.fromisoformat(env.grc["as_of"])
+    changes = _load("mas/scope-changes.json").get("entries", [])
+    dates = [r["date"] for r in env.grc.get("protection_reviews", []) if r.get("date")]
+    findings, notes = _change_review_findings("protection review", changes, dates, as_of)
+    observed = f"{len(changes)} change(s), {len(findings)} overdue" + (f"; {'; '.join(notes)}" if notes else "")
+    return result("cna-rvp-change", LIVE, "mas/scope-changes.json",
+                  "Every recorded change has a protection review inside the deadline for its SCN change type",
+                  "review before the deadline for each change", observed, findings)
 
 def rpl_rro_static(env: Env) -> MethodResult:
     """KSI-RPL-RRO Reviewing Recovery Objectives (static).

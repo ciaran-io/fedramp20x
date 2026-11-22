@@ -114,6 +114,25 @@ class Methods(unittest.TestCase):
         e.grc["protection_reviews"] = [{"date": "2024-05-01", "summary": "old"}]
         self.assertEqual(g.cna_rvp_live(e).status, "fail")
 
+    def test_review_missing_a_protection_resource_fails_cna_rvp(self):
+        e = env()
+        e.grc["protection_reviews"][0]["resources_covered"] = ["aws_wafv2_web_acl.edge"]
+        self.assertEqual(g.cna_rvp_live(e).status, "fail")
+
+    def test_change_review_deadlines_by_type(self):
+        as_of = g.datetime.date(2026, 11, 19)
+        late = [{"id": "SC-T1", "date": "2026-10-01", "scn_category": "adaptive"}]
+        f, n = g._change_review_findings("review", late, ["2026-09-01"], as_of)
+        self.assertTrue(f and not n)
+        pending = [{"id": "SC-T2", "date": "2026-11-18", "scn_category": "not_significant"}]
+        f, n = g._change_review_findings("review", pending, [], as_of)
+        self.assertTrue(n and not f)
+        transformative = [{"id": "SC-T3", "date": "2026-11-02", "scn_category": "transformative"}]
+        f, n = g._change_review_findings("review", transformative, ["2026-11-03"], as_of)
+        self.assertTrue(any("before the change" in x for x in f))
+        routine = [{"id": "SC-T4", "date": "2026-01-01", "scn_category": "routine"}]
+        self.assertEqual(g._change_review_findings("review", routine, [], as_of), ([], []))
+
     def test_password_only_user_fails_apm(self):
         e = env()
         e.live["identity"]["users_password_only"] = 1
