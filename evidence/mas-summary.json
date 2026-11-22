@@ -215,7 +215,5 @@
       "evidence": "Secret scan results on the wiki and a quarterly content sample."
     }
   ],
-  "check_counts": {
-    "INFO": 2
-  }
+  "check_counts": {}
 }
