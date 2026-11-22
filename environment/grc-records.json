@@ -92,6 +92,21 @@
         "aws_lb_listener.webhooks",
         "aws_guardduty_detector.main"
       ]
+    },
+    {
+      "date": "2026-11-22",
+      "reviewed_by": "Platform Lead",
+      "changes_reviewed": [
+        "SC-001",
+        "SC-002"
+      ],
+      "summary": "Review of protections after scope changes SC-001 (cross-region backup vault and on-demand recovery environment) and SC-002 (support-derived data on managed endpoints). Neither change adds an internet-facing entry point. The recovery environment has no standing resources and falls under the same protections when it is built (POL-RPL RPL-5). WAF rules, rate limits, load balancer listeners and threat detection stay as they are. No changes needed.",
+      "resources_covered": [
+        "aws_wafv2_web_acl.edge",
+        "aws_lb_listener.https",
+        "aws_lb_listener.webhooks",
+        "aws_guardduty_detector.main"
+      ]
     }
   ]
 }
