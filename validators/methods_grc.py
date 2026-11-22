@@ -341,10 +341,32 @@ def cmt_rvp_static(env: Env) -> MethodResult:
 
     Official statement: see FedRAMP/rules (after `make frmr`, also frmr/fedramp-consolidated-rules.json).
 
-    Check to write: POL-CMT requires an annual review of the change procedure and a review after a failed or emergency change.
+    Check: a POL-CMT requirement covers CMT-RVP and sets a yearly review and a review after failed or emergency
+    changes, the review cadence is 365 days or less, and the procedure it points to exists.
     Suggested method_id: "cmt-rvp-static"
     """
-    raise NotImplementedError("Author to write: KSI-CMT-RVP static")
+    findings: list[str] = []
+    reqs = _covering_requirements("POL-CMT", "CMT-RVP")
+    if not reqs:
+        findings.append("No POL-CMT requirement covers KSI CMT-RVP")
+    text = " ".join(r["text"] for r in reqs)
+    if reqs and "each year" not in text:
+        findings.append("No POL-CMT requirement for CMT-RVP sets a yearly review")
+    if reqs and "failed or emergency change" not in text:
+        findings.append("No POL-CMT requirement for CMT-RVP sets a review after a failed or emergency change")
+    proc = env.grc.get("change_procedure", {})
+    cadence = proc.get("review_cadence_days")
+    if not _is_positive_number(cadence) or cadence > 365:
+        findings.append(f"change_procedure.review_cadence_days must be a positive number of 365 or less (found {cadence!r})")
+    ref = proc.get("doc") or ""
+    path, _, anchor = ref.partition("#")
+    if not path or not (ROOT / path).exists():
+        findings.append(f"The change procedure reference does not resolve (found {ref!r})")
+    elif anchor and not any(p["id"] == anchor for p in _load(path).get("policies", [])):
+        findings.append(f"{anchor} is not in {path}")
+    return result("cmt-rvp-static", STATIC, "environment/grc-records.json#change_procedure",
+                  "POL-CMT requires a yearly review of the change procedure and a review after failed or emergency changes, and the procedure exists",
+                  "POL-CMT CMT-3 covers CMT-RVP; cadence <= 365 days; procedure present", f"{len(findings)} gap(s)", findings)
 
 
 def cmt_rvp_live(env: Env) -> MethodResult:
@@ -352,10 +374,41 @@ def cmt_rvp_live(env: Env) -> MethodResult:
 
     Official statement: see FedRAMP/rules (after `make frmr`, also frmr/fedramp-consolidated-rules.json).
 
-    Check to write: change_procedure.last_reviewed is within review_cadence_days of as_of and later than every failed_or_emergency_changes date.
+    Check: the newest entry in change_procedure.reviews is inside the cadence and was recorded by the POL-CMT owner.
     Suggested method_id: "cmt-rvp-live"
     """
-    raise NotImplementedError("Author to write: KSI-CMT-RVP live")
+    findings: list[str] = []
+    proc = env.grc.get("change_procedure", {})
+    cadence = proc.get("review_cadence_days")
+    newest = _newest(proc.get("reviews", []))
+    # An invalid cadence gives a limit of 0 days, so the method fails here as well as in the static method.
+    found, age = _review_age_findings("change procedure review", newest, env.as_of, cadence if _is_positive_number(cadence) else 0)
+    findings += found
+    owner = (_policy("POL-CMT") or {}).get("owner")
+    findings += _reviewer_findings("Change procedure review", newest, owner)
+    return result("cmt-rvp-live", LIVE, "environment/grc-records.json#change_procedure",
+                  "The newest review of the change procedure is inside the cadence and was recorded by the POL-CMT owner",
+                  f"<= {cadence} days; reviewed by {owner}", f"{age} days" if age is not None else "no review recorded", findings)
+
+
+# Review deadline in business days after a failed or emergency change (POL-CMT CMT-3).
+CHANGE_FAILURE_REVIEW_DAYS = {"failed": 10, "emergency": 10}
+
+
+def cmt_rvp_change(env: Env) -> MethodResult:
+    """KSI-CMT-RVP Reviewing Change Procedures (change-triggered, live).
+
+    Check: every failed or emergency change has a review of the change procedure within 10 business days.
+    """
+    proc = env.grc.get("change_procedure", {})
+    changes = [{"id": c.get("id"), "date": c.get("date"), "scn_category": c.get("type")}
+               for c in proc.get("failed_or_emergency_changes", [])]
+    dates = [r["date"] for r in proc.get("reviews", []) if r.get("date")]
+    findings, notes = _change_review_findings("change procedure review", changes, dates, env.as_of, CHANGE_FAILURE_REVIEW_DAYS)
+    observed = f"{len(changes)} failed or emergency change(s), {len(findings)} overdue" + (f"; {'; '.join(notes)}" if notes else "")
+    return result("cmt-rvp-change", LIVE, "environment/grc-records.json#change_procedure.failed_or_emergency_changes",
+                  "Every failed or emergency change has a review of the change procedure within 10 business days",
+                  "review within 10 business days of each failed or emergency change", observed, findings)
 
 
 def cna_rvp_static(env: Env) -> MethodResult:

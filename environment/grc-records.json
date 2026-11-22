@@ -82,11 +82,19 @@
   "change_procedure": {
     "doc": "policies/policy-set.json#POL-CMT",
     "review_cadence_days": 365,
-    "last_reviewed": null,
+    "reviews": [
+      {
+        "date": "2026-10-02",
+        "reviewed_by": "Platform Lead",
+        "summary": "Review after failed change CHG-0412. The database migration had no tested rollback step. Added a rule that a migration must pass a rollback test in staging before it is released."
+      }
+    ],
     "failed_or_emergency_changes": [
       {
-        "date": null,
-        "id": ""
+        "id": "CHG-0412",
+        "date": "2026-09-24",
+        "type": "failed",
+        "summary": "Database migration failed in production and was rolled back by hand."
       }
     ]
   },

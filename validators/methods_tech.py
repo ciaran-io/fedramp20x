@@ -50,6 +50,26 @@ def lmc_live(env: Env) -> MethodResult:
                 f"{ev['pipeline_changes_logged']}/{ev['pipeline_changes']} logged, {ev['manual_changes_alerted']}/{ev['manual_console_changes']} manual alerted")
 
 
+CHANGE_TYPES = ("routine_recurring", "not_significant", "adaptive", "transformative")
+
+
+def lmc_change_types(env: Env) -> MethodResult:
+    """KSI-CMT-LMC (live): every pipeline change in the last 30 days has one of the four change types (POL-CMT CMT-6)."""
+    ev = env.live["change_events"]["last_30_days"]
+    total, typed = ev["pipeline_changes"], ev.get("pipeline_changes_typed", 0)
+    types = ev.get("change_types", {})
+    f = []
+    if typed < total:
+        f.append(f"{total - typed} pipeline change(s) have no change type")
+    unknown = sorted(set(types) - set(CHANGE_TYPES))
+    if unknown:
+        f.append(f"Unknown change type(s): {', '.join(unknown)}")
+    if sum(types.values()) != typed:
+        f.append(f"The change type counts add up to {sum(types.values())}, but {typed} change(s) are typed")
+    return _out("lmc-live-change-types", LIVE, LIVE_SRC + "#change_events", "Every pipeline change in the last 30 days was assessed and given one of the four change types", "100% typed: routine recurring, not significant, adaptive or transformative", f,
+                f"{typed}/{total} typed: " + ", ".join(f"{k} {v}" for k, v in types.items()))
+
+
 # ---- KSI-CMT-RMV  Redeploying vs Modifying -------------------------------------
 def rmv_static(env: Env) -> MethodResult:
     f = []

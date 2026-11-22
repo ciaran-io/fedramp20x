@@ -24,15 +24,18 @@
     },
     {
       "id": "POL-CMT", "theme": "CMT", "title": "Change management policy",
+      "approval": {"version": "1.0", "approved_by": "CISO", "date": "2026-11-22"},
       "owner": "Platform Lead", "review_cadence": "Annual",
       "purpose": "Every change to the offering is recorded, reviewed, tested and reversible.",
       "resources": ["E1", "E2", "E3", "P1", "P2", "P11"],
       "requirements": [
         {"id": "CMT-1", "text": "Every change to a production resource is made through the pipeline. The pipeline logs the change, the author, the reviewer and the result.", "ksis": ["CMT-LMC"]},
         {"id": "CMT-2", "text": "Production machine-based resources are replaced from a trusted image or build. Staff do not modify running resources by hand.", "ksis": ["CMT-RMV"]},
-        {"id": "CMT-3", "text": "The Platform Lead reviews the change procedure each year and after any failed or emergency change.", "ksis": ["CMT-RVP"]},
+        {"id": "CMT-3", "text": "The Platform Lead reviews the change procedure each year, and within 10 business days after any failed or emergency change. Each review is recorded as a new entry in environment/grc-records.json.", "ksis": ["CMT-RVP"]},
         {"id": "CMT-4", "text": "Every deployment runs automated tests for integrity and security before release and checks that the deployed state matches the intended state after release.", "ksis": ["CMT-VTD"]},
-        {"id": "CMT-5", "text": "A change that matches a significant change rule is entered in the significant change log. The GRC Lead sends the required notice within the rule timeline (SCN rules).", "ksis": ["CMT-LMC", "CMT-RVP"]}
+        {"id": "CMT-5", "text": "A change that matches a significant change rule is entered in the significant change log. The GRC Lead sends the required notice within the rule timeline (SCN rules).", "ksis": ["CMT-LMC", "CMT-RVP"]},
+        {"id": "CMT-6", "text": "Every change made through the pipeline is assessed for its change type before release: routine recurring, adaptive, transformative or not significant. Every change gets one of these four types, so no change skips the assessment. Routine recurring and not significant changes need no notice. The type is recorded with the change in the pipeline log (CMT-1), and a change that alters the scope record is also logged in mas/scope-changes.json.", "ksis": ["CMT-LMC"]},
+        {"id": "CMT-7", "text": "A change of certification class is not a significant change. It needs a new certification before the offering operates at the new class (FRC-CCL-UCC, FRC-CCL-DCC).", "ksis": [], "ksis_note": "none (certification rule)"}
       ]
     },
     {

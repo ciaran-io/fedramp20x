@@ -7,7 +7,7 @@ Version 0.1, effective 2026-11-19. Approver: CISO. Generated from `policies/poli
 | Policy | Theme | Owner | Review | KSIs | KSIs passing |
 |---|---|---|---|---|---|
 | [Cybersecurity education policy](policies/POL-CED.md) | CED | GRC Lead | Annual | 1 | 0 |
-| [Change management policy](policies/POL-CMT.md) | CMT | Platform Lead | Annual | 4 | 3 |
+| [Change management policy](policies/POL-CMT.md) | CMT | Platform Lead | Annual | 4 | 4 |
 | [Cloud-native architecture policy](policies/POL-CNA.md) | CNA | Platform Lead | Annual | 8 | 8 |
 | [Identity and access management policy](policies/POL-IAM.md) | IAM | CISO | Annual | 6 | 5 |
 | [Incident response policy](policies/POL-INR.md) | INR | CISO | Annual | 3 | 1 |

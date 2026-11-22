@@ -19,7 +19,7 @@ KSI_METHODS = {
     "KSI-MLA-LET": [m.let_static, m.let_live],
     "KSI-RPL-ABO": [m.abo_static, m.abo_live, m.abo_alert],
     "KSI-SVC-VCM": [m.vcm_static, m.vcm_live],
-    "KSI-CMT-LMC": [t.lmc_static, t.lmc_live],
+    "KSI-CMT-LMC": [t.lmc_static, t.lmc_live, t.lmc_change_types],
     "KSI-CMT-RMV": [t.rmv_static, t.rmv_live],
     "KSI-CMT-VTD": [t.vtd_static, t.vtd_live],
     "KSI-CNA-DFP": [t.dfp_static, t.dfp_live],
@@ -49,6 +49,7 @@ KSI_METHODS = {
     "KSI-RPL-RRO": [g.rpl_rro_static, g.rpl_rro_live],
     "KSI-INR-RIR": [g.inr_rir_static, g.inr_rir_live],
     "KSI-CNA-RVP": [g.cna_rvp_static, g.cna_rvp_live, g.cna_rvp_change],
+    "KSI-CMT-RVP": [g.cmt_rvp_static, g.cmt_rvp_live, g.cmt_rvp_change],
 }
 
 # Known gaps between what the methods check and the OFFICIAL Class C KSI statement
