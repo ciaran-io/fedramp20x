@@ -224,24 +224,20 @@ def inr_rir_live(env: Env) -> MethodResult:
 
     Official statement: see FedRAMP/rules (after `make frmr`, also frmr/fedramp-consolidated-rules.json).
 
-    Check: ir_plan.last_reviewed is inside the cadence, reviewed_by matches the POL-INR owner, and the review follows every report or review with plan_change_required.
+    Check: the newest entry in ir_plan.reviews is inside the cadence, was recorded by the POL-INR owner, and follows every report or review with plan_change_required.
     Suggested method_id: "inr-rir-live"
     """
     findings: list[str] = []
     plan = env.grc.get("ir_plan", {})
     cadence = plan.get("review_cadence_days")
     as_of = env.as_of
-    last = plan.get("last_reviewed")
-    age = _age_days(last, as_of)
-    if age is None:
-        findings.append("No review of the incident response plan is recorded")
-    elif age < 0:
-        findings.append(f"ir_plan.last_reviewed {last} is after the run date {as_of}")
-    elif _is_positive_number(cadence) and age > cadence:
-        findings.append(f"Last plan review was {age} days ago, cadence is {cadence} days")
+    newest = _newest(plan.get("reviews", []))
+    last = newest["date"] if newest else None
+    # An invalid cadence gives a limit of 0 days, so the method fails here as well as in the static method.
+    found, age = _review_age_findings("plan review", newest, as_of, cadence if _is_positive_number(cadence) else 0)
+    findings += found
     owner = (_policy("POL-INR") or {}).get("owner")
-    if last and plan.get("reviewed_by") != owner:
-        findings.append(f"The plan review was recorded by {plan.get('reviewed_by')!r}, POL-INR names {owner!r}")
+    findings += _reviewer_findings("Plan review", newest, owner)
     for inc in env.grc.get("incidents", []):
         if inc.get("plan_change_required") is True and inc.get("aar_completed") and (not last or last < inc["aar_completed"]):
             findings.append(f"After action report for {inc['id']} on {inc['aar_completed']} requires a plan change, and no plan review follows it")
@@ -458,23 +454,19 @@ def rpl_rro_live(env: Env) -> MethodResult:
 
     Official statement: see FedRAMP/rules (after `make frmr`, also frmr/fedramp-consolidated-rules.json).
 
-    Check to write: last_reviewed in recovery-objectives.json is within review_cadence_days of the as_of date.
+    Check: the newest entry in reviews in recovery-objectives.json is within review_cadence_days of the run date and was recorded by the POL-RPL owner.
     Suggested method_id: "rpl-rro-live"
     """
     findings: list[str] = []
     obj = _load("environment/recovery-objectives.json")
     cadence = obj.get("review_cadence_days")
     as_of = env.as_of
-    last = obj.get("last_reviewed")
-    age = None
-    if not last:
-        findings.append("No last_reviewed date is recorded")
-    else:
-        age = (as_of - datetime.date.fromisoformat(last)).days
-        if age < 0:
-            findings.append(f"last_reviewed {last} is after the run date {as_of}")
-        elif isinstance(cadence, (int, float)) and age > cadence:
-            findings.append(f"Last review was {age} days ago, cadence is {cadence} days")
+    newest = _newest(obj.get("reviews", []))
+    # An invalid cadence gives a limit of 0 days, so the method fails here as well as in the static method.
+    found, age = _review_age_findings("review of the recovery objectives", newest, as_of, cadence if _is_positive_number(cadence) else 0)
+    findings += found
+    owner = (_policy("POL-RPL") or {}).get("owner")
+    findings += _reviewer_findings("Review of the recovery objectives", newest, owner)
     return result("rpl-rro-live", LIVE, "environment/recovery-objectives.json",
-                  "The last review of the recovery objectives is inside the review cadence",
-                  f"<= {cadence} days since last review", f"{age} days" if age is not None else "no review recorded", findings)
+                  "The newest review of the recovery objectives is inside the review cadence and was recorded by the POL-RPL owner",
+                  f"<= {cadence} days since last review; reviewed by {owner}", f"{age} days" if age is not None else "no review recorded", findings)

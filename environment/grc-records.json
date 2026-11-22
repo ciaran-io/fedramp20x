@@ -22,8 +22,17 @@
   "ir_plan": {
     "doc": "docs/incident-response-plan.md",
     "review_cadence_days": 365,
-    "last_reviewed": "2026-08-04",
-    "reviewed_by": "CISO"
+    "reviews": [
+      {
+        "date": "2026-08-04",
+        "reviewed_by": "CISO"
+      },
+      {
+        "date": "2026-11-21",
+        "reviewed_by": "CISO",
+        "summary": "Plan rewritten and approved as version 1.0: incidents rated with PAIN, reportability decided within 1 hour, and the reporting clock starts at the reportability decision (SD-006)."
+      }
+    ]
   },
   "incidents": [
     {
