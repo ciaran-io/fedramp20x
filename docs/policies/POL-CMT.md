@@ -6,7 +6,7 @@
 |---|---|
 | Owner | Platform Lead |
 | Approver | CISO |
-| Version | 0.1 draft, effective 2026-11-19 |
+| Version | 1.0, approved by the CISO on 2026-11-22 |
 | Review cadence | Annual |
 | Theme | CMT: Change Management |
 
@@ -35,17 +35,19 @@ This policy covers these information resources from the scope record:
 |---|---|---|
 | CMT-1 | Every change to a production resource is made through the pipeline. The pipeline logs the change, the author, the reviewer and the result. | KSI-CMT-LMC |
 | CMT-2 | Production machine-based resources are replaced from a trusted image or build. Staff do not modify running resources by hand. | KSI-CMT-RMV |
-| CMT-3 | The Platform Lead reviews the change procedure each year and after any failed or emergency change. | KSI-CMT-RVP |
+| CMT-3 | The Platform Lead reviews the change procedure each year, and within 10 business days after any failed or emergency change. Each review is recorded as a new entry in environment/grc-records.json. | KSI-CMT-RVP |
 | CMT-4 | Every deployment runs automated tests for integrity and security before release and checks that the deployed state matches the intended state after release. | KSI-CMT-VTD |
 | CMT-5 | A change that matches a significant change rule is entered in the significant change log. The GRC Lead sends the required notice within the rule timeline (SCN rules). | KSI-CMT-LMC, KSI-CMT-RVP |
+| CMT-6 | Every change made through the pipeline is assessed for its change type before release: routine recurring, adaptive, transformative or not significant. Every change gets one of these four types, so no change skips the assessment. Routine recurring and not significant changes need no notice. The type is recorded with the change in the pipeline log (CMT-1), and a change that alters the scope record is also logged in mas/scope-changes.json. | KSI-CMT-LMC |
+| CMT-7 | A change of certification class is not a significant change. It needs a new certification before the offering operates at the new class (FRC-CCL-UCC, FRC-CCL-DCC). | none (certification rule) |
 
 ## Indicators and validation
 
 | KSI | Name | Automated methods | Current status |
 |---|---|---|---|
-| KSI-CMT-LMC | Logging Changes | `lmc-iac-change-logging`, `lmc-live-change-coverage` | pass |
+| KSI-CMT-LMC | Logging Changes | `lmc-iac-change-logging`, `lmc-live-change-coverage`, `lmc-live-change-types` | pass |
 | KSI-CMT-RMV | Redeploying vs Modifying | `rmv-iac-redeploy-policy`, `rmv-live-image-match` | pass |
-| KSI-CMT-RVP | Reviewing Change Procedures | none yet | not_implemented |
+| KSI-CMT-RVP | Reviewing Change Procedures | `cmt-rvp-static`, `cmt-rvp-live`, `cmt-rvp-change` | pass |
 | KSI-CMT-VTD | Validating Throughout Deployment | `vtd-iac-pipeline-stages`, `vtd-live-pipeline-runs` | pass |
 
 Status is a simulated validator result. Class C needs at least two automated methods per KSI (`FRC-CSX-VVK`).

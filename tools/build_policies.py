@@ -58,7 +58,7 @@ def main() -> int:
              "| ID | Resource |", "|---|---|"]
         L += [f"| {r} | {res[r]['name']} |" for r in p["resources"] if r in res]
         L += ["", "## Requirements", "", "| ID | Requirement | KSIs |", "|---|---|---|"]
-        L += [f"| {rq['id']} | {rq['text']} | {', '.join('KSI-' + k for k in rq['ksis'])} |" for rq in p["requirements"]]
+        L += [f"| {rq['id']} | {rq['text']} | {', '.join('KSI-' + k for k in rq['ksis']) or rq.get('ksis_note', 'none')} |" for rq in p["requirements"]]
         L += ["", "## Indicators and validation", "",
               "| KSI | Name | Automated methods | Current status |", "|---|---|---|---|"]
         kapi = []
