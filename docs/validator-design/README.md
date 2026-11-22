@@ -11,7 +11,7 @@ FedRAMP statement text is not copied into this repository. Each design describes
 | Theme | KSIs | File |
 |---|---|---|
 | CED | 1 | Not started |
-| CMT | 4 | Not started |
+| CMT | 4 | [CMT.md](CMT.md) |
 | CNA | 8 | [CNA.md](CNA.md) |
 | IAM | 6 | Not started |
 | INR | 3 | [INR.md](INR.md) |
