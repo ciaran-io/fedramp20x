@@ -17,7 +17,7 @@ KSI_METHODS = {
     "KSI-SVC-SIN": [m.sin_static, m.sin_live],
     "KSI-SVC-ASM": [m.asm_static, m.asm_live],
     "KSI-MLA-LET": [m.let_static, m.let_live],
-    "KSI-RPL-ABO": [m.abo_static, m.abo_live],
+    "KSI-RPL-ABO": [m.abo_static, m.abo_live, m.abo_alert],
     "KSI-SVC-VCM": [m.vcm_static, m.vcm_live],
     "KSI-CMT-LMC": [t.lmc_static, t.lmc_live],
     "KSI-CMT-RMV": [t.rmv_static, t.rmv_live],

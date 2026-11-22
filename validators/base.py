@@ -60,6 +60,7 @@ class Env:
     live: dict
     mas: dict = field(default_factory=dict)  # scope record (mas/mas-record.json), used by flow-aware checks
     grc: dict = field(default_factory=dict)  # GRC records (environment/grc-records.json): training, incidents, reviews
+    backup_jobs: dict = field(default_factory=dict)  # prefilled AWS Backup job history (environment/backup-jobs.json)
     as_of: datetime.date = field(default_factory=run_date)  # the date record ages are measured against
 
     def iac_resources(self, rtype: str) -> list[dict]:

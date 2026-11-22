@@ -26,7 +26,7 @@ TEST_DATE = datetime.date(2026, 11, 22)
 
 def env():
     return Env(company=load("environment/company.json"), iac=load("environment/iac-plan.json"),
-               live=load("environment/live-state.json"), mas=load("mas/mas-record.json"),
+               live=load("environment/live-state.json"), backup_jobs=load("environment/backup-jobs.json"), mas=load("mas/mas-record.json"),
                grc=load("environment/grc-records.json"), as_of=TEST_DATE)
 
 
@@ -98,6 +98,27 @@ class Methods(unittest.TestCase):
                 v["lock_mode"] = "governance"
         self.assertEqual(m.abo_static(e).status, "fail")
         self.assertEqual(m.abo_live(e).status, "fail")
+
+    def test_failed_backup_job_without_alert_fails(self):
+        e = env()
+        self.assertEqual(m.abo_alert(e).status, "pass")
+        e.as_of = datetime.date(2027, 5, 22)
+        self.assertIn("raised no alert", " ".join(m.abo_alert(e).findings))
+
+    def test_late_or_unacknowledged_backup_alert_fails(self):
+        e = env()
+        failed = next(j for j in e.backup_jobs["jobs"] if j.get("alert"))
+        failed["alert"]["raised"] = "2026-11-17T05:00:00Z"
+        self.assertEqual(m.abo_alert(e).status, "fail")
+        e = env()
+        failed = next(j for j in e.backup_jobs["jobs"] if j.get("alert"))
+        failed["alert"]["acknowledged_by"] = None
+        self.assertEqual(m.abo_alert(e).status, "fail")
+
+    def test_backup_history_must_be_recent(self):
+        e = env()
+        e.as_of = datetime.date(2027, 11, 25)
+        self.assertIn("No completed backup job", " ".join(m.abo_alert(e).findings))
 
     def test_overdue_ir_plan_review_fails_inr_rir(self):
         e = env()

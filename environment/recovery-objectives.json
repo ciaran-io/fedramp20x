@@ -37,6 +37,8 @@
   ],
   "mechanism": "aws_backup",
   "backup_interval_hours_max": 2,
+  "failed_job_alert_minutes_max": 60,
+  "job_history_window_days": 30,
   "protected_resources": [
     "db:primary",
     "s3:backups",

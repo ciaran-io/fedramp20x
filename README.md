@@ -17,7 +17,7 @@ This repository shows how a small, invented SaaS company could meet FedRAMP 20x 
 - **Scoping.** A Minimum Assessment Scope written as one JSON record, with every information resource, third party and data flow identified (MAS-CSO-IIR, MAS-CSO-FLO, MAS-CSO-TPR). Documents and diagrams are generated from it, and CI fails when they drift. See [`mas/mas-record.json`](mas/mas-record.json) and [`docs/minimum-assessment-scope.md`](docs/minimum-assessment-scope.md).
 - **KSI validation.** Each of the 46 Class C KSIs is checked by at least two automated methods (FRC-CSX-VVK): a static check of what is declared and a live check of what the records show. See [`validators/registry.py`](validators/registry.py).
 - **Persistent validation.** The validators run every day and commit dated evidence, which meets the 3-day and 3-month validation rules (VDR-TFR-MVX, VDR-TFR-NMV) and builds the history the Security Decision Record needs. See [Persistent validation](#persistent-validation) and [`evidence/history/`](evidence/history/).
-- **Design reviews against policy.** Each check has a written design that states what it proves and where it falls short of the KSI. My review of RPL-ABO found two checks that were weaker than the policy, and I fixed both. See [`docs/validator-design/`](docs/validator-design/).
+- **Design reviews against policy.** Each check has a written design that states what it proves and where it falls short of the KSI. See [`docs/validator-design/`](docs/validator-design/).
 - **Trust center and the certification package.** A trust center with access logging and an access inventory (CDS rules), and an example FedRAMP Certification Package as the end goal. See [Trust center](#trust-center) and the [Roadmap](#roadmap).
 
 The latest result for every KSI is in [`evidence/latest.json`](evidence/latest.json). The scheduled run updates it every day.
@@ -119,6 +119,7 @@ An AI assistant (Claude) wrote much of the scaffolding and drafts the validator 
 | 2026-11-21 | KSI-CNA-RVP built with an annual review and a review after each change, with deadlines by SCN change type. POL-CNA rewritten and approved | KSI-CNA-RVP, SCN-ADP-NTF, SCN-TRF-NFP | #10 |
 | 2026-11-21 | Scope gap closed: support-derived data (D8) recorded on managed endpoints with a conditional flow, logged as scope change SC-002 | MAS-CSO-IIR, MAS-CSO-FLO, SCN-CSO-EVA | #12 |
 | 2026-11-22 | GRC checks measure record ages against the real run date, so reviews go overdue like real records. Protection review recorded after scope changes SC-001 and SC-002 | VDR-TFR-NMV, KSI-CNA-RVP | #32 |
+| 2026-11-22 | KSI-RPL-ABO: a third method reads a year of prefilled backup job history and checks that jobs ran in the last day and that every failed job raised an alert within 60 minutes that a person acknowledged. POL-RPL 1.2 approved | KSI-RPL-ABO | #33 |
 
 ### To do
 
@@ -143,7 +144,7 @@ An AI assistant (Claude) wrote much of the scaffolding and drafts the validator 
 
 - **Fictional data.** The company, the environment and every record are invented. The fixtures were set to show a mostly healthy service with two open findings (KSI-IAM-SNU and KSI-SVC-EIS), so that the failure path is visible.
 - **No real cloud account.** The live methods read snapshot files in `environment/`. With a real AWS account, I would replace each snapshot with API calls (for example AWS Backup, IAM and AWS Config), run them under a read-only role with short-lived credentials, and keep the daily schedule.
-- **Checks narrower than the KSI.** Some checks prove less than the official statement. Each one has a coverage note in `validators/registry.py` and a gap entry in its design. For example, no check yet confirms the alert for a failed backup job (KSI-RPL-ABO).
+- **Checks narrower than the KSI.** Some checks prove less than the official statement. Each one has a coverage note in `validators/registry.py` and a gap entry in its design. For example, KSI-SVC-ASM covers keys, certificates and other secrets, but its checks test secret rotation only.
 - **Not finished.** Some of my GRC KSIs have no checks yet (they show as `not_implemented` in [`evidence/latest.json`](evidence/latest.json)), and four documents still have `TODO` sections. See the [Roadmap](#roadmap).
 - **No independent assessment.** A real Class C package needs a FedRAMP Recognized assessor. Nothing here has been assessed.
 - **Access gate.** The trust center's access control is a demonstration only (see [Visibility](#visibility)).
