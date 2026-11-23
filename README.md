@@ -67,7 +67,7 @@ FedRAMP 20x expects a provider to keep validating its KSIs and to show the resul
 1. GitHub starts a short-lived Linux machine.
 2. It downloads the repository and the FedRAMP rules data.
 3. It runs the same checks as CI: the rules data schema, the unit tests and `make all`, which runs every KSI validator against the fictional environment.
-4. It writes the results to `evidence/latest.json`, adds a file for the day in `evidence/history/` and rebuilds the trust center page.
+4. It writes the results to `evidence/latest.json`, adds a record of the run in `evidence/history/runs/` that is never overwritten, rebuilds the day's summary in `evidence/history/` from all of that day's runs, and rebuilds the trust center page.
 5. It commits those files to `main` with the date and the result counts, for example `Scheduled validation 2026-11-22: 37 pass, 2 fail, 0 partial, 7 not implemented`.
 
 The daily history files are the source for the historical KSI metrics that the Security Decision Record needs (SDR-CSX-KMT). The GRC checks measure each review and record against the run date, so a review that is not repeated on time goes overdue and its KSI fails. The technical environment is fictional and static, so those checks give the same results on most runs. For a real provider, the live methods would call the cloud and system APIs, and a daily run would find drift such as an expired key or a backup that stopped.

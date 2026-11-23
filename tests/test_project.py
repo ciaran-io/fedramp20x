@@ -278,6 +278,44 @@ class EmptySource(unittest.TestCase):
         self.assertFalse(any(f.startswith("Source is") for f in m.elp_live(e).findings))
 
 
+class History(unittest.TestCase):
+    """Issue #47: a later run on the same day must not replace the record of an earlier run."""
+
+    def _ksis(self, status):
+        method = {"method_id": "rnt-live-traffic", "status": "fail" if status == "fail" else "pass"}
+        return [{"id": "KSI-CNA-RNT", "status": status, "methods": [method]}]
+
+    def test_two_runs_on_one_day_keep_both_records(self):
+        import tempfile
+        from datetime import datetime, timezone
+        from tools.run_validators import write_history
+        with tempfile.TemporaryDirectory() as d:
+            hist = Path(d)
+            morning = datetime(2026, 11, 23, 6, 17, tzinfo=timezone.utc)
+            afternoon = datetime(2026, 11, 23, 15, 0, tzinfo=timezone.utc)
+            first = write_history(hist, morning, self._ksis("fail"))
+            write_history(hist, afternoon, self._ksis("pass"))
+            self.assertEqual(len(list((hist / "runs").glob("*.json"))), 2)
+            kept = json.loads(first.read_text())
+            self.assertEqual(kept["ksi_status"]["KSI-CNA-RNT"], "fail")
+            self.assertEqual(kept["methods_not_passing"], {"KSI-CNA-RNT": ["rnt-live-traffic"]})
+            day = json.loads((hist / "2026-11-23.json").read_text())
+            self.assertEqual(day["ksi_status"]["KSI-CNA-RNT"], "pass")
+            self.assertEqual(len(day["runs"]), 2)
+            self.assertEqual(day["not_passing_in_any_run"], ["KSI-CNA-RNT"])
+
+    def test_two_runs_in_one_second_do_not_overwrite(self):
+        import tempfile
+        from datetime import datetime, timezone
+        from tools.run_validators import write_history
+        with tempfile.TemporaryDirectory() as d:
+            now = datetime(2026, 11, 23, 6, 17, tzinfo=timezone.utc)
+            a = write_history(Path(d), now, self._ksis("fail"))
+            b = write_history(Path(d), now, self._ksis("pass"))
+            self.assertNotEqual(a, b)
+            self.assertEqual(json.loads(a.read_text())["ksi_status"]["KSI-CNA-RNT"], "fail")
+
+
 class ScopeLog(unittest.TestCase):
     def test_fingerprint_changes_when_a_resource_moves_out(self):
         rec = load("mas/mas-record.json")

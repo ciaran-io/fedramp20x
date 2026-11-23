@@ -2,8 +2,9 @@
 """Run every registered KSI validation method and write evidence.
 
 Outputs:
-  evidence/latest.json          full result of this run
-  evidence/history/<date>.json  one daily summary written by each run
+  evidence/latest.json                       full result of this run
+  evidence/history/runs/<date>T<time>Z.json  one record per run, never overwritten (issue #47)
+  evidence/history/<date>.json               the day's summary, rebuilt from that day's run records
 
 Per-KSI status roll-up (honest by design):
   pass            >=2 automated methods ran and all passed
@@ -38,6 +39,37 @@ def roll_up(results: list[dict], gap: str | None = None) -> str:
     if len(results) < REQUIRED_METHODS or gap:
         return "partial"
     return "pass"
+
+
+def write_history(hist: Path, now: datetime, ksis: list[dict]) -> Path:
+    """Keep a record of every run, and rebuild the day's summary from all of that day's runs.
+
+    A run record is never overwritten, so a failure seen in one run and fixed by a later run on the
+    same day stays on record. Each record keeps the IDs of the methods that did not pass, which the
+    historical metrics (SDR-CSX-KMT) need.
+    """
+    runs = hist / "runs"
+    runs.mkdir(parents=True, exist_ok=True)
+    date = now.date().isoformat()
+    run = {"date": date, "generated_at": now.isoformat(timespec="seconds"), "synthetic": False,
+           "ksi_status": {k["id"]: k["status"] for k in ksis},
+           "methods_not_passing": {k["id"]: [m["method_id"] for m in k["methods"] if m["status"] != "pass"]
+                                   for k in ksis if any(m["status"] != "pass" for m in k["methods"])}}
+    stem, n = now.strftime("%Y-%m-%dT%H%M%SZ"), 1
+    path = runs / f"{stem}.json"
+    while path.exists():  # two runs in the same second keep separate records
+        n += 1
+        path = runs / f"{stem}-{n}.json"
+    path.write_text(json.dumps(run, indent=2) + "\n")
+
+    day_runs = [json.loads(p.read_text()) for p in sorted(runs.glob(f"{date}T*.json"))]
+    day_runs.sort(key=lambda r: r["generated_at"])
+    day = {"date": date, "synthetic": False,
+           "ksi_status": day_runs[-1]["ksi_status"],
+           "runs": [r["generated_at"] for r in day_runs],
+           "not_passing_in_any_run": sorted({k for r in day_runs for k, v in r["ksi_status"].items() if v != "pass"})}
+    (hist / f"{date}.json").write_text(json.dumps(day, indent=2) + "\n")
+    return path
 
 
 def main() -> int:
@@ -78,11 +110,7 @@ def main() -> int:
     }
     (ROOT / "evidence/latest.json").write_text(json.dumps(out, indent=2) + "\n")
 
-    hist = ROOT / "evidence/history"
-    hist.mkdir(exist_ok=True)
-    day = {"date": now.date().isoformat(), "synthetic": False,
-           "ksi_status": {k["id"]: k["status"] for k in ksis}}
-    (hist / f"{day['date']}.json").write_text(json.dumps(day, indent=2) + "\n")
+    write_history(ROOT / "evidence/history", now, ksis)
     print("summary:", out["summary"])
     return 0
 
