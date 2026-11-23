@@ -11,6 +11,7 @@ This extract records the data terms that the validators check. The machine-reada
 | Term | Value |
 |---|---|
 | Deletion deadline | 30 calendar days from the customer's written request |
+| Retention after contract end | Orrinwick deletes all customer data 30 calendar days after the contract ends, with no request needed. After that date the customer does not need to take any action to have its data removed |
 | Scope | Customer data in production stores and in backups |
 | Backups | Copies in backup vaults are deleted by the deadline or expire under the backup retention period, whichever is sooner |
 | Confirmation | Orrinwick confirms deletion in writing and keeps a record of the request |

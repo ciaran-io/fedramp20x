@@ -3,5 +3,6 @@
   "agreement": "docs/customer-agreement-standard.md",
   "version": "2026-11",
   "deletion_days": 30,
+  "retention_after_contract_days": 30,
   "includes_backups": true
 }
