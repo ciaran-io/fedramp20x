@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from datetime import date
 
-from .base import Env, MethodResult, result
+from .base import Env, MethodResult, result, source_findings
 
 STATIC, LIVE = "static", "live"
 IAC, LIVE_SRC = "environment/iac-plan.json", "environment/live-state.json"
@@ -85,7 +85,8 @@ def rmv_static(env: Env) -> MethodResult:
 
 
 def rmv_live(env: Env) -> MethodResult:
-    f = [f"{c['id']} does not match a registry image ({c.get('note', 'modified in place')})" for c in env.live.get("compute", []) if not c["image_digest_matches_registry"]]
+    f = source_findings((LIVE_SRC + "#compute", env.live.get("compute"), False))
+    f += [f"{c['id']} does not match a registry image ({c.get('note', 'modified in place')})" for c in env.live.get("compute", []) if not c["image_digest_matches_registry"]]
     return _out("rmv-live-image-match", LIVE, LIVE_SRC + "#compute", "Every running compute resource matches an image in the registry", "all digests match", f)
 
 
@@ -114,7 +115,9 @@ def vtd_live(env: Env) -> MethodResult:
 
 # ---- KSI-CNA-DFP  Defining Functionality and Privileges -------------------------
 def dfp_static(env: Env) -> MethodResult:
-    f, roles = [], {r["name"]: r["values"] for r in env.iac_resources("aws_iam_role")}
+    f = source_findings(("aws_iam_role resources in environment/iac-plan.json", env.iac_resources("aws_iam_role"), False),
+                        ("aws_ecs_service resources in environment/iac-plan.json", env.iac_resources("aws_ecs_service"), False))
+    roles = {r["name"]: r["values"] for r in env.iac_resources("aws_iam_role")}
     used = [s["values"]["task_role"].split("/")[-1] for s in env.iac_resources("aws_ecs_service")]
     for u in set(used):
         if u not in roles:
@@ -129,7 +132,8 @@ def dfp_static(env: Env) -> MethodResult:
 
 
 def dfp_live(env: Env) -> MethodResult:
-    f = [f"{r['name']} grants {', '.join(r['wildcard_actions'])} ({r.get('note', 'not defined in IaC')})" for r in env.live.get("iam_roles", []) if r["wildcard_actions"]]
+    f = source_findings((LIVE_SRC + "#iam_roles", env.live.get("iam_roles"), False))
+    f += [f"{r['name']} grants {', '.join(r['wildcard_actions'])} ({r.get('note', 'not defined in IaC')})" for r in env.live.get("iam_roles", []) if r["wildcard_actions"]]
     return _out("dfp-live-role-privileges", LIVE, LIVE_SRC + "#iam_roles", "No live role holds wildcard actions", "0 wildcard actions", f)
 
 
@@ -257,7 +261,8 @@ def jit_live(env: Env) -> MethodResult:
 
 # ---- KSI-IAM-SNU  Securing Non-User Authentication ------------------------------
 def snu_static(env: Env) -> MethodResult:
-    f = [f"Role '{r['name']}' uses long-lived keys" for r in env.iac_resources("aws_iam_role") if r["values"].get("long_lived_keys")]
+    f = source_findings(("aws_iam_role resources in environment/iac-plan.json", env.iac_resources("aws_iam_role"), False))
+    f += [f"Role '{r['name']}' uses long-lived keys" for r in env.iac_resources("aws_iam_role") if r["values"].get("long_lived_keys")]
     if not all(r["values"].get("long_lived_keys") is False for r in env.iac_resources("aws_iam_role") if "oidc_provider" in r["values"]):
         f.append("A pipeline role does not state that long-lived keys are off")
     return _out("snu-iac-workload-auth", STATIC, IAC, "Workload and pipeline identities use short-lived credentials", "no long-lived keys in IaC", f)

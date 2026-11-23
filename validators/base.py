@@ -70,6 +70,23 @@ class Env:
 Method = Callable[[Env], MethodResult]
 
 
+def source_findings(*sources: tuple[str, object, bool]) -> list[str]:
+    """Findings for each source a method reads that is missing or empty (issue #44, FRC-CSX-VVK).
+
+    A method that finds nothing to check has proved nothing, so it must fail, never pass.
+    Give each source as (label, value, empty_allowed). Set empty_allowed to True only when the
+    method's design says an empty list means there is nothing to check (for example no drift).
+    A missing source (None) always gives a finding.
+    """
+    findings = []
+    for label, value, empty_allowed in sources:
+        if value is None:
+            findings.append(f"Source is missing: {label}")
+        elif not empty_allowed and not value:
+            findings.append(f"Source is empty: {label}")
+    return findings
+
+
 def result(
     method_id: str,
     kind: str,

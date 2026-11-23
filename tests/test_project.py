@@ -10,6 +10,7 @@ from tools import check_scope_changes as scl
 from validators import methods as m
 from validators import methods_grc as g
 from validators import methods_ops as o
+from validators import methods_tech as t
 from validators.base import AS_OF_VARIABLE, Env, run_date
 from validators.registry import KSI_METHODS, KSI_GAPS, KSI_NOTES
 
@@ -227,6 +228,54 @@ class Methods(unittest.TestCase):
         e.live["identity"]["users_password_only"] = 1
         e.live["identity"]["users_phishing_resistant_mfa"] -= 1
         self.assertEqual(m.apm_live(e).status, "fail")
+
+
+class EmptySource(unittest.TestCase):
+    """Issue #44: a method must fail when the source it reads is missing or empty (FRC-CSX-VVK)."""
+
+    # (method, the Env field that holds its source, the key to empty, or None to empty the whole field)
+    CASES = [
+        (m.rnt_static, "iac", None), (m.rnt_live, "live", "security_groups"),
+        (m.elp_static, "iac", None), (m.elp_live, "live", "iam"),
+        (m.sin_static, "iac", None), (m.sin_live, "live", None),
+        (m.eis_live, "live", "drift"), (m.asm_live, "live", "secrets"),
+        (m.vcm_static, "iac", None),
+        (t.dfp_static, "iac", None), (t.dfp_live, "live", "iam_roles"),
+        (t.rmv_live, "live", "compute"), (t.snu_static, "iac", None),
+        (o.giv_live, "live", None),
+    ]
+
+    def test_each_method_passes_on_its_real_source(self):
+        e = env()
+        for fn, _, _ in self.CASES:
+            self.assertFalse(any(f.startswith("Source is") for f in fn(e).findings), fn.__name__)
+
+    def test_each_method_fails_when_its_source_is_empty(self):
+        for fn, field_name, key in self.CASES:
+            for blank in ({}, []) if key else ({},):
+                e = env()
+                if key is None:
+                    setattr(e, field_name, {})
+                else:
+                    getattr(e, field_name)[key] = blank
+                r = fn(e)
+                self.assertEqual(r.status, "fail", f"{fn.__name__} passed with {field_name}.{key or '*'} = {blank!r}")
+
+    def test_each_method_fails_when_its_source_is_missing(self):
+        for fn, field_name, key in self.CASES:
+            if key is None:
+                continue
+            e = env()
+            del getattr(e, field_name)[key]
+            self.assertEqual(fn(e).status, "fail", f"{fn.__name__} passed with {field_name}.{key} missing")
+
+    def test_allowed_empty_list_still_passes(self):
+        # No unmanaged resources and no wildcard attachments are good states, not missing data.
+        e = env()
+        e.live["drift"]["unmanaged_resources"] = []
+        e.live["iam"]["wildcard_admin_attachments"] = []
+        self.assertFalse(any(f.startswith("Source is") for f in m.eis_live(e).findings))
+        self.assertFalse(any(f.startswith("Source is") for f in m.elp_live(e).findings))
 
 
 class ScopeLog(unittest.TestCase):

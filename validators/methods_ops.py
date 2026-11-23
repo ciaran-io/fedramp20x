@@ -8,7 +8,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from .base import Env, MethodResult, result
+from .base import Env, MethodResult, result, source_findings
 
 STATIC, LIVE = "static", "live"
 IAC, LIVE_SRC = "environment/iac-plan.json", "environment/live-state.json"
@@ -143,7 +143,9 @@ def giv_static(env: Env) -> MethodResult:
 def giv_live(env: Env) -> MethodResult:
     """Flag live resources that carry no scope ID or name an ID the scope record does not hold (plan task 1.4)."""
     known = {r["id"] for r in env.mas.get("information_resources", [])}
-    f = []
+    live = [r for k in ("security_groups", "ebs_volumes", "s3_buckets", "rds_instances", "sqs_queues", "compute") for r in env.live.get(k) or []]
+    f = source_findings(("mas/mas-record.json#information_resources", env.mas.get("information_resources"), False),
+                        ("cloud resources in environment/live-state.json", live, False))
     for kind, key in (("Security group", "security_groups"), ("Volume", "ebs_volumes"), ("Bucket", "s3_buckets"), ("Database", "rds_instances"), ("Queue", "sqs_queues")):
         for r in env.live.get(key, []):
             label = r.get("name") or r.get("id")

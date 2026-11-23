@@ -14,7 +14,7 @@ import datetime
 import json
 from pathlib import Path
 
-from .base import Env, MethodResult, result
+from .base import Env, MethodResult, result, source_findings
 
 WORLD = "0.0.0.0/0"
 STATIC, LIVE = "static", "live"
@@ -22,7 +22,7 @@ STATIC, LIVE = "static", "live"
 
 # ---- KSI-CNA-RNT  Restricting Network Traffic --------------------------------
 def rnt_static(env: Env) -> MethodResult:
-    findings = []
+    findings = source_findings(("aws_security_group resources in environment/iac-plan.json", env.iac_resources("aws_security_group"), False))
     for sg in env.iac_resources("aws_security_group"):
         for rule in sg["values"].get("ingress", []):
             if rule["cidr"] == WORLD and rule["port"] not in (443,):
@@ -36,7 +36,7 @@ def rnt_static(env: Env) -> MethodResult:
 
 
 def rnt_live(env: Env) -> MethodResult:
-    findings = []
+    findings = source_findings(("environment/live-state.json#security_groups", env.live.get("security_groups"), False))
     for sg in env.live.get("security_groups", []):
         for rule in sg["ingress"]:
             if rule["cidr"] == WORLD and rule["port"] not in (443,):
@@ -59,8 +59,12 @@ def eis_static(env: Env) -> MethodResult:
 
 
 def eis_live(env: Env) -> MethodResult:
-    unmanaged = env.live.get("drift", {}).get("unmanaged_resources", [])
-    findings = [f"Unmanaged resource outside IaC: {u}" for u in unmanaged]
+    drift = env.live.get("drift") or {}
+    # No unmanaged resources is the intended state, so an empty list is allowed; a missing drift scan is not.
+    findings = source_findings(("environment/live-state.json#drift", env.live.get("drift"), False),
+                               ("environment/live-state.json#drift.unmanaged_resources", drift.get("unmanaged_resources"), True))
+    unmanaged = drift.get("unmanaged_resources") or []
+    findings += [f"Unmanaged resource outside IaC: {u}" for u in unmanaged]
     return result("eis-live-drift", LIVE, "environment/live-state.json#drift",
                   "Live environment has no resources outside declared intended state",
                   "0 unmanaged resources", f"{len(unmanaged)} unmanaged", findings)
@@ -94,7 +98,7 @@ def apm_live(env: Env) -> MethodResult:
 
 # ---- KSI-IAM-ELP  Ensuring Least Privilege -----------------------------------
 def elp_static(env: Env) -> MethodResult:
-    findings = []
+    findings = source_findings(("aws_iam_policy resources in environment/iac-plan.json", env.iac_resources("aws_iam_policy"), False))
     for pol in env.iac_resources("aws_iam_policy"):
         v = pol["values"]
         for st in v.get("statements", []):
@@ -108,9 +112,14 @@ def elp_static(env: Env) -> MethodResult:
 
 
 def elp_live(env: Env) -> MethodResult:
-    iam = env.live.get("iam", {})
-    findings = [f"Wildcard admin on {w['principal']} is not approval-gated"
-                for w in iam.get("wildcard_admin_attachments", []) if not w.get("approval_gated")]
+    iam = env.live.get("iam") or {}
+    # No wildcard attachments is a good state, so an empty list is allowed; a missing list is not.
+    findings = source_findings(("environment/live-state.json#iam", env.live.get("iam"), False),
+                               ("environment/live-state.json#iam.wildcard_admin_attachments", iam.get("wildcard_admin_attachments"), True),
+                               ("environment/live-state.json#iam.unused_permission_findings", iam.get("unused_permission_findings"), True),
+                               ("environment/live-state.json#iam.unused_permission_threshold", iam.get("unused_permission_threshold"), True))
+    findings += [f"Wildcard admin on {w['principal']} is not approval-gated"
+                 for w in iam.get("wildcard_admin_attachments", []) if not w.get("approval_gated")]
     unused, limit = iam.get("unused_permission_findings", 0), iam.get("unused_permission_threshold", 0)
     if unused > limit:
         findings.append(f"{unused} unused-permission findings exceed threshold {limit}")
@@ -121,7 +130,9 @@ def elp_live(env: Env) -> MethodResult:
 
 # ---- KSI-SVC-SIN  Securing Information (encryption at rest) ------------------
 def sin_static(env: Env) -> MethodResult:
-    findings = []
+    storage = [r for t in ("aws_s3_bucket", "aws_db_instance", "aws_ebs_volume", "aws_sqs_queue", "aws_dynamodb_table")
+               for r in env.iac_resources(t)]
+    findings = source_findings(("storage resources in environment/iac-plan.json", storage, False))
     for b in env.iac_resources("aws_s3_bucket"):
         if not b["values"].get("encrypted"):
             findings.append(f"IaC bucket '{b['name']}' is not encrypted")
@@ -143,7 +154,9 @@ def sin_static(env: Env) -> MethodResult:
 
 
 def sin_live(env: Env) -> MethodResult:
-    findings = [f"Live bucket '{b['name']}' unencrypted" for b in env.live.get("s3_buckets", []) if not b["encrypted"]]
+    storage = [r for k in ("s3_buckets", "ebs_volumes", "rds_instances", "sqs_queues") for r in env.live.get(k) or []]
+    findings = source_findings(("storage resources in environment/live-state.json", storage, False))
+    findings += [f"Live bucket '{b['name']}' unencrypted" for b in env.live.get("s3_buckets", []) if not b["encrypted"]]
     findings += [f"Live volume '{v['id']}' unencrypted" for v in env.live.get("ebs_volumes", []) if not v["encrypted"]]
     findings += [f"Live DB '{d['id']}' unencrypted" for d in env.live.get("rds_instances", []) if not d["storage_encrypted"]]
     findings += [f"Live queue '{q['name']}' unencrypted" for q in env.live.get("sqs_queues", []) if not q["sse_enabled"]]
@@ -165,8 +178,9 @@ def asm_static(env: Env) -> MethodResult:
 
 
 def asm_live(env: Env) -> MethodResult:
-    findings = [f"Secret '{s['name']}' last rotated {s['days_since_rotation']}d ago (limit 90d)"
-                for s in env.live.get("secrets", []) if s["days_since_rotation"] > 90 or not s["rotation_enabled"]]
+    findings = source_findings(("environment/live-state.json#secrets", env.live.get("secrets"), False))
+    findings += [f"Secret '{s['name']}' last rotated {s['days_since_rotation']}d ago (limit 90d)"
+                 for s in env.live.get("secrets", []) if s["days_since_rotation"] > 90 or not s["rotation_enabled"]]
     return result("asm-live-rotation-age", LIVE, "environment/live-state.json#secrets",
                   "No live secret is older than its rotation limit",
                   "all secrets rotated within 90d", f"{len(findings)} overdue", findings)
@@ -309,7 +323,8 @@ def abo_alert(env: Env) -> MethodResult:
 
 # ---- KSI-SVC-VCM  Validating Communications ----------------------------------
 def vcm_static(env: Env) -> MethodResult:
-    findings = [f"Listener '{l['name']}' is not HTTPS" for l in env.iac_resources("aws_lb_listener") if l["values"]["protocol"] != "HTTPS"]
+    findings = source_findings(("aws_lb_listener resources in environment/iac-plan.json", env.iac_resources("aws_lb_listener"), False))
+    findings += [f"Listener '{l['name']}' is not HTTPS" for l in env.iac_resources("aws_lb_listener") if l["values"]["protocol"] != "HTTPS"]
     findings += [f"Listener '{l['name']}' uses weak policy" for l in env.iac_resources("aws_lb_listener")
                  if "TLS13" not in l["values"].get("ssl_policy", "") and "TLS-1-2" not in l["values"].get("ssl_policy", "")]
     return result("vcm-iac-tls-policy", STATIC, "environment/iac-plan.json",
