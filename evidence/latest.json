@@ -4,7 +4,7 @@
   "cso": "Orrinwick Beacon",
   "class": "c",
   "frmr_version": "2026.11.02.01",
-  "generated_at": "2026-11-22T17:22:41+00:00",
+  "generated_at": "2026-11-23T07:46:29+00:00",
   "summary": {
     "total": 46,
     "pass": 38,
@@ -91,7 +91,7 @@
           "description": "Every pipeline change in the last 30 days was assessed and given one of the four change types",
           "status": "pass",
           "expected": "100% typed: routine recurring, not significant, adaptive or transformative",
-          "observed": "212/212 typed: routine_recurring 190, not_significant 22, adaptive 0, transformative 0",
+          "observed": "212/212 typed: routine 190, not_significant 22, adaptive 0, transformative 0",
           "findings": []
         }
       ]
@@ -170,7 +170,7 @@
           "description": "The newest review of the change procedure is inside the cadence and was recorded by the POL-CMT owner",
           "status": "pass",
           "expected": "<= 365 days; reviewed by Platform Lead",
-          "observed": "51 days",
+          "observed": "52 days",
           "findings": []
         },
         {
@@ -506,7 +506,7 @@
           "description": "The newest review of protections is no older than 365 days, was done by the Platform Lead and covers every protection resource",
           "status": "pass",
           "expected": "<= 365 days, Platform Lead, all protection resources covered",
-          "observed": "0 days",
+          "observed": "1 days",
           "findings": []
         },
         {
@@ -984,7 +984,7 @@
           "description": "The plan was reviewed by its owner inside the cadence, and after every report or review that required a plan change",
           "status": "pass",
           "expected": "<= 365 days; reviewed by CISO; review after each required change",
-          "observed": "1 days",
+          "observed": "2 days",
           "findings": []
         }
       ]
@@ -1412,7 +1412,7 @@
           "description": "Backup and copy jobs completed in the last day, and every failed job in the last 30 days raised an alert within 60 minutes that a person acknowledged",
           "status": "pass",
           "expected": "jobs in the last day; alert <= 60 min, acknowledged",
-          "observed": "15 job(s) in 30 days, 1 failed, 0 finding(s)",
+          "observed": "17 job(s) in 30 days, 1 failed, 0 finding(s)",
           "findings": []
         }
       ]
@@ -1496,7 +1496,7 @@
           "description": "The newest review of the recovery objectives is inside the review cadence and was recorded by the POL-RPL owner",
           "status": "pass",
           "expected": "<= 90 days since last review; reviewed by Platform Lead",
-          "observed": "0 days",
+          "observed": "1 days",
           "findings": []
         }
       ]
