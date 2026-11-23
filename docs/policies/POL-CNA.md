@@ -48,14 +48,14 @@ This policy covers these information resources from the scope record:
 
 | KSI | Name | Automated methods | Current status |
 |---|---|---|---|
-| KSI-CNA-DFP | Defining Functionality and Privileges | `dfp-iac-role-definitions`, `dfp-live-role-privileges` | pass |
-| KSI-CNA-EIS | Enforcing Intended State | `eis-iac-drift-rule`, `eis-live-drift` | pass |
-| KSI-CNA-IBP | Implementing Best Practices | `ibp-iac-provider-guidance`, `ibp-live-benchmark-results` | pass |
+| KSI-CNA-DFP | Defining Functionality and Privileges | `dfp-iac-role-definitions`, `dfp-live-role-privileges`, `dfp-live-network-data-privileges` | pass |
+| KSI-CNA-EIS | Enforcing Intended State | `eis-iac-drift-rule`, `eis-live-drift`, `eis-live-auto-remediation` | pass |
+| KSI-CNA-IBP | Implementing Best Practices | `ibp-iac-provider-guidance`, `ibp-live-benchmark-results`, `ibp-live-saas-guidance` | pass |
 | KSI-CNA-MAT | Minimizing Attack Surface | `mat-iac-exposure`, `mat-live-exposed-endpoints` | pass |
-| KSI-CNA-OFA | Optimizing for Availability | `ofa-iac-redundancy`, `ofa-live-availability` | pass |
+| KSI-CNA-OFA | Optimizing for Availability | `ofa-iac-redundancy`, `ofa-live-availability`, `ofa-live-recovery-time` | pass |
 | KSI-CNA-RNT | Restricting Network Traffic | `rnt-iac-traffic`, `rnt-live-traffic` | pass |
 | KSI-CNA-RVP | Reviewing Protections | `cna-rvp-static`, `cna-rvp-live`, `cna-rvp-change` | pass |
-| KSI-CNA-ULN | Using Logical Networking | `uln-iac-logical-network`, `uln-live-network-controls` | pass |
+| KSI-CNA-ULN | Using Logical Networking | `uln-iac-logical-network`, `uln-live-network-controls`, `uln-live-flow-review` | pass |
 
 Status is a simulated validator result. Class C needs at least two automated methods per KSI (`FRC-CSX-VVK`).
 

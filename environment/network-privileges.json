@@ -1,0 +1,76 @@
+{
+  "_notice": "FICTIONAL. The allowed network rules for each security group and the allowed principals for each bucket policy (KSI-CNA-DFP). Owner: Platform Lead.",
+  "security_groups": {
+    "alb": {
+      "ingress": [
+        {
+          "port": 443,
+          "cidr": "0.0.0.0/0"
+        }
+      ],
+      "egress": [
+        {
+          "port": 8443,
+          "cidr": "sg:app"
+        }
+      ]
+    },
+    "app": {
+      "ingress": [
+        {
+          "port": 8443,
+          "cidr": "sg:alb"
+        }
+      ],
+      "egress": [
+        {
+          "port": 5432,
+          "cidr": "sg:db"
+        },
+        {
+          "port": 443,
+          "cidr": "sg:vpce"
+        },
+        {
+          "port": 443,
+          "cidr": "nat"
+        }
+      ]
+    },
+    "db": {
+      "ingress": [
+        {
+          "port": 5432,
+          "cidr": "sg:app"
+        }
+      ],
+      "egress": []
+    },
+    "vpce": {
+      "ingress": [
+        {
+          "port": 443,
+          "cidr": "sg:app"
+        }
+      ],
+      "egress": []
+    }
+  },
+  "bucket_principals": {
+    "exports": [
+      "role/beacon-api"
+    ],
+    "backups": [
+      "role/backup"
+    ],
+    "terraform_state": [
+      "role/ci_deploy"
+    ],
+    "log_archive": [
+      "role/backup"
+    ],
+    "backup_replica": [
+      "role/backup"
+    ]
+  }
+}

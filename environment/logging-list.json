@@ -1,0 +1,183 @@
+{
+  "_notice": "FICTIONAL. The maintained list of what is logged for each in-scope machine-based resource (KSI-MLA-LET).",
+  "owner": "Security Engineering Lead",
+  "review_cadence_days": 365,
+  "last_review_days_ago": 53,
+  "event_types": [
+    "authentication",
+    "admin action",
+    "data access",
+    "configuration change",
+    "network deny"
+  ],
+  "resources": [
+    {
+      "scope": "P1",
+      "log_source": "cloudtrail",
+      "event_types": [
+        "admin action",
+        "configuration change"
+      ]
+    },
+    {
+      "scope": "P2",
+      "log_source": "app",
+      "event_types": [
+        "admin action",
+        "configuration change",
+        "authentication",
+        "data access"
+      ]
+    },
+    {
+      "scope": "P3",
+      "log_source": "cloudtrail",
+      "event_types": [
+        "admin action",
+        "configuration change",
+        "authentication",
+        "data access"
+      ]
+    },
+    {
+      "scope": "P4",
+      "log_source": "cloudtrail",
+      "event_types": [
+        "admin action",
+        "configuration change",
+        "authentication",
+        "data access"
+      ]
+    },
+    {
+      "scope": "P5",
+      "log_source": "cloudtrail",
+      "event_types": [
+        "admin action",
+        "configuration change"
+      ]
+    },
+    {
+      "scope": "P6",
+      "log_source": "cloudtrail",
+      "event_types": [
+        "admin action",
+        "configuration change"
+      ]
+    },
+    {
+      "scope": "P7",
+      "log_source": "vpc_flow",
+      "event_types": [
+        "admin action",
+        "configuration change"
+      ]
+    },
+    {
+      "scope": "P8",
+      "log_source": "alb",
+      "event_types": [
+        "admin action",
+        "configuration change",
+        "authentication",
+        "data access"
+      ]
+    },
+    {
+      "scope": "P9",
+      "log_source": "cloudtrail",
+      "event_types": [
+        "admin action",
+        "configuration change"
+      ]
+    },
+    {
+      "scope": "P10",
+      "log_source": "app",
+      "event_types": [
+        "admin action",
+        "configuration change"
+      ]
+    },
+    {
+      "scope": "P11",
+      "log_source": "cloudtrail",
+      "event_types": [
+        "admin action",
+        "configuration change"
+      ]
+    },
+    {
+      "scope": "P12",
+      "log_source": "cloudtrail",
+      "event_types": [
+        "admin action",
+        "configuration change"
+      ]
+    },
+    {
+      "scope": "P13",
+      "log_source": "cloudtrail",
+      "event_types": [
+        "admin action",
+        "configuration change"
+      ]
+    },
+    {
+      "scope": "E2",
+      "log_source": "cloudtrail",
+      "event_types": [
+        "admin action",
+        "configuration change"
+      ]
+    },
+    {
+      "scope": "E3",
+      "log_source": "cloudtrail",
+      "event_types": [
+        "admin action",
+        "configuration change"
+      ]
+    },
+    {
+      "scope": "E4",
+      "log_source": "cloudtrail",
+      "event_types": [
+        "admin action",
+        "configuration change"
+      ]
+    },
+    {
+      "scope": "E5",
+      "log_source": "cloudtrail",
+      "event_types": [
+        "admin action",
+        "configuration change"
+      ]
+    },
+    {
+      "scope": "E6",
+      "log_source": "cloudtrail",
+      "event_types": [
+        "admin action",
+        "configuration change"
+      ]
+    },
+    {
+      "scope": "E8",
+      "log_source": "cloudtrail",
+      "event_types": [
+        "admin action",
+        "configuration change"
+      ]
+    },
+    {
+      "scope": "S4",
+      "log_source": "cloudtrail",
+      "event_types": [
+        "admin action",
+        "configuration change"
+      ]
+    }
+  ]
+}

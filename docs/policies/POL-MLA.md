@@ -45,10 +45,10 @@ This policy covers these information resources from the scope record:
 
 | KSI | Name | Automated methods | Current status |
 |---|---|---|---|
-| KSI-MLA-ALA | Authorizing Log Access | `ala-iac-log-access-model`, `ala-live-log-access-grants` | pass |
-| KSI-MLA-EVC | Evaluating Configurations | `evc-iac-config-testing`, `evc-live-scan-results` | pass |
-| KSI-MLA-LET | Logging Event Types | `let-iac-cloudtrail`, `let-live-cloudtrail` | pass |
-| KSI-MLA-OSM | Operating SIEM Capability | `osm-iac-siem-config`, `osm-live-siem-health` | pass |
+| KSI-MLA-ALA | Authorizing Log Access | `ala-iac-log-access-model`, `ala-live-log-access-grants`, `ala-live-sensitivity-classes` | pass |
+| KSI-MLA-EVC | Evaluating Configurations | `evc-iac-config-testing`, `evc-live-scan-results`, `evc-live-saas-configuration` | pass |
+| KSI-MLA-LET | Logging Event Types | `let-iac-cloudtrail`, `let-live-cloudtrail`, `let-list-coverage` | pass |
+| KSI-MLA-OSM | Operating SIEM Capability | `osm-iac-siem-config`, `osm-live-siem-health`, `osm-live-siem-review` | pass |
 | KSI-MLA-RVL | Reviewing Logs | `rvl-iac-review-process`, `rvl-live-review-activity` | pass |
 
 Status is a simulated validator result. Class C needs at least two automated methods per KSI (`FRC-CSX-VVK`).

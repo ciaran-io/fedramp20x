@@ -52,13 +52,13 @@ This policy covers these information resources from the scope record:
 | KSI | Name | Automated methods | Current status |
 |---|---|---|---|
 | KSI-SVC-ACM | Automating Configuration Management | `acm-iac-config-automation`, `acm-live-drift` | pass |
-| KSI-SVC-ASM | Automating Secret Management | `asm-iac-rotation`, `asm-live-rotation-age` | pass |
+| KSI-SVC-ASM | Automating Secret Management | `asm-iac-rotation`, `asm-live-rotation-age`, `asm-live-keys-certificates` | pass |
 | KSI-SVC-EIS | Evaluating and Improving Security | `sei-iac-improvement-process`, `sei-live-improvement-flow` | fail |
-| KSI-SVC-PRR | Preventing Residual Risk | `prr-iac-cleanup-step`, `prr-live-residual-elements` | pass |
-| KSI-SVC-RUD | Removing Unwanted Data | `rud-iac-removal-process`, `rud-live-removal-requests` | pass |
-| KSI-SVC-SIN | Securing Information | `sin-iac-encryption`, `sin-live-encryption` | pass |
-| KSI-SVC-VCM | Validating Communications | `vcm-iac-tls-policy`, `vcm-live-tls-scan` | pass |
-| KSI-SVC-VRI | Validating Resource Integrity | `vri-iac-signing`, `vri-live-image-integrity` | pass |
+| KSI-SVC-PRR | Preventing Residual Risk | `prr-iac-cleanup-step`, `prr-live-residual-elements`, `prr-grc-plan-review` | pass |
+| KSI-SVC-RUD | Removing Unwanted Data | `rud-iac-removal-process`, `rud-live-removal-requests`, `rud-terms-agreement` | pass |
+| KSI-SVC-SIN | Securing Information | `sin-iac-encryption`, `sin-live-encryption`, `sin-live-modification-protection` | pass |
+| KSI-SVC-VCM | Validating Communications | `vcm-iac-tls-policy`, `vcm-live-tls-scan`, `vcm-live-client-authentication` | pass |
+| KSI-SVC-VRI | Validating Resource Integrity | `vri-iac-signing`, `vri-live-image-integrity`, `vri-live-artifact-signatures` | pass |
 
 Status is a simulated validator result. Class C needs at least two automated methods per KSI (`FRC-CSX-VVK`).
 

@@ -46,6 +46,18 @@ class Registry(unittest.TestCase):
         for ksi in KSI_GAPS:
             self.assertIn(ksi, KSI_METHODS)
 
+    def test_a_gap_blocks_a_pass(self):
+        # Issue #39: a KSI with a known gap cannot pass, even when every method passes.
+        from tools.run_validators import roll_up
+        passing = [{"status": "pass"}, {"status": "pass"}]
+        self.assertEqual(roll_up(passing), "pass")
+        for ksi, gap in KSI_GAPS.items():
+            self.assertEqual(roll_up(passing, gap), "partial", ksi)
+
+    def test_no_ksi_has_both_a_gap_and_a_limit_note_that_says_nothing_is_missing(self):
+        for ksi in KSI_GAPS:
+            self.assertFalse(KSI_NOTES.get(ksi, "").startswith("Limit:"), ksi)
+
     def test_method_ids_are_unique(self):
         e = env()
         ids = [fn(e).method_id for fns in KSI_METHODS.values() for fn in fns]
@@ -276,6 +288,148 @@ class EmptySource(unittest.TestCase):
         e.live["iam"]["wildcard_admin_attachments"] = []
         self.assertFalse(any(f.startswith("Source is") for f in m.eis_live(e).findings))
         self.assertFalse(any(f.startswith("Source is") for f in m.elp_live(e).findings))
+
+
+class CoverageMethods(unittest.TestCase):
+    """Issue #39: the methods that close the coverage gaps. Each passes on the demo data, fails on an
+    empty source, and fails on each recorded break test."""
+
+    def setUp(self):
+        from unittest import mock
+        from validators import methods_cover as c
+        self.c, self.mock = c, mock
+        self.files = {}  # file overrides for methods that read their own file
+
+    def run_method(self, fn, e, files=None):
+        real = self.c._file
+        files = files or {}
+        with self.mock.patch.object(self.c, "_file", side_effect=lambda rel: copy.deepcopy(files[rel]) if rel in files else real(rel)):
+            return fn(e)
+
+    def f(self, rel):
+        return copy.deepcopy(self.c._file(rel))
+
+    def assert_fails(self, fn, change, files_change=None, label=""):
+        e, files = env(), {}
+        if change:
+            change(e)
+        if files_change:
+            rel, edit = files_change
+            d = self.f(rel)
+            edit(d)
+            files[rel] = d
+        r = self.run_method(fn, e, files)
+        self.assertEqual(r.status, "fail", f"{fn.__name__} did not fail: {label}")
+        return r
+
+    def methods(self):
+        c = self.c
+        return [c.osm_review, c.uln_review, c.ofa_recovery, c.prr_plans, c.asm_keys_certs, c.trc_history, c.rud_terms,
+                c.aam_role_group_lifecycle, c.jit_non_user, c.eis_remediation, c.dfp_network_data, c.let_list, c.giv_people,
+                c.vri_artifacts, c.sin_modification, c.ala_classes, c.evc_saas, c.ibp_saas, c.vcm_client_auth]
+
+    def test_each_method_passes_on_the_demo_data(self):
+        e = env()
+        for fn in self.methods():
+            r = self.run_method(fn, e)
+            self.assertEqual(r.status, "pass", f"{fn.__name__}: {r.findings}")
+
+    def test_each_method_fails_on_empty_sources(self):
+        # Blank everything a method can read: the live snapshot, the GRC records, the IaC plan and its own files.
+        empty_files = {rel: {} for rel in ("environment/recovery-objectives.json", "environment/customer-terms.json",
+                       "environment/network-privileges.json", "environment/logging-list.json", "environment/log-classes.json",
+                       "environment/saas-config.json", "mas/scope-changes.json")}
+        for fn in self.methods():
+            e = env()
+            e.live, e.grc, e.iac = {}, {}, {}
+            self.assertEqual(self.run_method(fn, e, empty_files).status, "fail", fn.__name__)
+
+    # ---- break tests: one or more changes per method that must make it fail ----
+    def test_break_osm(self):
+        def age(e): e.live["siem_reviews"][-1]["days_ago"] = 120; e.live["siem_reviews"][1]["days_ago"] = 121; e.live["siem_reviews"][0]["days_ago"] = 150
+        self.assert_fails(self.c.osm_review, age, label="review past cycle")
+        self.assert_fails(self.c.osm_review, lambda e: e.live["siem_reviews"][-1].update(reviewed_by="Platform Lead"), label="wrong reviewer")
+        self.assert_fails(self.c.osm_review, lambda e: e.live["siem_reviews"][-1].update(sources_checked=4), label="sources missed")
+
+    def test_break_uln(self):
+        self.assert_fails(self.c.uln_review, lambda e: e.live["traffic_flow_reviews"][-1].update(days_ago=100), label="review past cycle")
+        self.assert_fails(self.c.uln_review, lambda e: e.live["traffic_flow_reviews"][-1].update(reviewed_by="CISO"), label="wrong reviewer")
+
+    def test_break_ofa(self):
+        self.assert_fails(self.c.ofa_recovery, lambda e: e.live["restore_tests"][-1].update(achieved_rto_hours=9.5), label="RTO missed")
+        self.assert_fails(self.c.ofa_recovery, lambda e: e.live["restore_tests"][-1].update(from_vault="primary"), label="same-region restore")
+
+    def test_break_prr(self):
+        self.assert_fails(self.c.prr_plans, lambda e: e.grc["change_plan_reviews"][0].update(plans_reviewed=[]), label="no plans reviewed")
+        e = env()
+        e.grc["change_plan_reviews"] = []
+        e.as_of = datetime.date(2026, 12, 31)
+        self.assertEqual(self.run_method(self.c.prr_plans, e).status, "fail", "change unreviewed after 28 days")
+
+    def test_break_asm(self):
+        self.assert_fails(self.c.asm_keys_certs, lambda e: e.live["kms_keys"][0].update(rotation_enabled=False), label="rotation off")
+        self.assert_fails(self.c.asm_keys_certs, lambda e: e.live["certificates"][0].update(expires_in_days=10), label="certificate near expiry")
+        self.assert_fails(self.c.asm_keys_certs, lambda e: e.live["certificates"][0].update(auto_renew=False), label="no auto renew")
+
+    def test_break_trc(self):
+        self.assert_fails(self.c.trc_history, lambda e: e.live["restore_tests"].pop(1), label="a missed cycle")
+        self.assert_fails(self.c.trc_history, lambda e: e.live["restore_tests"][0].update(achieved_rto_hours=12), label="RTO missed in history")
+
+    def test_break_rud(self):
+        self.assert_fails(self.c.rud_terms, lambda e: e.live["data_removal_requests"][0].update(completed_days=31), label="request on day 31")
+        self.assert_fails(self.c.rud_terms, None, ("environment/customer-terms.json", lambda d: d.update(deletion_days=10)), label="process longer than term")
+
+    def test_break_aam(self):
+        self.assert_fails(self.c.aam_role_group_lifecycle, lambda e: e.live["iam_change_events"].append(
+            {"target": "role/console-test", "kind": "role", "action": "create", "actor": "user:eng-04", "days_ago": 3}), label="console-made role")
+        self.assert_fails(self.c.aam_role_group_lifecycle, lambda e: e.live["iam_roles"].append(
+            {"name": "role/shadow", "scope": "P1", "wildcard_actions": []}), label="undeclared live role")
+
+    def test_break_jit(self):
+        self.assert_fails(self.c.jit_non_user, lambda e: e.live["service_accounts"][0].update(standing_admin=True), label="standing admin")
+        self.assert_fails(self.c.jit_non_user, lambda e: e.live["jit_reviews"][-1].update(days_ago=200), label="review past cycle")
+
+    def test_break_eis(self):
+        def drop(e): e.iac["resources"] = [r for r in e.iac["resources"] if not (r["type"] == "aws_config_remediation_configuration" and r["name"] == "sg_no_open_admin_ports")]
+        self.assert_fails(self.c.eis_remediation, drop, label="rule with no remediation")
+        self.assert_fails(self.c.eis_remediation, lambda e: e.live["remediation_log"][0].update(corrected_minutes=120), label="drift not corrected in time")
+
+    def test_break_dfp(self):
+        self.assert_fails(self.c.dfp_network_data, lambda e: e.live["security_groups"][2]["ingress"].append({"port": 22, "cidr": "0.0.0.0/0"}), label="SSH open")
+        self.assert_fails(self.c.dfp_network_data, lambda e: e.live["s3_buckets"][0]["policy_principals"].append("*"), label="wildcard principal")
+
+    def test_break_let(self):
+        self.assert_fails(self.c.let_list, None, ("environment/logging-list.json", lambda d: d["resources"].pop(0)), label="resource dropped")
+        self.assert_fails(self.c.let_list, None, ("environment/logging-list.json", lambda d: d.update(last_review_days_ago=400)), label="review past cycle")
+        self.assert_fails(self.c.let_list, lambda e: e.live["siem"]["sources_reporting"].remove("cloudtrail"), label="source off")
+
+    def test_break_giv(self):
+        self.assert_fails(self.c.giv_people, lambda e: e.live["idp_users"].append({"id": "u-9999", "people_resource": "N9", "status": "active"}), label="unmapped user")
+        self.assert_fails(self.c.giv_people, lambda e: e.grc["third_party_register"].pop(), label="vendor removed")
+
+    def test_break_vri(self):
+        self.assert_fails(self.c.vri_artifacts, lambda e: e.live["artifact_signatures"][0].update(signed=False), label="unsigned module")
+
+    def test_break_sin(self):
+        self.assert_fails(self.c.sin_modification, lambda e: e.live["s3_buckets"][0].update(versioning=False), label="versioning off")
+        self.assert_fails(self.c.sin_modification, lambda e: e.live["rds_instances"][0].update(deletion_protection=False), label="no deletion protection")
+
+    def test_break_ala(self):
+        self.assert_fails(self.c.ala_classes, lambda e: e.live["log_access"]["grants_last_90d"][0].update(classes=["C1", "C3"]), label="broad grant on C3")
+        self.assert_fails(self.c.ala_classes, None, ("environment/log-classes.json", lambda d: d["access_map"].update({"auditor": ["C1"]})), label="grant outside map")
+        self.assert_fails(self.c.ala_classes, lambda e: e.live["log_access"]["grants_last_90d"][1].update(type="standing_read"), label="C3 without JIT")
+
+    def test_break_evc_and_ibp(self):
+        saas = "environment/saas-config.json"
+        self.assert_fails(self.c.evc_saas, None, (saas, lambda d: d["exports"]["E1"].update(collected_days_ago=9)), label="stale export")
+        self.assert_fails(self.c.evc_saas, None, (saas, lambda d: d["exports"]["E9"].update(settings=[])), label="empty export")
+        self.assert_fails(self.c.evc_saas, None, (saas, lambda d: d["exports"]["E7"]["settings"][-1].pop("exception")), label="deviation with no exception")
+        self.assert_fails(self.c.ibp_saas, None, (saas, lambda d: d["exports"]["E7"].update(last_review_days_ago=120)), label="comparison past cycle")
+        self.assert_fails(self.c.ibp_saas, None, (saas, lambda d: d["exceptions"][0].update(expires_days=0)), label="expired exception")
+
+    def test_break_vcm(self):
+        self.assert_fails(self.c.vcm_client_auth, lambda e: e.live["flow_auth"][0].update(client_authenticated=False), label="no client auth")
+        self.assert_fails(self.c.vcm_client_auth, lambda e: e.live["flow_auth"].pop(), label="flow not observed")
 
 
 class History(unittest.TestCase):

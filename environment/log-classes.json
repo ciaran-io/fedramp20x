@@ -1,0 +1,25 @@
+{
+  "_notice": "FICTIONAL. Log data sensitivity classes and the access each role may have (KSI-MLA-ALA). Decided 23 Nov 2026.",
+  "classes": {
+    "C1": "security audit logs (CloudTrail, identity provider, pipeline)",
+    "C2": "operational logs (load balancer, app, VPC flow)",
+    "C3": "logs that may hold federal contact data (notification workers)"
+  },
+  "jit_required": [
+    "C3"
+  ],
+  "access_map": {
+    "security-analyst": [
+      "C1",
+      "C2"
+    ],
+    "auditor": [
+      "C1",
+      "C3"
+    ],
+    "platform-engineer": [
+      "C2",
+      "C3"
+    ]
+  }
+}

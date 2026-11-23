@@ -49,10 +49,10 @@ This policy covers these information resources from the scope record:
 
 | KSI | Name | Automated methods | Current status |
 |---|---|---|---|
-| KSI-IAM-AAM | Automating Account Management | `aam-iac-lifecycle-automation`, `aam-live-deprovisioning` | pass |
+| KSI-IAM-AAM | Automating Account Management | `aam-iac-lifecycle-automation`, `aam-live-deprovisioning`, `aam-live-role-group-lifecycle` | pass |
 | KSI-IAM-APM | Adopting Passwordless Methods | `apm-iac-idp-policy`, `apm-live-user-factors` | pass |
 | KSI-IAM-ELP | Ensuring Least Privilege | `elp-iac-wildcards`, `elp-live-unused-perms` | pass |
-| KSI-IAM-JIT | Authorizing Just-in-Time | `jit-iac-access-model`, `jit-live-standing-access` | pass |
+| KSI-IAM-JIT | Authorizing Just-in-Time | `jit-iac-access-model`, `jit-live-standing-access`, `jit-live-non-user-accounts` | pass |
 | KSI-IAM-SNU | Securing Non-User Authentication | `snu-iac-workload-auth`, `snu-live-access-key-age` | fail |
 | KSI-IAM-SUS | Responding to Suspicious Activity | `sus-iac-response-rules`, `sus-live-response-time` | pass |
 
