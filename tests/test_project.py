@@ -10,6 +10,7 @@ from tools import check_scope_changes as scl
 from validators import methods as m
 from validators import methods_grc as g
 from validators import methods_ops as o
+from validators import methods_tech as t
 from validators.base import AS_OF_VARIABLE, Env, run_date
 from validators.registry import KSI_METHODS, KSI_GAPS, KSI_NOTES
 
@@ -229,6 +230,92 @@ class Methods(unittest.TestCase):
         self.assertEqual(m.apm_live(e).status, "fail")
 
 
+class EmptySource(unittest.TestCase):
+    """Issue #44: a method must fail when the source it reads is missing or empty (FRC-CSX-VVK)."""
+
+    # (method, the Env field that holds its source, the key to empty, or None to empty the whole field)
+    CASES = [
+        (m.rnt_static, "iac", None), (m.rnt_live, "live", "security_groups"),
+        (m.elp_static, "iac", None), (m.elp_live, "live", "iam"),
+        (m.sin_static, "iac", None), (m.sin_live, "live", None),
+        (m.eis_live, "live", "drift"), (m.asm_live, "live", "secrets"),
+        (m.vcm_static, "iac", None),
+        (t.dfp_static, "iac", None), (t.dfp_live, "live", "iam_roles"),
+        (t.rmv_live, "live", "compute"), (t.snu_static, "iac", None),
+        (o.giv_live, "live", None),
+    ]
+
+    def test_each_method_passes_on_its_real_source(self):
+        e = env()
+        for fn, _, _ in self.CASES:
+            self.assertFalse(any(f.startswith("Source is") for f in fn(e).findings), fn.__name__)
+
+    def test_each_method_fails_when_its_source_is_empty(self):
+        for fn, field_name, key in self.CASES:
+            for blank in ({}, []) if key else ({},):
+                e = env()
+                if key is None:
+                    setattr(e, field_name, {})
+                else:
+                    getattr(e, field_name)[key] = blank
+                r = fn(e)
+                self.assertEqual(r.status, "fail", f"{fn.__name__} passed with {field_name}.{key or '*'} = {blank!r}")
+
+    def test_each_method_fails_when_its_source_is_missing(self):
+        for fn, field_name, key in self.CASES:
+            if key is None:
+                continue
+            e = env()
+            del getattr(e, field_name)[key]
+            self.assertEqual(fn(e).status, "fail", f"{fn.__name__} passed with {field_name}.{key} missing")
+
+    def test_allowed_empty_list_still_passes(self):
+        # No unmanaged resources and no wildcard attachments are good states, not missing data.
+        e = env()
+        e.live["drift"]["unmanaged_resources"] = []
+        e.live["iam"]["wildcard_admin_attachments"] = []
+        self.assertFalse(any(f.startswith("Source is") for f in m.eis_live(e).findings))
+        self.assertFalse(any(f.startswith("Source is") for f in m.elp_live(e).findings))
+
+
+class History(unittest.TestCase):
+    """Issue #47: a later run on the same day must not replace the record of an earlier run."""
+
+    def _ksis(self, status):
+        method = {"method_id": "rnt-live-traffic", "status": "fail" if status == "fail" else "pass"}
+        return [{"id": "KSI-CNA-RNT", "status": status, "methods": [method]}]
+
+    def test_two_runs_on_one_day_keep_both_records(self):
+        import tempfile
+        from datetime import datetime, timezone
+        from tools.run_validators import write_history
+        with tempfile.TemporaryDirectory() as d:
+            hist = Path(d)
+            morning = datetime(2026, 11, 23, 6, 17, tzinfo=timezone.utc)
+            afternoon = datetime(2026, 11, 23, 15, 0, tzinfo=timezone.utc)
+            first = write_history(hist, morning, self._ksis("fail"))
+            write_history(hist, afternoon, self._ksis("pass"))
+            self.assertEqual(len(list((hist / "runs").glob("*.json"))), 2)
+            kept = json.loads(first.read_text())
+            self.assertEqual(kept["ksi_status"]["KSI-CNA-RNT"], "fail")
+            self.assertEqual(kept["methods_not_passing"], {"KSI-CNA-RNT": ["rnt-live-traffic"]})
+            day = json.loads((hist / "2026-11-23.json").read_text())
+            self.assertEqual(day["ksi_status"]["KSI-CNA-RNT"], "pass")
+            self.assertEqual(len(day["runs"]), 2)
+            self.assertEqual(day["not_passing_in_any_run"], ["KSI-CNA-RNT"])
+
+    def test_two_runs_in_one_second_do_not_overwrite(self):
+        import tempfile
+        from datetime import datetime, timezone
+        from tools.run_validators import write_history
+        with tempfile.TemporaryDirectory() as d:
+            now = datetime(2026, 11, 23, 6, 17, tzinfo=timezone.utc)
+            a = write_history(Path(d), now, self._ksis("fail"))
+            b = write_history(Path(d), now, self._ksis("pass"))
+            self.assertNotEqual(a, b)
+            self.assertEqual(json.loads(a.read_text())["ksi_status"]["KSI-CNA-RNT"], "fail")
+
+
 class ScopeLog(unittest.TestCase):
     def test_fingerprint_changes_when_a_resource_moves_out(self):
         rec = load("mas/mas-record.json")
@@ -240,6 +327,42 @@ class ScopeLog(unittest.TestCase):
     def test_fingerprint_is_stable(self):
         rec = load("mas/mas-record.json")
         self.assertEqual(scl.fingerprint(rec), scl.fingerprint(copy.deepcopy(rec)))
+
+    def _condition(self, rec, cond_id):
+        return next(c for r in rec["information_resources"] for c in (r.get("conditions") or []) if c["id"] == cond_id)
+
+    def test_fingerprint_changes_when_condition_text_changes(self):
+        # Issue #38: the test of 2026-11-22 changed COND-S1-1 to allow alert content in tickets.
+        rec = load("mas/mas-record.json")
+        before = scl.fingerprint(rec)
+        self._condition(rec, "COND-S1-1")["text"] = "Structured intake accepts alert content in tickets."
+        self.assertNotEqual(before, scl.fingerprint(rec))
+        self.assertEqual(scl.fingerprint(load("mas/mas-record.json"), 1), scl.fingerprint(rec, 1),
+                         "method 1 is blind to this change, which is why method 2 exists")
+
+    def test_fingerprint_changes_when_condition_evidence_is_removed(self):
+        rec = load("mas/mas-record.json")
+        before = scl.fingerprint(rec)
+        self._condition(rec, "COND-S1-1")["evidence"] = ""
+        self.assertNotEqual(before, scl.fingerprint(rec))
+
+    def test_current_log_matches_the_record(self):
+        ref, method, problems = scl.reference(load("mas/scope-changes.json"))
+        self.assertEqual(problems, [])
+        self.assertEqual(method, scl.CURRENT_METHOD)
+        self.assertEqual(ref, scl.fingerprint(load("mas/mas-record.json")))
+
+    def test_rebaseline_cannot_hide_a_scope_change(self):
+        log = load("mas/scope-changes.json")
+        log["rebaselines"][0]["fingerprint_before"] = "0000000000000000"
+        _, _, problems = scl.reference(log)
+        self.assertTrue(any("fingerprint_before" in p for p in problems))
+
+    def test_log_without_rebaseline_is_flagged(self):
+        log = load("mas/scope-changes.json")
+        del log["rebaselines"]
+        _, _, problems = scl.reference(log)
+        self.assertTrue(any("add a rebaseline" in p for p in problems))
 
 
 if __name__ == "__main__":

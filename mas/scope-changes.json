@@ -31,5 +31,16 @@
       "notification": null,
       "scope_fingerprint_after": "a78b5fcdcbfbf373"
     }
+  ],
+  "rebaselines": [
+    {
+      "date": "2026-11-23",
+      "after_entry": "SC-002",
+      "method_from": 1,
+      "method_to": 2,
+      "fingerprint_before": "a78b5fcdcbfbf373",
+      "fingerprint_after": "e96a7c50eda0c707",
+      "reason": "The fingerprint now covers each exclusion condition's ID, text and evidence (issue #38). The record did not change: fingerprint_before equals the SC-002 fingerprint."
+    }
   ]
 }
