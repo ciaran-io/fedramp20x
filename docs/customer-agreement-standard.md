@@ -2,7 +2,7 @@
 
 > FICTIONAL DEMO PROJECT. Orrinwick Labs, Inc. and Orrinwick Beacon are invented. This is not a real agreement and is not legal text.
 
-Status: Draft, pending review by the demo author. Version 2026-11.
+Status: Approved by the demo author, 23 November 2026. Version 2026-11.
 
 This extract records the data terms that the validators check. The machine-readable copy is `environment/customer-terms.json`.
 

@@ -35,10 +35,10 @@ This policy covers these information resources from the scope record:
 
 | ID | Requirement | KSIs |
 |---|---|---|
-| MLA-1 | Log access is limited to named security and operations roles. Log changes and deletions raise an alert. | KSI-MLA-ALA |
-| MLA-2 | Resource configurations are evaluated against the baseline at least daily. | KSI-MLA-EVC |
-| MLA-3 | Each in-scope resource logs authentication, authorisation, administrative, configuration and data-access events. Logs do not contain alert summaries or credentials. | KSI-MLA-LET |
-| MLA-4 | Logs flow to the security monitoring stack (E4), which correlates events and raises alerts. | KSI-MLA-OSM |
+| MLA-1 | Log access is limited to named security and operations roles. Log changes and deletions raise an alert. Log data has three sensitivity classes: C1 security audit, C2 operational and C3 logs that may hold federal contact data. Each role's access is limited to the classes in environment/log-classes.json, and access to C3 is just in time. | KSI-MLA-ALA |
+| MLA-2 | Resource configurations are evaluated against the baseline at least daily. The configuration of each SaaS tool (E1, E7, E9) is exported and evaluated against its baseline at least daily (environment/saas-config.json). | KSI-MLA-EVC |
+| MLA-3 | Each in-scope resource logs authentication, authorisation, administrative, configuration and data-access events. Logs do not contain alert summaries or credentials. The Security Operations Lead keeps the list of logged resources and event types in environment/logging-list.json and reviews it every year. | KSI-MLA-LET |
+| MLA-4 | Logs flow to the security monitoring stack (E4), which correlates events and raises alerts. The Security Operations Lead reviews the monitoring stack every 30 days, checks that each expected log source reports, and records the review in environment/live-state.json#siem_reviews. | KSI-MLA-OSM |
 | MLA-5 | Security staff review alerts daily and review log coverage each quarter. Logs are kept for 12 months. | KSI-MLA-RVL |
 
 ## Indicators and validation

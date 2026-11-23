@@ -46,14 +46,14 @@
       "resources": ["P1", "P2", "P3", "P4", "P8", "P12", "E3"],
       "requirements": [
         {"id": "CNA-1", "text": "Each resource has a documented function in the scope record and its own role declared in code. A role grants only the named actions its function needs: no wildcard actions, no role shared between services, and permissions unused for 90 days are removed (POL-IAM IAM-3). Network access follows CNA-6, and data access follows SVC-6.", "ksis": ["CNA-DFP"]},
-        {"id": "CNA-2", "text": "Infrastructure is declared in code. A resource that exists outside the code is a defect and is removed or brought into the code within 5 business days.", "ksis": ["CNA-EIS"]},
+        {"id": "CNA-2", "text": "Infrastructure is declared in code. A resource that exists outside the code is a defect and is removed or brought into the code within 5 business days. AWS Config rules correct drift automatically within 15 minutes.", "ksis": ["CNA-EIS"]},
         {"id": "CNA-3", "text": "Each third-party machine-based resource is compared with its provider's best-practice guidance on every validation run, and at least every 3 days: the CIS AWS Foundations Benchmark for the AWS account, and the vendor's security baseline for each SaaS tool (E1, E7, E9). Failed controls are fixed or accepted as exceptions under the policy exception process.", "ksis": ["CNA-IBP"]},
         {"id": "CNA-4", "text": "Public exposure is limited to the load balancer, gateway and web application firewall (P8). Each open port and public endpoint is justified in the scope record.", "ksis": ["CNA-MAT"]},
         {"id": "CNA-5", "text": "Production runs in more than one availability zone. Cross-region encrypted backups meet the recovery objectives in policy POL-RPL.", "ksis": ["CNA-OFA"]},
-        {"id": "CNA-6", "text": "Inbound and outbound traffic is denied by default. Allowed flows match the flows in the scope record.", "ksis": ["CNA-RNT"]},
+        {"id": "CNA-6", "text": "Inbound and outbound traffic is denied by default. Allowed flows match the flows in the scope record. The allowed rules for each security group and the allowed principals for each bucket policy are kept in environment/network-privileges.json, owned by the Platform Lead.", "ksis": ["CNA-RNT"]},
         {"id": "CNA-7a", "text": "The Platform Lead reviews protections at least once a year.", "ksis": ["CNA-RVP"]},
         {"id": "CNA-7b", "text": "The Platform Lead also reviews protections after each change recorded in mas/scope-changes.json. The deadline depends on the change type in the SCN rules. Transformative: before the change starts, and again within 5 business days after it is finished. Adaptive: within 10 business days after the change is finished, before the notice under SCN-ADP-NTF. Not significant: within 20 business days after the change is finished. Routine recurring: no separate review, because the annual review covers these changes.", "ksis": ["CNA-RVP"]},
-        {"id": "CNA-8", "text": "Production uses logical networks and security groups to separate tenants' workloads from operations tooling and from other trust zones.", "ksis": ["CNA-ULN"]}
+        {"id": "CNA-8", "text": "Production uses logical networks and security groups to separate tenants' workloads from operations tooling and from other trust zones. The Platform Lead reviews security group, WAF and NAT egress rules every 90 days and records the review in environment/live-state.json#traffic_flow_reviews.", "ksis": ["CNA-ULN"]}
       ]
     },
     {
@@ -62,10 +62,10 @@
       "purpose": "Only authorised people and workloads reach resources, with the least privilege needed and for the shortest time.",
       "resources": ["E6", "E7", "E8", "E9", "S4", "N1", "N2", "P1", "P5", "P6"],
       "requirements": [
-        {"id": "IAM-1", "text": "Account creation, change and removal are automated from the identity provider. Leavers lose access within 24 hours.", "ksis": ["IAM-AAM"]},
+        {"id": "IAM-1", "text": "Account creation, change and removal are automated from the identity provider. Leavers lose access within 24 hours. Roles and groups are created, changed and removed only by the Terraform pipeline or the identity provider's provisioning.", "ksis": ["IAM-AAM"]},
         {"id": "IAM-2", "text": "Workforce sign-in uses phishing-resistant passwordless methods (WebAuthn or platform authenticators). No password-only path exists.", "ksis": ["IAM-APM"]},
         {"id": "IAM-3", "text": "Access follows least privilege. Permissions unused for 90 days are removed. Access is reviewed every quarter.", "ksis": ["IAM-ELP"]},
-        {"id": "IAM-4", "text": "Production and tenant-data access is granted just in time through the access gateway (E6), with an approval, a reason and an expiry.", "ksis": ["IAM-JIT"]},
+        {"id": "IAM-4", "text": "Production and tenant-data access is granted just in time through the access gateway (E6), with an approval, a reason and an expiry. Non-user accounts hold no standing admin access, and their sessions last 60 minutes or less. The Security Operations Lead reviews non-user access every 90 days.", "ksis": ["IAM-JIT"]},
         {"id": "IAM-5", "text": "Workloads authenticate with short-lived credentials. Static keys rotate at least every 90 days and are held in secrets management (P6).", "ksis": ["IAM-SNU"]},
         {"id": "IAM-6", "text": "Suspicious account activity raises an alert. The on-call responder starts a response within the time set in the incident response plan.", "ksis": ["IAM-SUS"]},
         {"id": "IAM-7", "text": "Support impersonation (S4) needs a recorded customer approval and writes an audit entry that the customer can see.", "ksis": ["IAM-ELP", "IAM-JIT"]}
@@ -90,10 +90,10 @@
       "purpose": "Security-relevant events are recorded, protected, searched and reviewed.",
       "resources": ["E4", "P1", "P2", "P3", "P4", "P8", "E6", "E7"],
       "requirements": [
-        {"id": "MLA-1", "text": "Log access is limited to named security and operations roles. Log changes and deletions raise an alert.", "ksis": ["MLA-ALA"]},
-        {"id": "MLA-2", "text": "Resource configurations are evaluated against the baseline at least daily.", "ksis": ["MLA-EVC"]},
-        {"id": "MLA-3", "text": "Each in-scope resource logs authentication, authorisation, administrative, configuration and data-access events. Logs do not contain alert summaries or credentials.", "ksis": ["MLA-LET"]},
-        {"id": "MLA-4", "text": "Logs flow to the security monitoring stack (E4), which correlates events and raises alerts.", "ksis": ["MLA-OSM"]},
+        {"id": "MLA-1", "text": "Log access is limited to named security and operations roles. Log changes and deletions raise an alert. Log data has three sensitivity classes: C1 security audit, C2 operational and C3 logs that may hold federal contact data. Each role's access is limited to the classes in environment/log-classes.json, and access to C3 is just in time.", "ksis": ["MLA-ALA"]},
+        {"id": "MLA-2", "text": "Resource configurations are evaluated against the baseline at least daily. The configuration of each SaaS tool (E1, E7, E9) is exported and evaluated against its baseline at least daily (environment/saas-config.json).", "ksis": ["MLA-EVC"]},
+        {"id": "MLA-3", "text": "Each in-scope resource logs authentication, authorisation, administrative, configuration and data-access events. Logs do not contain alert summaries or credentials. The Security Operations Lead keeps the list of logged resources and event types in environment/logging-list.json and reviews it every year.", "ksis": ["MLA-LET"]},
+        {"id": "MLA-4", "text": "Logs flow to the security monitoring stack (E4), which correlates events and raises alerts. The Security Operations Lead reviews the monitoring stack every 30 days, checks that each expected log source reports, and records the review in environment/live-state.json#siem_reviews.", "ksis": ["MLA-OSM"]},
         {"id": "MLA-5", "text": "Security staff review alerts daily and review log coverage each quarter. Logs are kept for 12 months.", "ksis": ["MLA-RVL"]}
       ]
     },
@@ -103,10 +103,10 @@
       "purpose": "The company knows what it runs, keeps its policies current and has executive backing for security.",
       "resources": ["N3", "N4", "E1", "E5", "P1"],
       "requirements": [
-        {"id": "PIY-1", "text": "The inventory of in-scope resources is generated from the scope record and checked against live state. A live resource with no scope ID is a finding.", "ksis": ["PIY-GIV"]},
+        {"id": "PIY-1", "text": "The inventory of in-scope resources is generated from the scope record and checked against live state. A live resource with no scope ID is a finding. Each user in the identity provider's workforce export maps to a people resource in the scope record, and the third-party register matches the scope record's third-party resources.", "ksis": ["PIY-GIV"]},
         {"id": "PIY-2", "text": "The executive team reviews security status, risks and policy exceptions every quarter. The review is minuted.", "ksis": ["PIY-RES"]},
         {"id": "PIY-3", "text": "The executive team reviews security spending against the risk register each year.", "ksis": ["PIY-RIS"]},
-        {"id": "PIY-4", "text": "Each release passes a threat model, static analysis and a dependency scan, and applies Orrinwick's secure-by-design principles: secure defaults, memory-safe languages where possible, MFA by default and no default passwords. The Security Engineering Lead reviews the secure development lifecycle and these principles every 90 days. The principles and review settings are kept in the sdlc_review record in environment/iac-plan.json, and review results in environment/live-state.json#sdlc.", "ksis": ["PIY-RSD"]},
+        {"id": "PIY-4", "text": "Each release passes a threat model, static analysis and a dependency scan, and applies Orrinwick's secure-by-design principles: secure defaults, memory-safe languages where possible, MFA by default and no default passwords. The Security Operations Lead reviews the secure development lifecycle and these principles every 90 days. The principles and review settings are kept in the sdlc_review record in environment/iac-plan.json, and review results in environment/live-state.json#sdlc.", "ksis": ["PIY-RSD"]},
         {"id": "PIY-5", "text": "Orrinwick publishes a vulnerability disclosure route, answers reports within 3 business days and tracks each report to closure.", "ksis": ["PIY-RVD"]},
         {"id": "PIY-6", "text": "The GRC Lead reviews every policy in this set at its stated cadence and records the review date.", "ksis": ["PIY-RES"]}
       ]
@@ -144,12 +144,12 @@
       "resources": ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "E2", "E3"],
       "requirements": [
         {"id": "SVC-1", "text": "Resource configuration is applied by automation. Manual configuration is a defect.", "ksis": ["SVC-ACM"]},
-        {"id": "SVC-2", "text": "Secrets live in secrets management (P6). Keys are held in the key management service (P5). Secrets rotate at least every 90 days and never appear in code, logs or tickets.", "ksis": ["SVC-ASM"]},
+        {"id": "SVC-2", "text": "Secrets live in secrets management (P6). Keys are held in the key management service (P5). Secrets rotate at least every 90 days and never appear in code, logs or tickets. Customer-managed keys rotate automatically. Certificates renew automatically, and no certificate is allowed to come within 30 days of expiry.", "ksis": ["SVC-ASM"]},
         {"id": "SVC-3", "text": "The security team evaluates new tools and findings every quarter and records the improvements made.", "ksis": ["SVC-EIS"]},
-        {"id": "SVC-4", "text": "The offering does not keep residual access, credentials or data after a change. Deprecated resources are removed within 30 days.", "ksis": ["SVC-PRR"]},
-        {"id": "SVC-5", "text": "Customer data is deleted from production within 30 days of a verified customer request and from backups at the next backup expiry. Staging holds synthetic data only.", "ksis": ["SVC-RUD"]},
-        {"id": "SVC-6", "text": "Data at rest is encrypted. Queues, tables and volumes use customer-data keys from the key management service.", "ksis": ["SVC-SIN"]},
-        {"id": "SVC-7", "text": "Every data flow in the scope record uses TLS 1.2 or later with a valid certificate. Certificates renew automatically.", "ksis": ["SVC-VCM"]},
+        {"id": "SVC-4", "text": "The offering does not keep residual access, credentials or data after a change. Deprecated resources are removed within 30 days. The Platform Lead reviews the affected plans and procedures within 20 business days of each scope change and records the review in environment/grc-records.json#change_plan_reviews.", "ksis": ["SVC-PRR"]},
+        {"id": "SVC-5", "text": "Customer data is deleted from production within 30 days of a verified customer request and from backups at the next backup expiry. Staging holds synthetic data only. Customer data is deleted 30 days after the contract ends, with no request needed.", "ksis": ["SVC-RUD"]},
+        {"id": "SVC-6", "text": "Data at rest is encrypted. Queues, tables and volumes use customer-data keys from the key management service. Stores that hold federal data use versioning and object lock, and the database has deletion protection.", "ksis": ["SVC-SIN"]},
+        {"id": "SVC-7", "text": "Every data flow in the scope record uses TLS 1.2 or later with a valid certificate. Certificates renew automatically. Internal flows authenticate the client: mutual TLS between services, and IAM-signed requests (workload or service-linked identity) to AWS services.", "ksis": ["SVC-VCM"]},
         {"id": "SVC-8", "text": "Deployed images and packages are signed. The pipeline verifies the signature and a digest before release.", "ksis": ["SVC-VRI"]}
       ]
     }

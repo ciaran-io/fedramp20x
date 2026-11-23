@@ -39,12 +39,12 @@ This policy covers these information resources from the scope record:
 | ID | Requirement | KSIs |
 |---|---|---|
 | SVC-1 | Resource configuration is applied by automation. Manual configuration is a defect. | KSI-SVC-ACM |
-| SVC-2 | Secrets live in secrets management (P6). Keys are held in the key management service (P5). Secrets rotate at least every 90 days and never appear in code, logs or tickets. | KSI-SVC-ASM |
+| SVC-2 | Secrets live in secrets management (P6). Keys are held in the key management service (P5). Secrets rotate at least every 90 days and never appear in code, logs or tickets. Customer-managed keys rotate automatically. Certificates renew automatically, and no certificate is allowed to come within 30 days of expiry. | KSI-SVC-ASM |
 | SVC-3 | The security team evaluates new tools and findings every quarter and records the improvements made. | KSI-SVC-EIS |
-| SVC-4 | The offering does not keep residual access, credentials or data after a change. Deprecated resources are removed within 30 days. | KSI-SVC-PRR |
-| SVC-5 | Customer data is deleted from production within 30 days of a verified customer request and from backups at the next backup expiry. Staging holds synthetic data only. | KSI-SVC-RUD |
-| SVC-6 | Data at rest is encrypted. Queues, tables and volumes use customer-data keys from the key management service. | KSI-SVC-SIN |
-| SVC-7 | Every data flow in the scope record uses TLS 1.2 or later with a valid certificate. Certificates renew automatically. | KSI-SVC-VCM |
+| SVC-4 | The offering does not keep residual access, credentials or data after a change. Deprecated resources are removed within 30 days. The Platform Lead reviews the affected plans and procedures within 20 business days of each scope change and records the review in environment/grc-records.json#change_plan_reviews. | KSI-SVC-PRR |
+| SVC-5 | Customer data is deleted from production within 30 days of a verified customer request and from backups at the next backup expiry. Staging holds synthetic data only. Customer data is deleted 30 days after the contract ends, with no request needed. | KSI-SVC-RUD |
+| SVC-6 | Data at rest is encrypted. Queues, tables and volumes use customer-data keys from the key management service. Stores that hold federal data use versioning and object lock, and the database has deletion protection. | KSI-SVC-SIN |
+| SVC-7 | Every data flow in the scope record uses TLS 1.2 or later with a valid certificate. Certificates renew automatically. Internal flows authenticate the client: mutual TLS between services, and IAM-signed requests (workload or service-linked identity) to AWS services. | KSI-SVC-VCM |
 | SVC-8 | Deployed images and packages are signed. The pipeline verifies the signature and a digest before release. | KSI-SVC-VRI |
 
 ## Indicators and validation

@@ -1,13 +1,14 @@
 {
   "_notice": "FICTIONAL. The maintained list of what is logged for each in-scope machine-based resource (KSI-MLA-LET).",
-  "owner": "Security Engineering Lead",
+  "owner": "Security Operations Lead",
   "review_cadence_days": 365,
   "last_review_days_ago": 53,
   "event_types": [
     "authentication",
-    "admin action",
+    "authorisation",
+    "administrative",
+    "configuration",
     "data access",
-    "configuration change",
     "network deny"
   ],
   "resources": [
@@ -15,17 +16,21 @@
       "scope": "P1",
       "log_source": "cloudtrail",
       "event_types": [
-        "admin action",
-        "configuration change"
+        "authentication",
+        "authorisation",
+        "administrative",
+        "configuration",
+        "data access"
       ]
     },
     {
       "scope": "P2",
       "log_source": "app",
       "event_types": [
-        "admin action",
-        "configuration change",
         "authentication",
+        "authorisation",
+        "administrative",
+        "configuration",
         "data access"
       ]
     },
@@ -33,9 +38,10 @@
       "scope": "P3",
       "log_source": "cloudtrail",
       "event_types": [
-        "admin action",
-        "configuration change",
         "authentication",
+        "authorisation",
+        "administrative",
+        "configuration",
         "data access"
       ]
     },
@@ -43,9 +49,10 @@
       "scope": "P4",
       "log_source": "cloudtrail",
       "event_types": [
-        "admin action",
-        "configuration change",
         "authentication",
+        "authorisation",
+        "administrative",
+        "configuration",
         "data access"
       ]
     },
@@ -53,33 +60,43 @@
       "scope": "P5",
       "log_source": "cloudtrail",
       "event_types": [
-        "admin action",
-        "configuration change"
+        "authentication",
+        "authorisation",
+        "administrative",
+        "configuration",
+        "data access"
       ]
     },
     {
       "scope": "P6",
       "log_source": "cloudtrail",
       "event_types": [
-        "admin action",
-        "configuration change"
+        "authentication",
+        "authorisation",
+        "administrative",
+        "configuration",
+        "data access"
       ]
     },
     {
       "scope": "P7",
       "log_source": "vpc_flow",
       "event_types": [
-        "admin action",
-        "configuration change"
+        "authentication",
+        "authorisation",
+        "administrative",
+        "configuration",
+        "data access"
       ]
     },
     {
       "scope": "P8",
       "log_source": "alb",
       "event_types": [
-        "admin action",
-        "configuration change",
         "authentication",
+        "authorisation",
+        "administrative",
+        "configuration",
         "data access"
       ]
     },
@@ -87,97 +104,141 @@
       "scope": "P9",
       "log_source": "cloudtrail",
       "event_types": [
-        "admin action",
-        "configuration change"
+        "authentication",
+        "authorisation",
+        "administrative",
+        "configuration",
+        "data access"
       ]
     },
     {
       "scope": "P10",
       "log_source": "app",
       "event_types": [
-        "admin action",
-        "configuration change"
+        "authentication",
+        "authorisation",
+        "administrative",
+        "configuration",
+        "data access"
       ]
     },
     {
       "scope": "P11",
       "log_source": "cloudtrail",
       "event_types": [
-        "admin action",
-        "configuration change"
+        "authentication",
+        "authorisation",
+        "administrative",
+        "configuration",
+        "data access"
       ]
     },
     {
       "scope": "P12",
       "log_source": "cloudtrail",
       "event_types": [
-        "admin action",
-        "configuration change"
+        "authentication",
+        "authorisation",
+        "administrative",
+        "configuration",
+        "data access"
       ]
     },
     {
       "scope": "P13",
       "log_source": "cloudtrail",
       "event_types": [
-        "admin action",
-        "configuration change"
+        "authentication",
+        "authorisation",
+        "administrative",
+        "configuration",
+        "data access"
       ]
     },
     {
       "scope": "E2",
       "log_source": "cloudtrail",
       "event_types": [
-        "admin action",
-        "configuration change"
+        "authentication",
+        "authorisation",
+        "administrative",
+        "configuration",
+        "data access"
       ]
     },
     {
       "scope": "E3",
       "log_source": "cloudtrail",
       "event_types": [
-        "admin action",
-        "configuration change"
+        "authentication",
+        "authorisation",
+        "administrative",
+        "configuration",
+        "data access"
       ]
     },
     {
       "scope": "E4",
       "log_source": "cloudtrail",
       "event_types": [
-        "admin action",
-        "configuration change"
+        "authentication",
+        "authorisation",
+        "administrative",
+        "configuration",
+        "data access"
       ]
     },
     {
       "scope": "E5",
       "log_source": "cloudtrail",
       "event_types": [
-        "admin action",
-        "configuration change"
+        "authentication",
+        "authorisation",
+        "administrative",
+        "configuration",
+        "data access"
       ]
     },
     {
       "scope": "E6",
       "log_source": "cloudtrail",
       "event_types": [
-        "admin action",
-        "configuration change"
+        "authentication",
+        "authorisation",
+        "administrative",
+        "configuration",
+        "data access"
       ]
     },
     {
       "scope": "E8",
       "log_source": "cloudtrail",
       "event_types": [
-        "admin action",
-        "configuration change"
+        "authentication",
+        "authorisation",
+        "administrative",
+        "configuration",
+        "data access"
       ]
     },
     {
       "scope": "S4",
       "log_source": "cloudtrail",
       "event_types": [
-        "admin action",
-        "configuration change"
+        "authentication",
+        "authorisation",
+        "administrative",
+        "configuration",
+        "data access"
       ]
     }
-  ]
+  ],
+  "required_event_types": [
+    "authentication",
+    "authorisation",
+    "administrative",
+    "configuration",
+    "data access"
+  ],
+  "required_by": "POL-MLA MLA-3"
 }

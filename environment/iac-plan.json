@@ -791,7 +791,7 @@
         "scim_provisioning": true,
         "deprovision_sla_hours": 24,
         "group_based_roles": true,
-        "jit_review_owner": "Security Engineering Lead",
+        "jit_review_owner": "Security Operations Lead",
         "jit_review_cadence_days": 90,
         "lifecycle_actors": [
           "terraform-ci",
@@ -902,7 +902,7 @@
         "tamper_protection": "object_lock_separate_account",
         "retention_days": 400,
         "review_cadence_days": 30,
-        "review_owner": "Security Engineering Lead"
+        "review_owner": "Security Operations Lead"
       }
     },
     {

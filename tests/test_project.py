@@ -402,6 +402,7 @@ class CoverageMethods(unittest.TestCase):
         self.assert_fails(self.c.let_list, None, ("environment/logging-list.json", lambda d: d["resources"].pop(0)), label="resource dropped")
         self.assert_fails(self.c.let_list, None, ("environment/logging-list.json", lambda d: d.update(last_review_days_ago=400)), label="review past cycle")
         self.assert_fails(self.c.let_list, lambda e: e.live["siem"]["sources_reporting"].remove("cloudtrail"), label="source off")
+        self.assert_fails(self.c.let_list, None, ("environment/logging-list.json", lambda d: d["resources"][3]["event_types"].remove("authorisation")), label="MLA-3 event type missing")
 
     def test_break_giv(self):
         self.assert_fails(self.c.giv_people, lambda e: e.live["idp_users"].append({"id": "u-9999", "people_resource": "N9", "status": "active"}), label="unmapped user")
@@ -426,10 +427,13 @@ class CoverageMethods(unittest.TestCase):
         self.assert_fails(self.c.evc_saas, None, (saas, lambda d: d["exports"]["E7"]["settings"][-1].pop("exception")), label="deviation with no exception")
         self.assert_fails(self.c.ibp_saas, None, (saas, lambda d: d["exports"]["E7"].update(last_review_days_ago=120)), label="comparison past cycle")
         self.assert_fails(self.c.ibp_saas, None, (saas, lambda d: d["exceptions"][0].update(expires_days=0)), label="expired exception")
+        self.assert_fails(self.c.ibp_saas, None, (saas, lambda d: d["exports"]["E1"].update(collected_days_ago=4)), label="comparison older than 3 days")
+        self.assert_fails(self.c.evc_saas, None, (saas, lambda d: d["exports"]["E1"].update(collected_days_ago=2)), label="evaluation older than 1 day")
 
     def test_break_vcm(self):
         self.assert_fails(self.c.vcm_client_auth, lambda e: e.live["flow_auth"][0].update(client_authenticated=False), label="no client auth")
         self.assert_fails(self.c.vcm_client_auth, lambda e: e.live["flow_auth"].pop(), label="flow not observed")
+        self.assert_fails(self.c.vcm_client_auth, lambda e: e.live["flow_auth"][0].update(identity="API key"), label="identity differs from scope record")
 
 
 class History(unittest.TestCase):

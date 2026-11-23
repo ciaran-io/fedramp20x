@@ -37,10 +37,10 @@ This policy covers these information resources from the scope record:
 
 | ID | Requirement | KSIs |
 |---|---|---|
-| IAM-1 | Account creation, change and removal are automated from the identity provider. Leavers lose access within 24 hours. | KSI-IAM-AAM |
+| IAM-1 | Account creation, change and removal are automated from the identity provider. Leavers lose access within 24 hours. Roles and groups are created, changed and removed only by the Terraform pipeline or the identity provider's provisioning. | KSI-IAM-AAM |
 | IAM-2 | Workforce sign-in uses phishing-resistant passwordless methods (WebAuthn or platform authenticators). No password-only path exists. | KSI-IAM-APM |
 | IAM-3 | Access follows least privilege. Permissions unused for 90 days are removed. Access is reviewed every quarter. | KSI-IAM-ELP |
-| IAM-4 | Production and tenant-data access is granted just in time through the access gateway (E6), with an approval, a reason and an expiry. | KSI-IAM-JIT |
+| IAM-4 | Production and tenant-data access is granted just in time through the access gateway (E6), with an approval, a reason and an expiry. Non-user accounts hold no standing admin access, and their sessions last 60 minutes or less. The Security Operations Lead reviews non-user access every 90 days. | KSI-IAM-JIT |
 | IAM-5 | Workloads authenticate with short-lived credentials. Static keys rotate at least every 90 days and are held in secrets management (P6). | KSI-IAM-SNU |
 | IAM-6 | Suspicious account activity raises an alert. The on-call responder starts a response within the time set in the incident response plan. | KSI-IAM-SUS |
 | IAM-7 | Support impersonation (S4) needs a recorded customer approval and writes an audit entry that the customer can see. | KSI-IAM-ELP, KSI-IAM-JIT |
