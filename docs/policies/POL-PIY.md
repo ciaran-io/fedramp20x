@@ -35,7 +35,7 @@ This policy covers these information resources from the scope record:
 | PIY-1 | The inventory of in-scope resources is generated from the scope record and checked against live state. A live resource with no scope ID is a finding. | KSI-PIY-GIV |
 | PIY-2 | The executive team reviews security status, risks and policy exceptions every quarter. The review is minuted. | KSI-PIY-RES |
 | PIY-3 | The executive team reviews security spending against the risk register each year. | KSI-PIY-RIS |
-| PIY-4 | Security requirements are part of each stage of the software development lifecycle. Design review, code review and dependency scanning are required for every release. | KSI-PIY-RSD |
+| PIY-4 | Each release passes a threat model, static analysis and a dependency scan, and applies Orrinwick's secure-by-design principles: secure defaults, memory-safe languages where possible, MFA by default and no default passwords. The Security Engineering Lead reviews the secure development lifecycle and these principles every 90 days. The principles and review settings are kept in the sdlc_review record in environment/iac-plan.json, and review results in environment/live-state.json#sdlc. | KSI-PIY-RSD |
 | PIY-5 | Orrinwick publishes a vulnerability disclosure route, answers reports within 3 business days and tracks each report to closure. | KSI-PIY-RVD |
 | PIY-6 | The GRC Lead reviews every policy in this set at its stated cadence and records the review date. | KSI-PIY-RES |
 

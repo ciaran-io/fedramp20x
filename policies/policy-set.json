@@ -106,7 +106,7 @@
         {"id": "PIY-1", "text": "The inventory of in-scope resources is generated from the scope record and checked against live state. A live resource with no scope ID is a finding.", "ksis": ["PIY-GIV"]},
         {"id": "PIY-2", "text": "The executive team reviews security status, risks and policy exceptions every quarter. The review is minuted.", "ksis": ["PIY-RES"]},
         {"id": "PIY-3", "text": "The executive team reviews security spending against the risk register each year.", "ksis": ["PIY-RIS"]},
-        {"id": "PIY-4", "text": "Security requirements are part of each stage of the software development lifecycle. Design review, code review and dependency scanning are required for every release.", "ksis": ["PIY-RSD"]},
+        {"id": "PIY-4", "text": "Each release passes a threat model, static analysis and a dependency scan, and applies Orrinwick's secure-by-design principles: secure defaults, memory-safe languages where possible, MFA by default and no default passwords. The Security Engineering Lead reviews the secure development lifecycle and these principles every 90 days. The principles and review settings are kept in the sdlc_review record in environment/iac-plan.json, and review results in environment/live-state.json#sdlc.", "ksis": ["PIY-RSD"]},
         {"id": "PIY-5", "text": "Orrinwick publishes a vulnerability disclosure route, answers reports within 3 business days and tracks each report to closure.", "ksis": ["PIY-RVD"]},
         {"id": "PIY-6", "text": "The GRC Lead reviews every policy in this set at its stated cadence and records the review date.", "ksis": ["PIY-RES"]}
       ]
