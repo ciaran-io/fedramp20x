@@ -10,7 +10,9 @@
       "values": {
         "cidr": "10.20.0.0/16",
         "availability_zones": 2,
-        "flow_logs": true
+        "flow_logs": true,
+        "flow_review_owner": "Platform Lead",
+        "flow_review_cadence_days": 90
       }
     },
     {
@@ -177,7 +179,8 @@
         "multi_az": true,
         "publicly_accessible": false,
         "require_tls": true,
-        "failover_tested_days_ago": 60
+        "failover_tested_days_ago": 60,
+        "deletion_protection": true
       }
     },
     {
@@ -188,7 +191,11 @@
         "encrypted": true,
         "kms_key": "kms:data",
         "public_access_blocked": true,
-        "versioning": true
+        "versioning": true,
+        "policy_principals": [
+          "role/beacon-api"
+        ],
+        "object_lock": true
       }
     },
     {
@@ -199,7 +206,11 @@
         "encrypted": true,
         "kms_key": "kms:data",
         "public_access_blocked": true,
-        "versioning": true
+        "versioning": true,
+        "policy_principals": [
+          "role/backup"
+        ],
+        "object_lock": true
       }
     },
     {
@@ -210,7 +221,10 @@
         "encrypted": true,
         "kms_key": "kms:data",
         "public_access_blocked": true,
-        "versioning": true
+        "versioning": true,
+        "policy_principals": [
+          "role/ci_deploy"
+        ]
       }
     },
     {
@@ -230,7 +244,10 @@
         "encrypted": true,
         "kms_key": "kms:data",
         "public_access_blocked": true,
-        "object_lock": true
+        "object_lock": true,
+        "policy_principals": [
+          "role/backup"
+        ]
       }
     },
     {
@@ -351,7 +368,23 @@
       "scope": "E4",
       "values": {
         "retention_days": 400,
-        "kms_key": "kms:data"
+        "kms_key": "kms:data",
+        "sensitivity_classes": [
+          "C1",
+          "C2"
+        ]
+      }
+    },
+    {
+      "type": "aws_cloudwatch_log_group",
+      "name": "notify-workers",
+      "scope": "E4",
+      "values": {
+        "retention_days": 400,
+        "kms_key": "kms:data",
+        "sensitivity_classes": [
+          "C3"
+        ]
       }
     },
     {
@@ -368,6 +401,93 @@
       "scope": "E4",
       "values": {
         "enabled": true
+      }
+    },
+    {
+      "type": "aws_config_config_rule",
+      "name": "s3_public_access_blocked",
+      "scope": "E4",
+      "values": {
+        "enabled": true
+      }
+    },
+    {
+      "type": "aws_config_config_rule",
+      "name": "sg_no_open_admin_ports",
+      "scope": "E4",
+      "values": {
+        "enabled": true
+      }
+    },
+    {
+      "type": "aws_config_config_rule",
+      "name": "ebs_volumes_encrypted",
+      "scope": "E4",
+      "values": {
+        "enabled": true
+      }
+    },
+    {
+      "type": "aws_config_config_rule",
+      "name": "scope_tag_required",
+      "scope": "E4",
+      "values": {
+        "enabled": true
+      }
+    },
+    {
+      "type": "aws_config_remediation_configuration",
+      "name": "drift_detection",
+      "scope": "E4",
+      "values": {
+        "config_rule": "drift_detection",
+        "automatic": true,
+        "max_minutes": 15,
+        "action": "pipeline-reapply"
+      }
+    },
+    {
+      "type": "aws_config_remediation_configuration",
+      "name": "s3_public_access_blocked",
+      "scope": "E4",
+      "values": {
+        "config_rule": "s3_public_access_blocked",
+        "automatic": true,
+        "max_minutes": 15,
+        "action": "ssm-automation:s3_public_access_blocked"
+      }
+    },
+    {
+      "type": "aws_config_remediation_configuration",
+      "name": "sg_no_open_admin_ports",
+      "scope": "E4",
+      "values": {
+        "config_rule": "sg_no_open_admin_ports",
+        "automatic": true,
+        "max_minutes": 15,
+        "action": "ssm-automation:sg_no_open_admin_ports"
+      }
+    },
+    {
+      "type": "aws_config_remediation_configuration",
+      "name": "ebs_volumes_encrypted",
+      "scope": "E4",
+      "values": {
+        "config_rule": "ebs_volumes_encrypted",
+        "automatic": true,
+        "max_minutes": 15,
+        "action": "ssm-automation:ebs_volumes_encrypted"
+      }
+    },
+    {
+      "type": "aws_config_remediation_configuration",
+      "name": "scope_tag_required",
+      "scope": "E4",
+      "values": {
+        "config_rule": "scope_tag_required",
+        "automatic": true,
+        "max_minutes": 15,
+        "action": "ssm-automation:scope_tag_required"
       }
     },
     {
@@ -609,7 +729,11 @@
         "deploy_strategy": "redeploy",
         "rollback_on_failure": true,
         "audit_log_retention_days": 400,
-        "post_change_cleanup": true
+        "post_change_cleanup": true,
+        "signing_required_for": [
+          "container_image",
+          "iac_module"
+        ]
       }
     },
     {
@@ -666,7 +790,13 @@
       "values": {
         "scim_provisioning": true,
         "deprovision_sla_hours": 24,
-        "group_based_roles": true
+        "group_based_roles": true,
+        "jit_review_owner": "Security Engineering Lead",
+        "jit_review_cadence_days": 90,
+        "lifecycle_actors": [
+          "terraform-ci",
+          "idp-provisioning"
+        ]
       }
     },
     {
@@ -771,7 +901,8 @@
         ],
         "tamper_protection": "object_lock_separate_account",
         "retention_days": 400,
-        "review_cadence_days": 30
+        "review_cadence_days": 30,
+        "review_owner": "Security Engineering Lead"
       }
     },
     {

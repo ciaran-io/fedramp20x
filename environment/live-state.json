@@ -70,32 +70,53 @@
       "name": "exports",
       "scope": "P4",
       "encrypted": true,
-      "public_access_blocked": true
+      "public_access_blocked": true,
+      "policy_principals": [
+        "role/beacon-api"
+      ],
+      "versioning": true,
+      "object_lock": true
     },
     {
       "name": "backups",
       "scope": "P4",
       "encrypted": true,
-      "public_access_blocked": true
+      "public_access_blocked": true,
+      "policy_principals": [
+        "role/backup"
+      ],
+      "versioning": true,
+      "object_lock": true
     },
     {
       "name": "backup_replica",
       "scope": "P12",
       "encrypted": true,
       "public_access_blocked": true,
-      "region": "us-west-2"
+      "region": "us-west-2",
+      "policy_principals": [
+        "role/backup"
+      ],
+      "versioning": true,
+      "object_lock": true
     },
     {
       "name": "terraform_state",
       "scope": "E3",
       "encrypted": true,
-      "public_access_blocked": true
+      "public_access_blocked": true,
+      "policy_principals": [
+        "role/ci_deploy"
+      ]
     },
     {
       "name": "log_archive",
       "scope": "E4",
       "encrypted": true,
-      "public_access_blocked": true
+      "public_access_blocked": true,
+      "policy_principals": [
+        "role/backup"
+      ]
     }
   ],
   "sqs_queues": [
@@ -116,7 +137,8 @@
       "id": "primary",
       "scope": "P3",
       "storage_encrypted": true,
-      "backup_retention_days": 14
+      "backup_retention_days": 14,
+      "deletion_protection": true
     }
   ],
   "kms_keys": [
@@ -161,6 +183,30 @@
   "config_rules": [
     {
       "name": "drift_detection",
+      "scope": "E4",
+      "compliance": "COMPLIANT",
+      "non_compliant_resources": 0
+    },
+    {
+      "name": "s3_public_access_blocked",
+      "scope": "E4",
+      "compliance": "COMPLIANT",
+      "non_compliant_resources": 0
+    },
+    {
+      "name": "sg_no_open_admin_ports",
+      "scope": "E4",
+      "compliance": "COMPLIANT",
+      "non_compliant_resources": 0
+    },
+    {
+      "name": "ebs_volumes_encrypted",
+      "scope": "E4",
+      "compliance": "COMPLIANT",
+      "non_compliant_resources": 0
+    },
+    {
+      "name": "scope_tag_required",
       "scope": "E4",
       "compliance": "COMPLIANT",
       "non_compliant_resources": 0
@@ -674,19 +720,31 @@
       {
         "id": "LA-1",
         "role": "security-analyst",
-        "type": "standing_read"
+        "type": "standing_read",
+        "classes": [
+          "C1",
+          "C2"
+        ]
       },
       {
         "id": "LA-2",
         "role": "auditor",
         "type": "jit",
-        "duration_hours": 4
+        "duration_hours": 4,
+        "classes": [
+          "C1",
+          "C3"
+        ]
       },
       {
         "id": "LA-3",
         "role": "platform-engineer",
         "type": "jit",
-        "duration_hours": 6
+        "duration_hours": 6,
+        "classes": [
+          "C2",
+          "C3"
+        ]
       }
     ],
     "raw_log_standing_access": [],
@@ -781,6 +839,33 @@
   },
   "restore_tests": [
     {
+      "id": "RT-2025-11",
+      "date": "2025-11-30",
+      "days_ago": 355,
+      "result": "pass",
+      "achieved_rto_hours": 7.0,
+      "achieved_rpo_hours": 2.0,
+      "from_vault": "recovery"
+    },
+    {
+      "id": "RT-2026-02",
+      "date": "2026-02-28",
+      "days_ago": 265,
+      "result": "pass",
+      "achieved_rto_hours": 6.8,
+      "achieved_rpo_hours": 2.0,
+      "from_vault": "recovery"
+    },
+    {
+      "id": "RT-2026-05",
+      "date": "2026-05-29",
+      "days_ago": 175,
+      "result": "pass",
+      "achieved_rto_hours": 6.6,
+      "achieved_rpo_hours": 2.0,
+      "from_vault": "recovery"
+    },
+    {
       "id": "RT-2026-08",
       "date": "2026-08-27",
       "days_ago": 85,
@@ -794,5 +879,518 @@
     "last_review_days_ago": 1,
     "documented_rto_hours": 8,
     "documented_rpo_hours": 4
-  }
+  },
+  "siem_reviews": [
+    {
+      "id": "SR-2026-09",
+      "days_ago": 68,
+      "reviewed_by": "Security Engineering Lead",
+      "sources_checked": 6,
+      "alert_rules_tuned": 2,
+      "findings_raised": 1
+    },
+    {
+      "id": "SR-2026-10",
+      "days_ago": 38,
+      "reviewed_by": "Security Engineering Lead",
+      "sources_checked": 6,
+      "alert_rules_tuned": 1,
+      "findings_raised": 0
+    },
+    {
+      "id": "SR-2026-11",
+      "days_ago": 9,
+      "reviewed_by": "Security Engineering Lead",
+      "sources_checked": 6,
+      "alert_rules_tuned": 3,
+      "findings_raised": 1
+    }
+  ],
+  "traffic_flow_reviews": [
+    {
+      "id": "TF-2026-Q2",
+      "days_ago": 160,
+      "reviewed_by": "Platform Lead",
+      "rules_checked": [
+        "security groups",
+        "WAF",
+        "NAT egress"
+      ],
+      "rules_removed": 0
+    },
+    {
+      "id": "TF-2026-Q3",
+      "days_ago": 69,
+      "reviewed_by": "Platform Lead",
+      "rules_checked": [
+        "security groups",
+        "WAF",
+        "NAT egress"
+      ],
+      "rules_removed": 2
+    }
+  ],
+  "certificates": [
+    {
+      "name": "public",
+      "scope": "P9",
+      "domains": [
+        "api.beacon.example",
+        "console.beacon.example",
+        "status.beacon.example"
+      ],
+      "expires_in_days": 212,
+      "auto_renew": true
+    }
+  ],
+  "iam_change_events": [
+    {
+      "target": "role/beacon-api",
+      "kind": "role",
+      "action": "update",
+      "actor": "terraform-ci",
+      "days_ago": 12
+    },
+    {
+      "target": "role/beacon-push",
+      "kind": "role",
+      "action": "update",
+      "actor": "terraform-ci",
+      "days_ago": 33
+    },
+    {
+      "target": "role/beacon-reporting",
+      "kind": "role",
+      "action": "delete",
+      "actor": "terraform-ci",
+      "days_ago": 47
+    },
+    {
+      "target": "grp-oncall",
+      "kind": "group",
+      "action": "update",
+      "actor": "idp-provisioning",
+      "days_ago": 5
+    },
+    {
+      "target": "grp-support-tier2",
+      "kind": "group",
+      "action": "create",
+      "actor": "idp-provisioning",
+      "days_ago": 21
+    },
+    {
+      "target": "grp-contractors-2025",
+      "kind": "group",
+      "action": "delete",
+      "actor": "idp-provisioning",
+      "days_ago": 64
+    }
+  ],
+  "service_accounts": [
+    {
+      "name": "role/beacon-api",
+      "kind": "ecs_task",
+      "scope": "P1",
+      "standing_admin": false,
+      "max_session_minutes": 60
+    },
+    {
+      "name": "role/beacon-router",
+      "kind": "ecs_task",
+      "scope": "P1",
+      "standing_admin": false,
+      "max_session_minutes": 60
+    },
+    {
+      "name": "role/beacon-notify",
+      "kind": "ecs_task",
+      "scope": "P1",
+      "standing_admin": false,
+      "max_session_minutes": 60
+    },
+    {
+      "name": "role/beacon-web",
+      "kind": "ecs_task",
+      "scope": "P1",
+      "standing_admin": false,
+      "max_session_minutes": 60
+    },
+    {
+      "name": "role/beacon-push",
+      "kind": "ecs_task",
+      "scope": "P1",
+      "standing_admin": false,
+      "max_session_minutes": 60
+    },
+    {
+      "name": "role/ci_deploy",
+      "kind": "ci",
+      "scope": "E2",
+      "standing_admin": false,
+      "max_session_minutes": 60
+    },
+    {
+      "name": "role/backup",
+      "kind": "backup",
+      "scope": "P12",
+      "standing_admin": false,
+      "max_session_minutes": 60
+    },
+    {
+      "name": "role/recovery-pipeline",
+      "kind": "recovery",
+      "scope": "P13",
+      "standing_admin": false,
+      "max_session_minutes": 60
+    }
+  ],
+  "jit_reviews": [
+    {
+      "id": "JR-2026-Q3",
+      "days_ago": 111,
+      "reviewed_by": "Security Engineering Lead",
+      "accounts_reviewed": 8
+    },
+    {
+      "id": "JR-2026-Q4",
+      "days_ago": 21,
+      "reviewed_by": "Security Engineering Lead",
+      "accounts_reviewed": 8
+    }
+  ],
+  "remediation_log": [
+    {
+      "rule": "s3_public_access_blocked",
+      "resource": "bucket exports",
+      "detected_days_ago": 26,
+      "corrected_minutes": 4
+    },
+    {
+      "rule": "sg_no_open_admin_ports",
+      "resource": "security group app",
+      "detected_days_ago": 17,
+      "corrected_minutes": 3
+    },
+    {
+      "rule": "ebs_volumes_encrypted",
+      "resource": "volume vol-recovery-test",
+      "detected_days_ago": 11,
+      "corrected_minutes": 12
+    },
+    {
+      "rule": "scope_tag_required",
+      "resource": "task beacon-notify",
+      "detected_days_ago": 2,
+      "corrected_minutes": 6
+    }
+  ],
+  "idp_users": [
+    {
+      "id": "u-1000",
+      "people_resource": "N1",
+      "status": "active"
+    },
+    {
+      "id": "u-1001",
+      "people_resource": "N1",
+      "status": "active"
+    },
+    {
+      "id": "u-1002",
+      "people_resource": "N1",
+      "status": "active"
+    },
+    {
+      "id": "u-1003",
+      "people_resource": "N1",
+      "status": "active"
+    },
+    {
+      "id": "u-1004",
+      "people_resource": "N1",
+      "status": "active"
+    },
+    {
+      "id": "u-1005",
+      "people_resource": "N1",
+      "status": "active"
+    },
+    {
+      "id": "u-1006",
+      "people_resource": "N1",
+      "status": "active"
+    },
+    {
+      "id": "u-1007",
+      "people_resource": "N1",
+      "status": "active"
+    },
+    {
+      "id": "u-1008",
+      "people_resource": "N1",
+      "status": "active"
+    },
+    {
+      "id": "u-1009",
+      "people_resource": "N1",
+      "status": "active"
+    },
+    {
+      "id": "u-1010",
+      "people_resource": "N1",
+      "status": "active"
+    },
+    {
+      "id": "u-1011",
+      "people_resource": "N1",
+      "status": "active"
+    },
+    {
+      "id": "u-1012",
+      "people_resource": "N1",
+      "status": "active"
+    },
+    {
+      "id": "u-1013",
+      "people_resource": "N1",
+      "status": "active"
+    },
+    {
+      "id": "u-1014",
+      "people_resource": "N1",
+      "status": "active"
+    },
+    {
+      "id": "u-1015",
+      "people_resource": "N1",
+      "status": "active"
+    },
+    {
+      "id": "u-1016",
+      "people_resource": "N1",
+      "status": "active"
+    },
+    {
+      "id": "u-1017",
+      "people_resource": "N1",
+      "status": "active"
+    },
+    {
+      "id": "u-1018",
+      "people_resource": "N2",
+      "status": "active"
+    },
+    {
+      "id": "u-1019",
+      "people_resource": "N2",
+      "status": "active"
+    },
+    {
+      "id": "u-1020",
+      "people_resource": "N2",
+      "status": "active"
+    },
+    {
+      "id": "u-1021",
+      "people_resource": "N2",
+      "status": "active"
+    },
+    {
+      "id": "u-1022",
+      "people_resource": "N2",
+      "status": "active"
+    },
+    {
+      "id": "u-1023",
+      "people_resource": "N2",
+      "status": "active"
+    },
+    {
+      "id": "u-1024",
+      "people_resource": "N2",
+      "status": "active"
+    },
+    {
+      "id": "u-1025",
+      "people_resource": "N2",
+      "status": "active"
+    },
+    {
+      "id": "u-1026",
+      "people_resource": "N2",
+      "status": "active"
+    },
+    {
+      "id": "u-1027",
+      "people_resource": "N2",
+      "status": "active"
+    },
+    {
+      "id": "u-1028",
+      "people_resource": "N2",
+      "status": "active"
+    },
+    {
+      "id": "u-1029",
+      "people_resource": "N2",
+      "status": "active"
+    },
+    {
+      "id": "u-1030",
+      "people_resource": "N3",
+      "status": "active"
+    },
+    {
+      "id": "u-1031",
+      "people_resource": "N3",
+      "status": "active"
+    },
+    {
+      "id": "u-1032",
+      "people_resource": "N3",
+      "status": "active"
+    },
+    {
+      "id": "u-1033",
+      "people_resource": "N3",
+      "status": "active"
+    },
+    {
+      "id": "u-1034",
+      "people_resource": "N3",
+      "status": "active"
+    },
+    {
+      "id": "u-1035",
+      "people_resource": "N3",
+      "status": "active"
+    },
+    {
+      "id": "u-1036",
+      "people_resource": "N3",
+      "status": "active"
+    }
+  ],
+  "artifact_signatures": [
+    {
+      "artifact": "terraform module network",
+      "type": "iac_module",
+      "scope": "E2",
+      "signed": true,
+      "digest_verified": true
+    },
+    {
+      "artifact": "terraform module compute",
+      "type": "iac_module",
+      "scope": "E2",
+      "signed": true,
+      "digest_verified": true
+    },
+    {
+      "artifact": "terraform module database",
+      "type": "iac_module",
+      "scope": "E2",
+      "signed": true,
+      "digest_verified": true
+    },
+    {
+      "artifact": "terraform module storage",
+      "type": "iac_module",
+      "scope": "E2",
+      "signed": true,
+      "digest_verified": true
+    },
+    {
+      "artifact": "terraform module backup",
+      "type": "iac_module",
+      "scope": "E2",
+      "signed": true,
+      "digest_verified": true
+    },
+    {
+      "artifact": "terraform module recovery",
+      "type": "iac_module",
+      "scope": "E2",
+      "signed": true,
+      "digest_verified": true
+    }
+  ],
+  "flow_auth": [
+    {
+      "flow": "F05",
+      "method": "mutual_tls",
+      "client_authenticated": true
+    },
+    {
+      "flow": "F06",
+      "method": "iam_signed",
+      "client_authenticated": true
+    },
+    {
+      "flow": "F07",
+      "method": "iam_signed",
+      "client_authenticated": true
+    },
+    {
+      "flow": "F08",
+      "method": "iam_signed",
+      "client_authenticated": true
+    },
+    {
+      "flow": "F09",
+      "method": "iam_signed",
+      "client_authenticated": true
+    },
+    {
+      "flow": "F10",
+      "method": "iam_signed",
+      "client_authenticated": true
+    },
+    {
+      "flow": "F11",
+      "method": "iam_signed",
+      "client_authenticated": true
+    },
+    {
+      "flow": "F12",
+      "method": "iam_signed",
+      "client_authenticated": true
+    },
+    {
+      "flow": "F13",
+      "method": "mutual_tls",
+      "client_authenticated": true
+    },
+    {
+      "flow": "F21",
+      "method": "iam_signed",
+      "client_authenticated": true
+    },
+    {
+      "flow": "F22",
+      "method": "iam_signed",
+      "client_authenticated": true
+    },
+    {
+      "flow": "F34",
+      "method": "iam_signed",
+      "client_authenticated": true
+    },
+    {
+      "flow": "F37",
+      "method": "iam_signed",
+      "client_authenticated": true
+    },
+    {
+      "flow": "F43",
+      "method": "iam_signed",
+      "client_authenticated": true
+    },
+    {
+      "flow": "F44",
+      "method": "iam_signed",
+      "client_authenticated": true
+    }
+  ]
 }

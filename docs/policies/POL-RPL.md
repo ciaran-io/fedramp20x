@@ -45,7 +45,7 @@ This policy covers these information resources from the scope record:
 | KSI-RPL-ABO | Aligning Backups with Objectives | `abo-iac-backup-policy`, `abo-live-backup-currency`, `abo-live-failed-job-alerts` | pass |
 | KSI-RPL-ARP | Aligning Recovery Plan | `arp-iac-plan-alignment`, `arp-live-plan-review` | pass |
 | KSI-RPL-RRO | Reviewing Recovery Objectives | `rpl-rro-static`, `rpl-rro-live` | pass |
-| KSI-RPL-TRC | Testing Recovery Capabilities | `trc-iac-restore-test-plan`, `trc-live-restore-results` | pass |
+| KSI-RPL-TRC | Testing Recovery Capabilities | `trc-iac-restore-test-plan`, `trc-live-restore-results`, `trc-live-test-history` | pass |
 
 Status is a simulated validator result. Class C needs at least two automated methods per KSI (`FRC-CSX-VVK`).
 

@@ -1,0 +1,119 @@
+{
+  "_notice": "FICTIONAL. One configuration export per SaaS tool in scope, compared with the provider's hardening guidance. Read by KSI-MLA-EVC and KSI-CNA-IBP. Decided 23 Nov 2026.",
+  "review_owner": "Security Engineering Lead",
+  "review_cadence_days": 90,
+  "max_export_age_days": 7,
+  "exports": {
+    "E1": {
+      "tool": "Source control (hosted)",
+      "guidance": "provider security hardening guide",
+      "collected_days_ago": 1,
+      "last_review_days_ago": 18,
+      "settings": [
+        {
+          "id": "E1-01",
+          "setting": "SSO required for organization members",
+          "expected": true,
+          "observed": true
+        },
+        {
+          "id": "E1-02",
+          "setting": "Branch protection on main",
+          "expected": true,
+          "observed": true
+        },
+        {
+          "id": "E1-03",
+          "setting": "Secret scanning and push protection",
+          "expected": true,
+          "observed": true
+        },
+        {
+          "id": "E1-04",
+          "setting": "Two-person review before merge",
+          "expected": true,
+          "observed": true
+        }
+      ],
+      "deviations": []
+    },
+    "E7": {
+      "tool": "Workforce identity provider",
+      "guidance": "provider security hardening guide",
+      "collected_days_ago": 1,
+      "last_review_days_ago": 18,
+      "settings": [
+        {
+          "id": "E7-01",
+          "setting": "Phishing-resistant MFA for all users",
+          "expected": true,
+          "observed": true
+        },
+        {
+          "id": "E7-02",
+          "setting": "Session lifetime 12 hours or less",
+          "expected": true,
+          "observed": true
+        },
+        {
+          "id": "E7-03",
+          "setting": "Admin roles need approval",
+          "expected": true,
+          "observed": true
+        },
+        {
+          "id": "E7-04",
+          "setting": "Legacy sign-in protocols off",
+          "expected": true,
+          "observed": false,
+          "exception": "EX-2026-07"
+        }
+      ],
+      "deviations": [
+        "E7-04"
+      ]
+    },
+    "E9": {
+      "tool": "EDR and device management",
+      "guidance": "provider security hardening guide",
+      "collected_days_ago": 2,
+      "last_review_days_ago": 18,
+      "settings": [
+        {
+          "id": "E9-01",
+          "setting": "Tamper protection on",
+          "expected": true,
+          "observed": true
+        },
+        {
+          "id": "E9-02",
+          "setting": "Disk encryption required",
+          "expected": true,
+          "observed": true
+        },
+        {
+          "id": "E9-03",
+          "setting": "Agent on every managed device",
+          "expected": true,
+          "observed": true
+        },
+        {
+          "id": "E9-04",
+          "setting": "Automatic OS updates",
+          "expected": true,
+          "observed": true
+        }
+      ],
+      "deviations": []
+    }
+  },
+  "exceptions": [
+    {
+      "id": "EX-2026-07",
+      "setting": "E7-04",
+      "approved_by": "CISO",
+      "expires_days": 90,
+      "reason": "One legacy SMTP relay sign-in is kept until the mail service moves in Q1 2027."
+    }
+  ]
+}

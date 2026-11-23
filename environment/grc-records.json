@@ -125,5 +125,61 @@
         "aws_guardduty_detector.main"
       ]
     }
+  ],
+  "change_plan_reviews": [
+    {
+      "date": "2026-11-22",
+      "reviewed_by": "Platform Lead",
+      "changes_reviewed": [
+        "SC-001",
+        "SC-002"
+      ],
+      "plans_reviewed": [
+        "incident response plan",
+        "recovery plan"
+      ],
+      "procedures_reviewed": [
+        "change procedure",
+        "deployment runbook"
+      ],
+      "summary": "Plans and procedures reviewed after SC-001 and SC-002. The recovery plan already covers the on-demand recovery environment; no procedure change needed."
+    }
+  ],
+  "third_party_register": [
+    {
+      "id": "TPR-T1",
+      "contract_end": "2027-06-30",
+      "owner": "Security and compliance team"
+    },
+    {
+      "id": "TPR-T2",
+      "contract_end": "2027-06-30",
+      "owner": "Security and compliance team"
+    },
+    {
+      "id": "TPR-T3",
+      "contract_end": "2027-06-30",
+      "owner": "Security and compliance team"
+    },
+    {
+      "id": "TPR-T5",
+      "contract_end": "2027-06-30",
+      "owner": "Security and compliance team"
+    },
+    {
+      "id": "TPR-E1",
+      "contract_end": "2027-06-30",
+      "owner": "Security and compliance team"
+    },
+    {
+      "id": "TPR-E7",
+      "contract_end": "2027-06-30",
+      "owner": "Security and compliance team"
+    },
+    {
+      "id": "TPR-E9",
+      "contract_end": "2027-06-30",
+      "owner": "Security and compliance team"
+    }
   ]
 }

@@ -43,7 +43,7 @@ This policy covers these information resources from the scope record:
 
 | KSI | Name | Automated methods | Current status |
 |---|---|---|---|
-| KSI-PIY-GIV | Generating Inventories | `giv-iac-inventory-generator`, `giv-live-unscoped-resources` | pass |
+| KSI-PIY-GIV | Generating Inventories | `giv-iac-inventory-generator`, `giv-live-unscoped-resources`, `giv-live-people-third-parties` | pass |
 | KSI-PIY-RES | Reviewing Executive Support | none yet | not_implemented |
 | KSI-PIY-RIS | Reviewing Investments in Security | none yet | not_implemented |
 | KSI-PIY-RSD | Reviewing Security in the SDLC | `rsd-iac-sdlc-policy`, `rsd-live-sdlc-metrics` | pass |
