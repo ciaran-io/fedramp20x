@@ -290,6 +290,42 @@ class ScopeLog(unittest.TestCase):
         rec = load("mas/mas-record.json")
         self.assertEqual(scl.fingerprint(rec), scl.fingerprint(copy.deepcopy(rec)))
 
+    def _condition(self, rec, cond_id):
+        return next(c for r in rec["information_resources"] for c in (r.get("conditions") or []) if c["id"] == cond_id)
+
+    def test_fingerprint_changes_when_condition_text_changes(self):
+        # Issue #38: the test of 2026-11-22 changed COND-S1-1 to allow alert content in tickets.
+        rec = load("mas/mas-record.json")
+        before = scl.fingerprint(rec)
+        self._condition(rec, "COND-S1-1")["text"] = "Structured intake accepts alert content in tickets."
+        self.assertNotEqual(before, scl.fingerprint(rec))
+        self.assertEqual(scl.fingerprint(load("mas/mas-record.json"), 1), scl.fingerprint(rec, 1),
+                         "method 1 is blind to this change, which is why method 2 exists")
+
+    def test_fingerprint_changes_when_condition_evidence_is_removed(self):
+        rec = load("mas/mas-record.json")
+        before = scl.fingerprint(rec)
+        self._condition(rec, "COND-S1-1")["evidence"] = ""
+        self.assertNotEqual(before, scl.fingerprint(rec))
+
+    def test_current_log_matches_the_record(self):
+        ref, method, problems = scl.reference(load("mas/scope-changes.json"))
+        self.assertEqual(problems, [])
+        self.assertEqual(method, scl.CURRENT_METHOD)
+        self.assertEqual(ref, scl.fingerprint(load("mas/mas-record.json")))
+
+    def test_rebaseline_cannot_hide_a_scope_change(self):
+        log = load("mas/scope-changes.json")
+        log["rebaselines"][0]["fingerprint_before"] = "0000000000000000"
+        _, _, problems = scl.reference(log)
+        self.assertTrue(any("fingerprint_before" in p for p in problems))
+
+    def test_log_without_rebaseline_is_flagged(self):
+        log = load("mas/scope-changes.json")
+        del log["rebaselines"]
+        _, _, problems = scl.reference(log)
+        self.assertTrue(any("add a rebaseline" in p for p in problems))
+
 
 if __name__ == "__main__":
     unittest.main()
