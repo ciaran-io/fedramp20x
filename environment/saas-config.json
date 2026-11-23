@@ -1,8 +1,8 @@
 {
   "_notice": "FICTIONAL. One configuration export per SaaS tool in scope, compared with the provider's hardening guidance. Read by KSI-MLA-EVC and KSI-CNA-IBP. Decided 23 Nov 2026.",
-  "review_owner": "Security Engineering Lead",
+  "review_owner": "Security Operations Lead",
   "review_cadence_days": 90,
-  "max_export_age_days": 7,
+  "max_export_age_days": 1,
   "exports": {
     "E1": {
       "tool": "Source control (hosted)",
@@ -76,7 +76,7 @@
     "E9": {
       "tool": "EDR and device management",
       "guidance": "provider security hardening guide",
-      "collected_days_ago": 2,
+      "collected_days_ago": 1,
       "last_review_days_ago": 18,
       "settings": [
         {
@@ -115,5 +115,6 @@
       "expires_days": 90,
       "reason": "One legacy SMTP relay sign-in is kept until the mail service moves in Q1 2027."
     }
-  ]
+  ],
+  "max_comparison_age_days": 3
 }

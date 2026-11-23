@@ -884,7 +884,7 @@
     {
       "id": "SR-2026-09",
       "days_ago": 68,
-      "reviewed_by": "Security Engineering Lead",
+      "reviewed_by": "Security Operations Lead",
       "sources_checked": 6,
       "alert_rules_tuned": 2,
       "findings_raised": 1
@@ -892,7 +892,7 @@
     {
       "id": "SR-2026-10",
       "days_ago": 38,
-      "reviewed_by": "Security Engineering Lead",
+      "reviewed_by": "Security Operations Lead",
       "sources_checked": 6,
       "alert_rules_tuned": 1,
       "findings_raised": 0
@@ -900,7 +900,7 @@
     {
       "id": "SR-2026-11",
       "days_ago": 9,
-      "reviewed_by": "Security Engineering Lead",
+      "reviewed_by": "Security Operations Lead",
       "sources_checked": 6,
       "alert_rules_tuned": 3,
       "findings_raised": 1
@@ -1049,13 +1049,13 @@
     {
       "id": "JR-2026-Q3",
       "days_ago": 111,
-      "reviewed_by": "Security Engineering Lead",
+      "reviewed_by": "Security Operations Lead",
       "accounts_reviewed": 8
     },
     {
       "id": "JR-2026-Q4",
       "days_ago": 21,
-      "reviewed_by": "Security Engineering Lead",
+      "reviewed_by": "Security Operations Lead",
       "accounts_reviewed": 8
     }
   ],
@@ -1320,77 +1320,92 @@
     {
       "flow": "F05",
       "method": "mutual_tls",
-      "client_authenticated": true
+      "client_authenticated": true,
+      "identity": "Mutual TLS between gateway and services"
     },
     {
       "flow": "F06",
       "method": "iam_signed",
-      "client_authenticated": true
+      "client_authenticated": true,
+      "identity": "Cloud IAM database authentication"
     },
     {
       "flow": "F07",
       "method": "iam_signed",
-      "client_authenticated": true
+      "client_authenticated": true,
+      "identity": "Workload identity"
     },
     {
       "flow": "F08",
       "method": "iam_signed",
-      "client_authenticated": true
+      "client_authenticated": true,
+      "identity": "Workload identity"
     },
     {
       "flow": "F09",
       "method": "iam_signed",
-      "client_authenticated": true
+      "client_authenticated": true,
+      "identity": "Service-linked identity"
     },
     {
       "flow": "F10",
       "method": "iam_signed",
-      "client_authenticated": true
+      "client_authenticated": true,
+      "identity": "Service-linked identity"
     },
     {
       "flow": "F11",
       "method": "iam_signed",
-      "client_authenticated": true
+      "client_authenticated": true,
+      "identity": "Workload identity"
     },
     {
       "flow": "F12",
       "method": "iam_signed",
-      "client_authenticated": true
+      "client_authenticated": true,
+      "identity": "Workload identity"
     },
     {
       "flow": "F13",
       "method": "mutual_tls",
-      "client_authenticated": true
+      "client_authenticated": true,
+      "identity": "Mutual TLS"
     },
     {
       "flow": "F21",
       "method": "iam_signed",
-      "client_authenticated": true
+      "client_authenticated": true,
+      "identity": "Service-linked identity"
     },
     {
       "flow": "F22",
       "method": "iam_signed",
-      "client_authenticated": true
+      "client_authenticated": true,
+      "identity": "Workload identity"
     },
     {
       "flow": "F34",
       "method": "iam_signed",
-      "client_authenticated": true
+      "client_authenticated": true,
+      "identity": "Workload identity"
     },
     {
       "flow": "F37",
       "method": "iam_signed",
-      "client_authenticated": true
+      "client_authenticated": true,
+      "identity": "Provider identity"
     },
     {
       "flow": "F43",
       "method": "iam_signed",
-      "client_authenticated": true
+      "client_authenticated": true,
+      "identity": "Service-linked replication role"
     },
     {
       "flow": "F44",
       "method": "iam_signed",
-      "client_authenticated": true
+      "client_authenticated": true,
+      "identity": "Restore role assumed by the recovery pipeline"
     }
   ]
 }

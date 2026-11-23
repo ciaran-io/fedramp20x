@@ -242,7 +242,11 @@ def let_list(env: Env) -> MethodResult:
         need = {r["id"] for r in env.mas.get("information_resources", []) if r["decision"] == "in_scope" and r["kind"] == "machine_based"}
         listed = {r["scope"] for r in lst.get("resources", [])}
         f += [f"In-scope resource {r} is not on the logging list" for r in sorted(need - listed)]
-        f += [f"Logging list entry {r['scope']} has no event types" for r in lst["resources"] if not r.get("event_types")]
+        required = lst.get("required_event_types")
+        if not required:
+            f.append("Logging list declares no required event types (POL-MLA MLA-3)")
+        f += [f"Logging list entry {r['scope']} does not log {', '.join(sorted(set(required) - set(r.get('event_types', []))))} (POL-MLA MLA-3)"
+              for r in lst["resources"] if required and set(required) - set(r.get("event_types", []))]
         f += [f"Log source {s} for {r['scope']} is not reporting to the SIEM" for r in lst["resources"]
               for s in [r["log_source"]] if s not in siem.get("sources_reporting", [])]
         if lst.get("last_review_days_ago", 9999) > lst.get("review_cadence_days", 0):
@@ -251,7 +255,7 @@ def let_list(env: Env) -> MethodResult:
             f.append("Logging list has no owner")
     return _out("let-list-coverage", LIVE, "environment/logging-list.json",
                 "Every in-scope resource is on the reviewed logging list and its log source is reporting",
-                "all in-scope resources listed, sources reporting, review in cycle", f)
+                "all in-scope resources listed with every MLA-3 event type, sources reporting, review in cycle", f)
 
 
 # ---- KSI-PIY-GIV: people and third-party inventory -----------------------------
@@ -372,14 +376,19 @@ def ibp_saas(env: Env) -> MethodResult:
         f += [f"SaaS comparison for {t} was last reviewed {s['exports'][t]['last_review_days_ago']} days ago (cycle {s['review_cadence_days']})"
               for t in SAAS if t in s["exports"] and s["exports"][t].get("last_review_days_ago", 9999) > s["review_cadence_days"]]
         f += [f"SaaS comparison for {t} names no provider guidance" for t in SAAS if t in s["exports"] and not s["exports"][t].get("guidance")]
+        # POL-CNA CNA-3: each SaaS tool is compared with its guidance at least every 3 days.
+        limit = s.get("max_comparison_age_days")
+        if not limit:
+            f.append("No comparison age limit is declared (POL-CNA CNA-3)")
+        f += [f"SaaS export for {t} is {s['exports'][t]['collected_days_ago']} days old, so the comparison is older than {limit} days (POL-CNA CNA-3)"
+              for t in SAAS if limit and t in s["exports"] and s["exports"][t]["collected_days_ago"] > limit]
         f += _saas_setting_findings(s)
     return _out("ibp-live-saas-guidance", LIVE, "environment/saas-config.json",
                 "Each SaaS tool was compared with its provider's guidance within the cycle",
-                "review within review_cadence_days, guidance named, 0 unexcepted deviations", f)
+                "comparison <= max_comparison_age_days, review within review_cadence_days, guidance named, 0 unexcepted deviations", f)
 
 
 # ---- KSI-SVC-VCM: client authentication between machine-based resources ---------
-SERVICES = {"P2", "P8", "P10"}
 
 
 def vcm_client_auth(env: Env) -> MethodResult:
@@ -389,11 +398,17 @@ def vcm_client_auth(env: Env) -> MethodResult:
     seen = {a["flow"]: a for a in auth or []}
     for x in flows:
         a = seen.get(x["id"])
-        want = "mutual_tls" if x["source"] in SERVICES and x["destination"] in SERVICES else "iam_signed"
+        # The scope record names each flow's authentication. Mutual TLS flows must use mutual TLS; every other
+        # internal flow uses an AWS identity (workload, service-linked or role), so its requests are IAM-signed.
+        stated = x.get("authentication") or ""
+        want = "mutual_tls" if "mutual tls" in stated.lower() else "iam_signed"
         if a is None:
             f.append(f"Flow {x['id']} ({x['source']} to {x['destination']}) has no observed client authentication")
-        elif not a.get("client_authenticated") or a.get("method") != want:
+            continue
+        if not a.get("client_authenticated") or a.get("method") != want:
             f.append(f"Flow {x['id']} uses {a.get('method')} with client_authenticated={a.get('client_authenticated')} (expected {want})")
+        if a.get("identity") != stated:
+            f.append(f"Flow {x['id']} observed identity '{a.get('identity')}' differs from the scope record ('{stated}')")
     return _out("vcm-live-client-authentication", LIVE, LIVE_SRC + "#flow_auth",
                 "Every internal flow authenticates its client: mutual TLS between services, IAM-signed requests to AWS services",
                 "every internal flow authenticated by the expected method", f)

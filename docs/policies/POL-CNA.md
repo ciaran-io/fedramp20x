@@ -35,14 +35,14 @@ This policy covers these information resources from the scope record:
 | ID | Requirement | KSIs |
 |---|---|---|
 | CNA-1 | Each resource has a documented function in the scope record and its own role declared in code. A role grants only the named actions its function needs: no wildcard actions, no role shared between services, and permissions unused for 90 days are removed (POL-IAM IAM-3). Network access follows CNA-6, and data access follows SVC-6. | KSI-CNA-DFP |
-| CNA-2 | Infrastructure is declared in code. A resource that exists outside the code is a defect and is removed or brought into the code within 5 business days. | KSI-CNA-EIS |
+| CNA-2 | Infrastructure is declared in code. A resource that exists outside the code is a defect and is removed or brought into the code within 5 business days. AWS Config rules correct drift automatically within 15 minutes. | KSI-CNA-EIS |
 | CNA-3 | Each third-party machine-based resource is compared with its provider's best-practice guidance on every validation run, and at least every 3 days: the CIS AWS Foundations Benchmark for the AWS account, and the vendor's security baseline for each SaaS tool (E1, E7, E9). Failed controls are fixed or accepted as exceptions under the policy exception process. | KSI-CNA-IBP |
 | CNA-4 | Public exposure is limited to the load balancer, gateway and web application firewall (P8). Each open port and public endpoint is justified in the scope record. | KSI-CNA-MAT |
 | CNA-5 | Production runs in more than one availability zone. Cross-region encrypted backups meet the recovery objectives in policy POL-RPL. | KSI-CNA-OFA |
-| CNA-6 | Inbound and outbound traffic is denied by default. Allowed flows match the flows in the scope record. | KSI-CNA-RNT |
+| CNA-6 | Inbound and outbound traffic is denied by default. Allowed flows match the flows in the scope record. The allowed rules for each security group and the allowed principals for each bucket policy are kept in environment/network-privileges.json, owned by the Platform Lead. | KSI-CNA-RNT |
 | CNA-7a | The Platform Lead reviews protections at least once a year. | KSI-CNA-RVP |
 | CNA-7b | The Platform Lead also reviews protections after each change recorded in mas/scope-changes.json. The deadline depends on the change type in the SCN rules. Transformative: before the change starts, and again within 5 business days after it is finished. Adaptive: within 10 business days after the change is finished, before the notice under SCN-ADP-NTF. Not significant: within 20 business days after the change is finished. Routine recurring: no separate review, because the annual review covers these changes. | KSI-CNA-RVP |
-| CNA-8 | Production uses logical networks and security groups to separate tenants' workloads from operations tooling and from other trust zones. | KSI-CNA-ULN |
+| CNA-8 | Production uses logical networks and security groups to separate tenants' workloads from operations tooling and from other trust zones. The Platform Lead reviews security group, WAF and NAT egress rules every 90 days and records the review in environment/live-state.json#traffic_flow_reviews. | KSI-CNA-ULN |
 
 ## Indicators and validation
 
