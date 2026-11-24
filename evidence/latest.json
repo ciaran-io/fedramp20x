@@ -4,7 +4,7 @@
   "cso": "Orrinwick Beacon",
   "class": "c",
   "frmr_version": "2026.11.02.01",
-  "generated_at": "2026-11-23T07:46:29+00:00",
+  "generated_at": "2026-11-24T07:30:04+00:00",
   "summary": {
     "total": 46,
     "pass": 38,
@@ -62,7 +62,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement also requires changes to be monitored; methods check that changes are logged and manual changes alert, not that logs are reviewed.",
+      "coverage_note": "Monitoring is by alert on manual changes. Methods do not check a separate review of change logs.",
       "methods": [
         {
           "method_id": "lmc-iac-change-logging",
@@ -170,7 +170,7 @@
           "description": "The newest review of the change procedure is inside the cadence and was recorded by the POL-CMT owner",
           "status": "pass",
           "expected": "<= 365 days; reviewed by Platform Lead",
-          "observed": "52 days",
+          "observed": "53 days",
           "findings": []
         },
         {
@@ -238,7 +238,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement says functionality and privileges are strictly defined for infrastructure and services; methods check roles only, not network or data-store privileges.",
+      "coverage_note": null,
       "methods": [
         {
           "method_id": "dfp-iac-role-definitions",
@@ -257,6 +257,16 @@
           "description": "No live role holds wildcard actions",
           "status": "pass",
           "expected": "0 wildcard actions",
+          "observed": "0 finding(s)",
+          "findings": []
+        },
+        {
+          "method_id": "dfp-live-network-data-privileges",
+          "kind": "live",
+          "source": "environment/live-state.json#security_groups, #s3_buckets",
+          "description": "Live network rules and bucket policy principals match the allowed list",
+          "status": "pass",
+          "expected": "0 rules or principals outside environment/network-privileges.json",
           "observed": "0 finding(s)",
           "findings": []
         }
@@ -283,7 +293,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement requires automatically ENFORCING intended state; methods only detect drift, no auto-remediation check.",
+      "coverage_note": null,
       "methods": [
         {
           "method_id": "eis-iac-drift-rule",
@@ -292,7 +302,7 @@
           "description": "A drift-detection rule is declared and enabled in IaC",
           "status": "pass",
           "expected": ">=1 enabled drift rule",
-          "observed": "1 rule(s)",
+          "observed": "5 rule(s)",
           "findings": []
         },
         {
@@ -303,6 +313,16 @@
           "status": "pass",
           "expected": "0 unmanaged resources",
           "observed": "0 unmanaged",
+          "findings": []
+        },
+        {
+          "method_id": "eis-live-auto-remediation",
+          "kind": "live",
+          "source": "environment/live-state.json#remediation_log",
+          "description": "Every enabled rule has automatic remediation, and every drift in the last 30 days was corrected in time",
+          "status": "pass",
+          "expected": "remediation for every rule, corrections within max_minutes",
+          "observed": "0 finding(s)",
           "findings": []
         }
       ]
@@ -320,7 +340,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement covers all third-party machine-based resources; methods compare the AWS account to one benchmark and not the SaaS tools (E1, E7, E9).",
+      "coverage_note": null,
       "methods": [
         {
           "method_id": "ibp-iac-provider-guidance",
@@ -340,6 +360,16 @@
           "status": "pass",
           "expected": "0 failed controls",
           "observed": "0 of 52 controls failed",
+          "findings": []
+        },
+        {
+          "method_id": "ibp-live-saas-guidance",
+          "kind": "live",
+          "source": "environment/saas-config.json",
+          "description": "Each SaaS tool was compared with its provider's guidance within the cycle",
+          "status": "pass",
+          "expected": "comparison <= max_comparison_age_days, review within review_cadence_days, guidance named, 0 unexcepted deviations",
+          "observed": "0 finding(s)",
           "findings": []
         }
       ]
@@ -368,7 +398,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement covers a persistent review of lateral movement; methods count known paths and do not run a path analysis.",
+      "coverage_note": "Limit: methods count known lateral movement paths on each run; they do not run a full path analysis.",
       "methods": [
         {
           "method_id": "mat-iac-exposure",
@@ -403,7 +433,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement covers rapid recovery; recovery is only tested by KSI-RPL-TRC, which records one restore test.",
+      "coverage_note": null,
       "methods": [
         {
           "method_id": "ofa-iac-redundancy",
@@ -422,6 +452,16 @@
           "description": "Every service runs in 2 or more zones and failover was tested in the last 90 days",
           "status": "pass",
           "expected": ">= 2 tasks and zones, failover test <= 90d",
+          "observed": "0 finding(s)",
+          "findings": []
+        },
+        {
+          "method_id": "ofa-live-recovery-time",
+          "kind": "live",
+          "source": "environment/live-state.json#restore_tests",
+          "description": "The latest restore from the second-region recovery vault passed within the RTO",
+          "status": "pass",
+          "expected": "pass, achieved RTO <= rto_hours, from the recovery vault",
           "observed": "0 finding(s)",
           "findings": []
         }
@@ -506,7 +546,7 @@
           "description": "The newest review of protections is no older than 365 days, was done by the Platform Lead and covers every protection resource",
           "status": "pass",
           "expected": "<= 365 days, Platform Lead, all protection resources covered",
-          "observed": "1 days",
+          "observed": "2 days",
           "findings": []
         },
         {
@@ -542,7 +582,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement covers a persistent review of traffic flow controls; methods check configuration and telemetry, not a review record.",
+      "coverage_note": null,
       "methods": [
         {
           "method_id": "uln-iac-logical-network",
@@ -561,6 +601,16 @@
           "description": "Flow logs deliver, data subnets have no internet route and network changes are reviewed",
           "status": "pass",
           "expected": "active logs, 0 routes, 0 unreviewed",
+          "observed": "0 finding(s)",
+          "findings": []
+        },
+        {
+          "method_id": "uln-live-flow-review",
+          "kind": "live",
+          "source": "environment/live-state.json#traffic_flow_reviews",
+          "description": "Traffic flow controls were reviewed by their owner within the review cycle",
+          "status": "pass",
+          "expected": "review within aws_vpc.flow_review_cadence_days, by flow_review_owner",
           "observed": "0 finding(s)",
           "findings": []
         }
@@ -585,7 +635,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement covers all accounts, roles and groups; methods check workforce leavers and provisioning, not role and group lifecycle.",
+      "coverage_note": null,
       "methods": [
         {
           "method_id": "aam-iac-lifecycle-automation",
@@ -604,6 +654,16 @@
           "description": "Leavers in the last 90 days lost access within 24 hours",
           "status": "pass",
           "expected": "all <= 24h",
+          "observed": "0 finding(s)",
+          "findings": []
+        },
+        {
+          "method_id": "aam-live-role-group-lifecycle",
+          "kind": "live",
+          "source": "environment/live-state.json#iam_change_events",
+          "description": "Every role and group change came from lifecycle automation, and every live role is declared in IaC",
+          "status": "pass",
+          "expected": "all actors in lifecycle_actors, 0 undeclared roles",
           "observed": "0 finding(s)",
           "findings": []
         }
@@ -804,7 +864,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement covers user and non-user accounts and a persistent review; methods check privileged human access only.",
+      "coverage_note": null,
       "methods": [
         {
           "method_id": "jit-iac-access-model",
@@ -823,6 +883,16 @@
           "description": "No account holds standing privileged access",
           "status": "pass",
           "expected": "0 accounts",
+          "observed": "0 finding(s)",
+          "findings": []
+        },
+        {
+          "method_id": "jit-live-non-user-accounts",
+          "kind": "live",
+          "source": "environment/live-state.json#service_accounts, #jit_reviews",
+          "description": "No non-user account holds standing admin or long sessions, and access was reviewed within the cycle",
+          "status": "pass",
+          "expected": "0 standing admin, sessions <= 60 min, review in cycle by owner",
           "observed": "0 finding(s)",
           "findings": []
         }
@@ -846,7 +916,7 @@
         "ra-5.5"
       ],
       "status": "fail",
-      "coverage_gap": null,
+      "coverage_gap": "No method checks a review record for non-user authentication.",
       "coverage_note": "Official statement covers a persistent review of non-user authentication; methods check key age and declared key use, not a review record.",
       "methods": [
         {
@@ -902,7 +972,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement covers disabling or securing accounts; methods check response time for sampled events, not every account type.",
+      "coverage_note": "Limit: methods check response time on sampled privileged-account events, not every event.",
       "methods": [
         {
           "method_id": "sus-iac-response-rules",
@@ -984,7 +1054,7 @@
           "description": "The plan was reviewed by its owner inside the cadence, and after every report or review that required a plan change",
           "status": "pass",
           "expected": "<= 365 days; reviewed by CISO; review after each required change",
-          "observed": "2 days",
+          "observed": "3 days",
           "findings": []
         }
       ]
@@ -1022,7 +1092,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement bases access on data sensitivity classes; methods check roles and grants, not a per-class sensitivity map.",
+      "coverage_note": null,
       "methods": [
         {
           "method_id": "ala-iac-log-access-model",
@@ -1041,6 +1111,16 @@
           "description": "No standing raw log access, no unmasked reads and a review in the last 30 days",
           "status": "pass",
           "expected": "0 standing, review <= 30d",
+          "observed": "0 finding(s)",
+          "findings": []
+        },
+        {
+          "method_id": "ala-live-sensitivity-classes",
+          "kind": "live",
+          "source": "environment/log-classes.json",
+          "description": "Every log group has a sensitivity class and every grant matches the role's access map, with JIT for C3",
+          "status": "pass",
+          "expected": "0 unclassified groups, 0 grants outside the map, JIT for C3",
           "observed": "0 finding(s)",
           "findings": []
         }
@@ -1062,7 +1142,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement covers all machine-based resources; methods check IaC scans and merge checks, not configuration tests of SaaS tools.",
+      "coverage_note": null,
       "methods": [
         {
           "method_id": "evc-iac-config-testing",
@@ -1081,6 +1161,16 @@
           "description": "Scans are fresh, every merge was checked and no high finding is open",
           "status": "pass",
           "expected": "scan <= 24h, 100% checked, 0 high",
+          "observed": "0 finding(s)",
+          "findings": []
+        },
+        {
+          "method_id": "evc-live-saas-configuration",
+          "kind": "live",
+          "source": "environment/saas-config.json",
+          "description": "A fresh configuration export exists for each SaaS tool and every setting meets guidance or has an approved exception",
+          "status": "pass",
+          "expected": "export <= max_export_age_days, 0 unexcepted deviations",
           "observed": "0 finding(s)",
           "findings": []
         }
@@ -1111,7 +1201,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement is about a maintained, reviewed LIST of resources and event types that are logged; methods only check that the audit trail is on and fresh.",
+      "coverage_note": null,
       "methods": [
         {
           "method_id": "let-iac-cloudtrail",
@@ -1131,6 +1221,16 @@
           "status": "pass",
           "expected": "logging, delivery <= 60 min",
           "observed": "logging=True, age=7m",
+          "findings": []
+        },
+        {
+          "method_id": "let-list-coverage",
+          "kind": "live",
+          "source": "environment/logging-list.json",
+          "description": "Every in-scope resource is on the reviewed logging list and its log source is reporting",
+          "status": "pass",
+          "expected": "all in-scope resources listed with every MLA-3 event type, sources reporting, review in cycle",
+          "observed": "0 finding(s)",
           "findings": []
         }
       ]
@@ -1166,7 +1266,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement requires the SIEM itself to be persistently reviewed; methods check health and tamper protection, not a review record.",
+      "coverage_note": null,
       "methods": [
         {
           "method_id": "osm-iac-siem-config",
@@ -1185,6 +1285,16 @@
           "description": "All expected sources report, events are fresh and the store is locked",
           "status": "pass",
           "expected": "all sources, <= 15 min, lock on",
+          "observed": "0 finding(s)",
+          "findings": []
+        },
+        {
+          "method_id": "osm-live-siem-review",
+          "kind": "live",
+          "source": "environment/live-state.json#siem_reviews",
+          "description": "The SIEM was reviewed by its owner within the review cycle, covering every expected source",
+          "status": "pass",
+          "expected": "review within siem_config.review_cadence_days, by review_owner, all sources",
           "observed": "0 finding(s)",
           "findings": []
         }
@@ -1209,7 +1319,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement requires logs to be audited; methods check review recency and triage, not audit quality.",
+      "coverage_note": "Limit: methods prove that logs are reviewed and findings are triaged on time; they do not judge the quality of each review.",
       "methods": [
         {
           "method_id": "rvl-iac-review-process",
@@ -1251,7 +1361,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement covers all information resources; the live method checks cloud resources against the scope record, not people and process resources.",
+      "coverage_note": null,
       "methods": [
         {
           "method_id": "giv-iac-inventory-generator",
@@ -1270,6 +1380,16 @@
           "description": "Every live resource carries a scope ID that exists in the scope record",
           "status": "pass",
           "expected": "0 unscoped resources",
+          "observed": "0 finding(s)",
+          "findings": []
+        },
+        {
+          "method_id": "giv-live-people-third-parties",
+          "kind": "live",
+          "source": "environment/live-state.json#idp_users, environment/grc-records.json#third_party_register",
+          "description": "Every workforce user maps to a people resource and the third-party register matches the scope record",
+          "status": "pass",
+          "expected": "user count matches, 0 unmapped users, register equals scope record",
           "observed": "0 finding(s)",
           "findings": []
         }
@@ -1332,7 +1452,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement covers CISA Secure by Design principles; methods check four named principles, not the full pledge.",
+      "coverage_note": "Limit: methods check the principles Orrinwick selected in its SDLC review record, not every principle in the CISA pledge. POL-PIY PIY-4 does not yet name the selected principles.",
       "methods": [
         {
           "method_id": "rsd-iac-sdlc-policy",
@@ -1383,7 +1503,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Objectives are read from environment/recovery-objectives.json, but the methods do not prove a backup can be restored or that a restore meets the RTO (see KSI-RPL-TRC).",
+      "coverage_note": "Methods check that backup configuration aligns with the recovery objectives in environment/recovery-objectives.json. Proof that a restore works and meets the RTO is under KSI-RPL-TRC.",
       "methods": [
         {
           "method_id": "abo-iac-backup-policy",
@@ -1412,7 +1532,7 @@
           "description": "Backup and copy jobs completed in the last day, and every failed job in the last 30 days raised an alert within 60 minutes that a person acknowledged",
           "status": "pass",
           "expected": "jobs in the last day; alert <= 60 min, acknowledged",
-          "observed": "17 job(s) in 30 days, 1 failed, 0 finding(s)",
+          "observed": "19 job(s) in 30 days, 1 failed, 0 finding(s)",
           "findings": []
         }
       ]
@@ -1442,7 +1562,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement is about a persistent review; methods compare the plan record to the objectives and check review age.",
+      "coverage_note": "Methods compare the recovery plan record with the recovery objectives and check the age of its last review.",
       "methods": [
         {
           "method_id": "arp-iac-plan-alignment",
@@ -1496,7 +1616,7 @@
           "description": "The newest review of the recovery objectives is inside the review cadence and was recorded by the POL-RPL owner",
           "status": "pass",
           "expected": "<= 90 days since last review; reviewed by Platform Lead",
-          "observed": "1 days",
+          "observed": "2 days",
           "findings": []
         }
       ]
@@ -1522,7 +1642,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "One restore test result is recorded; methods do not prove the result by running a restore.",
+      "coverage_note": "Limit: methods check recorded restore test results, their age and the test history; they do not run a restore. The test cadence differs between RPL-4 and SD-003 (issue #20); the history check uses the 90-day cycle in environment/recovery-objectives.json.",
       "methods": [
         {
           "method_id": "trc-iac-restore-test-plan",
@@ -1541,6 +1661,16 @@
           "description": "A restore test inside the cadence met the RTO and RPO",
           "status": "pass",
           "expected": "<= cadence, RTO and RPO met",
+          "observed": "0 finding(s)",
+          "findings": []
+        },
+        {
+          "method_id": "trc-live-test-history",
+          "kind": "live",
+          "source": "environment/live-state.json#restore_tests",
+          "description": "Restore tests ran every cycle for the last year, each passing within the RTO",
+          "status": "pass",
+          "expected": "one test per restore_test_cadence_days, no gap over the cycle, all within RTO",
           "observed": "0 finding(s)",
           "findings": []
         }
@@ -1586,7 +1716,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement covers identifying risks; methods check review recency, stale risks and contract clauses, not risk quality.",
+      "coverage_note": "Limit: methods check review recency, stale risks and contract clauses; they do not judge the quality of each risk assessment.",
       "methods": [
         {
           "method_id": "mit-iac-supply-chain-policy",
@@ -1633,7 +1763,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement covers contractual or active monitoring; methods check advisory check age and the SBOM, not that each advisory was acted on.",
+      "coverage_note": "Methods check that upstream advisories are checked on time and that the SBOM is current. Action on each advisory is checked under the VDR process.",
       "methods": [
         {
           "method_id": "mon-iac-upstream-monitoring",
@@ -1720,7 +1850,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement covers keys, certificates and other secrets; methods check secret rotation only, not key rotation or certificate expiry.",
+      "coverage_note": null,
       "methods": [
         {
           "method_id": "asm-iac-rotation",
@@ -1740,6 +1870,16 @@
           "status": "pass",
           "expected": "all secrets rotated within 90d",
           "observed": "0 overdue",
+          "findings": []
+        },
+        {
+          "method_id": "asm-live-keys-certificates",
+          "kind": "live",
+          "source": "environment/live-state.json#kms_keys, #certificates",
+          "description": "Every key rotates and every certificate renews automatically with more than 30 days left",
+          "status": "pass",
+          "expected": "rotation on, auto renew, > 30 days to expiry",
+          "observed": "0 finding(s)",
           "findings": []
         }
       ]
@@ -1764,7 +1904,7 @@
         "sr-10"
       ],
       "status": "fail",
-      "coverage_gap": null,
+      "coverage_gap": "No method checks that improvements are made; methods check only that open items are not stale.",
       "coverage_note": "Official statement requires improvements to be made; methods check that open items are not stale, not that each improvement was effective.",
       "methods": [
         {
@@ -1805,7 +1945,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement covers plans, procedures and state; methods check state only.",
+      "coverage_note": null,
       "methods": [
         {
           "method_id": "prr-iac-cleanup-step",
@@ -1826,6 +1966,16 @@
           "expected": "0 residual elements",
           "observed": "0 finding(s)",
           "findings": []
+        },
+        {
+          "method_id": "prr-grc-plan-review",
+          "kind": "live",
+          "source": "environment/grc-records.json#change_plan_reviews",
+          "description": "Plans and procedures were reviewed after every scope change",
+          "status": "pass",
+          "expected": "a review with plans and procedures for each change, within 28 days",
+          "observed": "0 finding(s)",
+          "findings": []
         }
       ]
     },
@@ -1843,7 +1993,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement depends on customer agreements; methods check the 30 day target the demo author chose, not each agreement.",
+      "coverage_note": "Methods check deletion requests against the 30-day term in Orrinwick's standard customer agreement (docs/customer-agreement-standard.md).",
       "methods": [
         {
           "method_id": "rud-iac-removal-process",
@@ -1862,6 +2012,16 @@
           "description": "Every removal request finished within 30 days, including backups",
           "status": "pass",
           "expected": "all <= 30d",
+          "observed": "0 finding(s)",
+          "findings": []
+        },
+        {
+          "method_id": "rud-terms-agreement",
+          "kind": "static",
+          "source": "environment/customer-terms.json",
+          "description": "The removal process and every request meet the standard customer term",
+          "status": "pass",
+          "expected": "process target and requests <= deletion_days",
           "observed": "0 finding(s)",
           "findings": []
         }
@@ -1895,7 +2055,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement also covers securing information from unwanted modification; methods check encryption at rest only.",
+      "coverage_note": null,
       "methods": [
         {
           "method_id": "sin-iac-encryption",
@@ -1916,6 +2076,16 @@
           "expected": "0 unencrypted resources",
           "observed": "0 unencrypted",
           "findings": []
+        },
+        {
+          "method_id": "sin-live-modification-protection",
+          "kind": "live",
+          "source": "environment/live-state.json#s3_buckets, #rds_instances",
+          "description": "Stores that hold federal data are protected from modification and deletion",
+          "status": "pass",
+          "expected": "versioning and object lock on federal buckets, deletion protection on the database",
+          "observed": "0 finding(s)",
+          "findings": []
         }
       ]
     },
@@ -1935,7 +2105,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Observed TLS version and certificate validity are checked for every data flow in the scope record, but not mutual authentication or workload identity between machine-based resources.",
+      "coverage_note": null,
       "methods": [
         {
           "method_id": "vcm-iac-tls-policy",
@@ -1955,6 +2125,16 @@
           "status": "pass",
           "expected": "TLS1.2+, valid certificates, 0 weak ciphers",
           "observed": "3 endpoint(s), 31 flow(s) checked, 0 finding(s)",
+          "findings": []
+        },
+        {
+          "method_id": "vcm-live-client-authentication",
+          "kind": "live",
+          "source": "environment/live-state.json#flow_auth",
+          "description": "Every internal flow authenticates its client: mutual TLS between services, IAM-signed requests to AWS services",
+          "status": "pass",
+          "expected": "every internal flow authenticated by the expected method",
+          "observed": "0 finding(s)",
           "findings": []
         }
       ]
@@ -1982,7 +2162,7 @@
       ],
       "status": "pass",
       "coverage_gap": null,
-      "coverage_note": "Official statement covers all machine-based information resources; methods check container images only.",
+      "coverage_note": null,
       "methods": [
         {
           "method_id": "vri-iac-signing",
@@ -2001,6 +2181,16 @@
           "description": "Every running image is signed and digest-verified",
           "status": "pass",
           "expected": "100% signed and verified",
+          "observed": "0 finding(s)",
+          "findings": []
+        },
+        {
+          "method_id": "vri-live-artifact-signatures",
+          "kind": "live",
+          "source": "environment/live-state.json#artifact_signatures",
+          "description": "Signing is required for every artifact type and every deployed IaC module is signed and verified",
+          "status": "pass",
+          "expected": "iac_module in signing_required_for, all signed and verified",
           "observed": "0 finding(s)",
           "findings": []
         }

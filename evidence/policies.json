@@ -195,7 +195,7 @@
         },
         {
           "id": "CNA-2",
-          "text": "Infrastructure is declared in code. A resource that exists outside the code is a defect and is removed or brought into the code within 5 business days.",
+          "text": "Infrastructure is declared in code. A resource that exists outside the code is a defect and is removed or brought into the code within 5 business days. AWS Config rules correct drift automatically within 15 minutes.",
           "ksis": [
             "KSI-CNA-EIS"
           ]
@@ -223,7 +223,7 @@
         },
         {
           "id": "CNA-6",
-          "text": "Inbound and outbound traffic is denied by default. Allowed flows match the flows in the scope record.",
+          "text": "Inbound and outbound traffic is denied by default. Allowed flows match the flows in the scope record. The allowed rules for each security group and the allowed principals for each bucket policy are kept in environment/network-privileges.json, owned by the Platform Lead.",
           "ksis": [
             "KSI-CNA-RNT"
           ]
@@ -244,7 +244,7 @@
         },
         {
           "id": "CNA-8",
-          "text": "Production uses logical networks and security groups to separate tenants' workloads from operations tooling and from other trust zones.",
+          "text": "Production uses logical networks and security groups to separate tenants' workloads from operations tooling and from other trust zones. The Platform Lead reviews security group, WAF and NAT egress rules every 90 days and records the review in environment/live-state.json#traffic_flow_reviews.",
           "ksis": [
             "KSI-CNA-ULN"
           ]
@@ -255,7 +255,8 @@
           "ksi": "KSI-CNA-DFP",
           "methods": [
             "dfp-iac-role-definitions",
-            "dfp-live-role-privileges"
+            "dfp-live-role-privileges",
+            "dfp-live-network-data-privileges"
           ],
           "status": "pass"
         },
@@ -263,7 +264,8 @@
           "ksi": "KSI-CNA-EIS",
           "methods": [
             "eis-iac-drift-rule",
-            "eis-live-drift"
+            "eis-live-drift",
+            "eis-live-auto-remediation"
           ],
           "status": "pass"
         },
@@ -271,7 +273,8 @@
           "ksi": "KSI-CNA-IBP",
           "methods": [
             "ibp-iac-provider-guidance",
-            "ibp-live-benchmark-results"
+            "ibp-live-benchmark-results",
+            "ibp-live-saas-guidance"
           ],
           "status": "pass"
         },
@@ -287,7 +290,8 @@
           "ksi": "KSI-CNA-OFA",
           "methods": [
             "ofa-iac-redundancy",
-            "ofa-live-availability"
+            "ofa-live-availability",
+            "ofa-live-recovery-time"
           ],
           "status": "pass"
         },
@@ -312,7 +316,8 @@
           "ksi": "KSI-CNA-ULN",
           "methods": [
             "uln-iac-logical-network",
-            "uln-live-network-controls"
+            "uln-live-network-controls",
+            "uln-live-flow-review"
           ],
           "status": "pass"
         }
@@ -342,7 +347,7 @@
       "requirements": [
         {
           "id": "IAM-1",
-          "text": "Account creation, change and removal are automated from the identity provider. Leavers lose access within 24 hours.",
+          "text": "Account creation, change and removal are automated from the identity provider. Leavers lose access within 24 hours. Roles and groups are created, changed and removed only by the Terraform pipeline or the identity provider's provisioning.",
           "ksis": [
             "KSI-IAM-AAM"
           ]
@@ -363,7 +368,7 @@
         },
         {
           "id": "IAM-4",
-          "text": "Production and tenant-data access is granted just in time through the access gateway (E6), with an approval, a reason and an expiry.",
+          "text": "Production and tenant-data access is granted just in time through the access gateway (E6), with an approval, a reason and an expiry. Non-user accounts hold no standing admin access, and their sessions last 60 minutes or less. The Security Operations Lead reviews non-user access every 90 days.",
           "ksis": [
             "KSI-IAM-JIT"
           ]
@@ -396,7 +401,8 @@
           "ksi": "KSI-IAM-AAM",
           "methods": [
             "aam-iac-lifecycle-automation",
-            "aam-live-deprovisioning"
+            "aam-live-deprovisioning",
+            "aam-live-role-group-lifecycle"
           ],
           "status": "pass"
         },
@@ -420,7 +426,8 @@
           "ksi": "KSI-IAM-JIT",
           "methods": [
             "jit-iac-access-model",
-            "jit-live-standing-access"
+            "jit-live-standing-access",
+            "jit-live-non-user-accounts"
           ],
           "status": "pass"
         },
@@ -530,28 +537,28 @@
       "requirements": [
         {
           "id": "MLA-1",
-          "text": "Log access is limited to named security and operations roles. Log changes and deletions raise an alert.",
+          "text": "Log access is limited to named security and operations roles. Log changes and deletions raise an alert. Log data has three sensitivity classes: C1 security audit, C2 operational and C3 logs that may hold federal contact data. Each role's access is limited to the classes in environment/log-classes.json, and access to C3 is just in time.",
           "ksis": [
             "KSI-MLA-ALA"
           ]
         },
         {
           "id": "MLA-2",
-          "text": "Resource configurations are evaluated against the baseline at least daily.",
+          "text": "Resource configurations are evaluated against the baseline at least daily. The configuration of each SaaS tool (E1, E7, E9) is exported and evaluated against its baseline at least daily (environment/saas-config.json).",
           "ksis": [
             "KSI-MLA-EVC"
           ]
         },
         {
           "id": "MLA-3",
-          "text": "Each in-scope resource logs authentication, authorisation, administrative, configuration and data-access events. Logs do not contain alert summaries or credentials.",
+          "text": "Each in-scope resource logs authentication, authorisation, administrative, configuration and data-access events. Logs do not contain alert summaries or credentials. The Security Operations Lead keeps the list of logged resources and event types in environment/logging-list.json and reviews it every year.",
           "ksis": [
             "KSI-MLA-LET"
           ]
         },
         {
           "id": "MLA-4",
-          "text": "Logs flow to the security monitoring stack (E4), which correlates events and raises alerts.",
+          "text": "Logs flow to the security monitoring stack (E4), which correlates events and raises alerts. The Security Operations Lead reviews the monitoring stack every 30 days, checks that each expected log source reports, and records the review in environment/live-state.json#siem_reviews.",
           "ksis": [
             "KSI-MLA-OSM"
           ]
@@ -569,7 +576,8 @@
           "ksi": "KSI-MLA-ALA",
           "methods": [
             "ala-iac-log-access-model",
-            "ala-live-log-access-grants"
+            "ala-live-log-access-grants",
+            "ala-live-sensitivity-classes"
           ],
           "status": "pass"
         },
@@ -577,7 +585,8 @@
           "ksi": "KSI-MLA-EVC",
           "methods": [
             "evc-iac-config-testing",
-            "evc-live-scan-results"
+            "evc-live-scan-results",
+            "evc-live-saas-configuration"
           ],
           "status": "pass"
         },
@@ -585,7 +594,8 @@
           "ksi": "KSI-MLA-LET",
           "methods": [
             "let-iac-cloudtrail",
-            "let-live-cloudtrail"
+            "let-live-cloudtrail",
+            "let-list-coverage"
           ],
           "status": "pass"
         },
@@ -593,7 +603,8 @@
           "ksi": "KSI-MLA-OSM",
           "methods": [
             "osm-iac-siem-config",
-            "osm-live-siem-health"
+            "osm-live-siem-health",
+            "osm-live-siem-review"
           ],
           "status": "pass"
         },
@@ -626,7 +637,7 @@
       "requirements": [
         {
           "id": "PIY-1",
-          "text": "The inventory of in-scope resources is generated from the scope record and checked against live state. A live resource with no scope ID is a finding.",
+          "text": "The inventory of in-scope resources is generated from the scope record and checked against live state. A live resource with no scope ID is a finding. Each user in the identity provider's workforce export maps to a people resource in the scope record, and the third-party register matches the scope record's third-party resources.",
           "ksis": [
             "KSI-PIY-GIV"
           ]
@@ -647,7 +658,7 @@
         },
         {
           "id": "PIY-4",
-          "text": "Security requirements are part of each stage of the software development lifecycle. Design review, code review and dependency scanning are required for every release.",
+          "text": "Each release passes a threat model, static analysis and a dependency scan, and applies Orrinwick's secure-by-design principles: secure defaults, memory-safe languages where possible, MFA by default and no default passwords. The Security Operations Lead reviews the secure development lifecycle and these principles every 90 days. The principles and review settings are kept in the sdlc_review record in environment/iac-plan.json, and review results in environment/live-state.json#sdlc.",
           "ksis": [
             "KSI-PIY-RSD"
           ]
@@ -672,7 +683,8 @@
           "ksi": "KSI-PIY-GIV",
           "methods": [
             "giv-iac-inventory-generator",
-            "giv-live-unscoped-resources"
+            "giv-live-unscoped-resources",
+            "giv-live-people-third-parties"
           ],
           "status": "pass"
         },
@@ -784,7 +796,8 @@
           "ksi": "KSI-RPL-TRC",
           "methods": [
             "trc-iac-restore-test-plan",
-            "trc-live-restore-results"
+            "trc-live-restore-results",
+            "trc-live-test-history"
           ],
           "status": "pass"
         }
@@ -889,7 +902,7 @@
         },
         {
           "id": "SVC-2",
-          "text": "Secrets live in secrets management (P6). Keys are held in the key management service (P5). Secrets rotate at least every 90 days and never appear in code, logs or tickets.",
+          "text": "Secrets live in secrets management (P6). Keys are held in the key management service (P5). Secrets rotate at least every 90 days and never appear in code, logs or tickets. Customer-managed keys rotate automatically. Certificates renew automatically, and no certificate is allowed to come within 30 days of expiry.",
           "ksis": [
             "KSI-SVC-ASM"
           ]
@@ -903,28 +916,28 @@
         },
         {
           "id": "SVC-4",
-          "text": "The offering does not keep residual access, credentials or data after a change. Deprecated resources are removed within 30 days.",
+          "text": "The offering does not keep residual access, credentials or data after a change. Deprecated resources are removed within 30 days. The Platform Lead reviews the affected plans and procedures within 20 business days of each scope change and records the review in environment/grc-records.json#change_plan_reviews.",
           "ksis": [
             "KSI-SVC-PRR"
           ]
         },
         {
           "id": "SVC-5",
-          "text": "Customer data is deleted from production within 30 days of a verified customer request and from backups at the next backup expiry. Staging holds synthetic data only.",
+          "text": "Customer data is deleted from production within 30 days of a verified customer request and from backups at the next backup expiry. Staging holds synthetic data only. Customer data is deleted 30 days after the contract ends, with no request needed.",
           "ksis": [
             "KSI-SVC-RUD"
           ]
         },
         {
           "id": "SVC-6",
-          "text": "Data at rest is encrypted. Queues, tables and volumes use customer-data keys from the key management service.",
+          "text": "Data at rest is encrypted. Queues, tables and volumes use customer-data keys from the key management service. Stores that hold federal data use versioning and object lock, and the database has deletion protection.",
           "ksis": [
             "KSI-SVC-SIN"
           ]
         },
         {
           "id": "SVC-7",
-          "text": "Every data flow in the scope record uses TLS 1.2 or later with a valid certificate. Certificates renew automatically.",
+          "text": "Every data flow in the scope record uses TLS 1.2 or later with a valid certificate. Certificates renew automatically. Internal flows authenticate the client: mutual TLS between services, and IAM-signed requests (workload or service-linked identity) to AWS services.",
           "ksis": [
             "KSI-SVC-VCM"
           ]
@@ -950,7 +963,8 @@
           "ksi": "KSI-SVC-ASM",
           "methods": [
             "asm-iac-rotation",
-            "asm-live-rotation-age"
+            "asm-live-rotation-age",
+            "asm-live-keys-certificates"
           ],
           "status": "pass"
         },
@@ -966,7 +980,8 @@
           "ksi": "KSI-SVC-PRR",
           "methods": [
             "prr-iac-cleanup-step",
-            "prr-live-residual-elements"
+            "prr-live-residual-elements",
+            "prr-grc-plan-review"
           ],
           "status": "pass"
         },
@@ -974,7 +989,8 @@
           "ksi": "KSI-SVC-RUD",
           "methods": [
             "rud-iac-removal-process",
-            "rud-live-removal-requests"
+            "rud-live-removal-requests",
+            "rud-terms-agreement"
           ],
           "status": "pass"
         },
@@ -982,7 +998,8 @@
           "ksi": "KSI-SVC-SIN",
           "methods": [
             "sin-iac-encryption",
-            "sin-live-encryption"
+            "sin-live-encryption",
+            "sin-live-modification-protection"
           ],
           "status": "pass"
         },
@@ -990,7 +1007,8 @@
           "ksi": "KSI-SVC-VCM",
           "methods": [
             "vcm-iac-tls-policy",
-            "vcm-live-tls-scan"
+            "vcm-live-tls-scan",
+            "vcm-live-client-authentication"
           ],
           "status": "pass"
         },
@@ -998,7 +1016,8 @@
           "ksi": "KSI-SVC-VRI",
           "methods": [
             "vri-iac-signing",
-            "vri-live-image-integrity"
+            "vri-live-image-integrity",
+            "vri-live-artifact-signatures"
           ],
           "status": "pass"
         }
