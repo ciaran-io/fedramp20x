@@ -4,7 +4,7 @@
   "cso": "Orrinwick Beacon",
   "class": "c",
   "frmr_version": "2026.11.02.01",
-  "generated_at": "2026-11-24T07:30:04+00:00",
+  "generated_at": "2026-11-25T07:33:53+00:00",
   "summary": {
     "total": 46,
     "pass": 38,
@@ -170,7 +170,7 @@
           "description": "The newest review of the change procedure is inside the cadence and was recorded by the POL-CMT owner",
           "status": "pass",
           "expected": "<= 365 days; reviewed by Platform Lead",
-          "observed": "53 days",
+          "observed": "54 days",
           "findings": []
         },
         {
@@ -546,7 +546,7 @@
           "description": "The newest review of protections is no older than 365 days, was done by the Platform Lead and covers every protection resource",
           "status": "pass",
           "expected": "<= 365 days, Platform Lead, all protection resources covered",
-          "observed": "2 days",
+          "observed": "3 days",
           "findings": []
         },
         {
@@ -1054,7 +1054,7 @@
           "description": "The plan was reviewed by its owner inside the cadence, and after every report or review that required a plan change",
           "status": "pass",
           "expected": "<= 365 days; reviewed by CISO; review after each required change",
-          "observed": "3 days",
+          "observed": "4 days",
           "findings": []
         }
       ]
@@ -1532,7 +1532,7 @@
           "description": "Backup and copy jobs completed in the last day, and every failed job in the last 30 days raised an alert within 60 minutes that a person acknowledged",
           "status": "pass",
           "expected": "jobs in the last day; alert <= 60 min, acknowledged",
-          "observed": "19 job(s) in 30 days, 1 failed, 0 finding(s)",
+          "observed": "21 job(s) in 30 days, 1 failed, 0 finding(s)",
           "findings": []
         }
       ]
@@ -1616,7 +1616,7 @@
           "description": "The newest review of the recovery objectives is inside the review cadence and was recorded by the POL-RPL owner",
           "status": "pass",
           "expected": "<= 90 days since last review; reviewed by Platform Lead",
-          "observed": "2 days",
+          "observed": "3 days",
           "findings": []
         }
       ]
