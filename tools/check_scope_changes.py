@@ -62,8 +62,19 @@ def fingerprint(rec: dict, method: int = CURRENT_METHOD) -> str:
     return hashlib.sha256(json.dumps(core, sort_keys=True, default=str).encode()).hexdigest()[:16]
 
 
-def reference(log: dict) -> tuple[str | None, int, list[str]]:
-    """The fingerprint the current record must match, the method it uses, and problems with the rebaselines."""
+# A change of fingerprint method is a code change, so each rebaseline is pinned here, in the same code that
+# introduced the method (assessor re-check F1, 23 Nov 2026). A rebaseline in the log that is not pinned here,
+# or whose fingerprints differ from the pinned ones, is a problem: editing the log alone cannot move the baseline.
+KNOWN_REBASELINES = {
+    ("SC-002", 1, 2): {"fingerprint_before": "a78b5fcdcbfbf373", "fingerprint_after": "e96a7c50eda0c707"},
+}
+
+
+def reference(log: dict, rec: dict | None = None) -> tuple[str | None, int, list[str]]:
+    """The fingerprint the current record must match, the method it uses, and problems with the rebaselines.
+
+    With the current record, a rebaseline that is the latest reference is also checked against it: under
+    the old method the record must still give fingerprint_before, so no scope change hides behind it."""
     problems = []
     entries = log.get("entries", [])
     position = {e["id"]: i for i, e in enumerate(entries)}
@@ -81,13 +92,22 @@ def reference(log: dict) -> tuple[str | None, int, list[str]]:
         if rb.get("fingerprint_before") != entries[pos]["scope_fingerprint_after"]:
             problems.append(f"rebaseline {rb.get('date')}: fingerprint_before does not equal {rb['after_entry']} "
                             "scope_fingerprint_after, so the scope may have changed without an entry")
+        pinned = KNOWN_REBASELINES.get((rb.get("after_entry"), rb.get("method_from"), rb.get("method_to")))
+        if pinned is None:
+            problems.append(f"rebaseline {rb.get('date')}: not pinned in KNOWN_REBASELINES in tools/check_scope_changes.py")
+        elif any(rb.get(k) != v for k, v in pinned.items()):
+            problems.append(f"rebaseline {rb.get('date')}: fingerprints differ from the pinned values, so the log was edited")
         method, last_rb_pos = rb.get("method_to", method + 1), pos
     if method != CURRENT_METHOD:
         problems.append(f"the log reaches fingerprint method {method}, but this check uses method {CURRENT_METHOD}: add a rebaseline")
     if not entries:
         return None, method, problems
     if rebaselines and last_rb_pos == len(entries) - 1:
-        return rebaselines[-1].get("fingerprint_after"), method, problems
+        rb = rebaselines[-1]
+        if rec is not None and rb.get("method_from") in (1, 2) and fingerprint(rec, rb["method_from"]) != rb.get("fingerprint_before"):
+            problems.append(f"rebaseline {rb.get('date')}: under method {rb['method_from']} the current record no longer gives "
+                            "fingerprint_before, so the scope changed after the rebaseline without an entry")
+        return rb.get("fingerprint_after"), method, problems
     return entries[-1]["scope_fingerprint_after"], method, problems
 
 
@@ -117,7 +137,7 @@ def main() -> int:
     dates = [e["date"] for e in log["entries"]]
     if dates != sorted(dates):
         problems.append("entries are not in date order")
-    ref, _, rb_problems = reference(log)
+    ref, _, rb_problems = reference(log, rec)
     problems += rb_problems
     if ref != now:
         problems.append(f"scope record changed without a log entry (log fingerprint {ref or 'none'}, record {now}). "

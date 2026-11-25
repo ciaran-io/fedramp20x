@@ -123,6 +123,11 @@ An AI assistant (Claude) wrote much of the scaffolding and drafts the validator 
 | 2026-11-22 | Plan reviews for KSI-INR-RIR and KSI-RPL-RRO kept as lists that only grow. The approval of the incident response plan recorded as a review, and KSI-RPL-RRO checks who reviewed | KSI-INR-RIR, KSI-RPL-RRO | [#34](https://github.com/ciaran-io/fedramp20x/pull/34) |
 | 2026-11-22 | KSI-CMT-RVP built: a yearly review of the change procedure by its owner, and a review within 10 business days of each failed or emergency change. KSI-CMT-LMC checks that every pipeline change has a change type. POL-CMT 1.0 approved | KSI-CMT-RVP, KSI-CMT-LMC, SCN-CSO-EVA, FRC-CCL-UCC | [#35](https://github.com/ciaran-io/fedramp20x/pull/35) |
 | 2026-11-22 | Significant change log generated from the scope change log, with the notice each change type needs, the protection review after each change and the pipeline changes by type | SCN-CSO-HRM, SCN-CSO-EVA | [#37](https://github.com/ciaran-io/fedramp20x/pull/37) |
+| 2026-11-23 | Checks that can fail: 14 methods fail on an empty source, the scope fingerprint covers each exclusion condition, and every validation run keeps its own history record | FRC-CSX-VVK, SCN-CSO-MAR, VDR-TFR-NMV | [#57](https://github.com/ciaran-io/fedramp20x/pull/57) |
+| 2026-11-23 | Coverage gaps closed: a triage found 19 KSIs whose checks proved less than the official statement. 17 now have a third method with fictional data; IAM-SNU and SVC-EIS stay as the planned failures with their gaps recorded | FRC-CSX-VVK | [#58](https://github.com/ciaran-io/fedramp20x/pull/58) |
+| 2026-11-23 | Standard customer agreement with a 30-day deletion term and 30-day retention after contract end. POL-PIY PIY-4 names the secure-by-design principles, owner and cycle | KSI-SVC-RUD, KSI-PIY-RSD | [#59](https://github.com/ciaran-io/fedramp20x/pull/59), [#60](https://github.com/ciaran-io/fedramp20x/pull/60) |
+| 2026-11-23 | Sanity check after these changes: one owner role, SaaS and logging checks match the policy cycles, and 15 policy requirements now state what their checks enforce | | [#61](https://github.com/ciaran-io/fedramp20x/pull/61) |
+| 2026-11-24 | A fingerprint rebaseline is pinned in code and checked against the current record, so it cannot hide a scope change (assessor re-check F1) | SCN-CSO-MAR | this change |
 
 ### To do
 
@@ -151,7 +156,7 @@ Each item has a GitHub issue that tracks the work.
 
 - **Fictional data.** The company, the environment and every record are invented. The fixtures were set to show a mostly healthy service with two open findings (KSI-IAM-SNU and KSI-SVC-EIS), so that the failure path is visible.
 - **No real cloud account.** The live methods read snapshot files in `environment/`. With a real AWS account, I would replace each snapshot with API calls (for example AWS Backup, IAM and AWS Config), run them under a read-only role with short-lived credentials, and keep the daily schedule.
-- **Checks narrower than the KSI.** Some checks prove less than the official statement. Each one has a coverage note in `validators/registry.py` and a gap entry in its design. For example, KSI-SVC-ASM covers keys, certificates and other secrets, but its checks test secret rotation only.
+- **Checks narrower than the KSI.** Where a check proves less than the official statement, `KSI_GAPS` in `validators/registry.py` holds the KSI at partial until a method covers the missing part. Today only the two planned failures have a gap. Coverage notes there record limits of depth, for example a check that samples events instead of reading every event.
 - **Not finished.** Some of my GRC KSIs have no checks yet (they show as `not_implemented` in [`evidence/latest.json`](evidence/latest.json)), and four documents still have `TODO` sections. See the [Roadmap](#roadmap).
 - **No independent assessment.** A real Class C package needs a FedRAMP Recognized assessor. Nothing here has been assessed.
 - **Access gate.** The trust center's access control is a demonstration only (see [Visibility](#visibility)).
