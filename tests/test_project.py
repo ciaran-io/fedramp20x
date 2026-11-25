@@ -516,6 +516,32 @@ class ScopeLog(unittest.TestCase):
         _, _, problems = scl.reference(log)
         self.assertTrue(any("fingerprint_before" in p for p in problems))
 
+    def _hidden_change(self, edit):
+        # Assessor re-check F1: change the record, then rewrite the rebaseline's fingerprint_after to match.
+        rec, log = load("mas/mas-record.json"), load("mas/scope-changes.json")
+        edit(rec)
+        log["rebaselines"][-1]["fingerprint_after"] = scl.fingerprint(rec)
+        ref, _, problems = scl.reference(log, rec)
+        self.assertEqual(ref, scl.fingerprint(rec), "the rewritten log now matches the record")
+        return problems
+
+    def test_rebaseline_cannot_hide_a_resource_decision_change(self):
+        # Probe T4: P1 moved out of scope and the rebaseline rewritten.
+        problems = self._hidden_change(lambda rec: next(r for r in rec["information_resources"] if r["id"] == "P1").update(decision="out_of_scope"))
+        self.assertTrue(any("pinned" in p or "no longer gives" in p for p in problems), problems)
+
+    def test_rebaseline_cannot_hide_a_condition_change(self):
+        # Probe T3: COND-S1-1 edited and the rebaseline rewritten. Method 1 cannot see this, so the pin catches it.
+        problems = self._hidden_change(lambda rec: self._condition(rec, "COND-S1-1").update(text="Alert content is allowed in tickets."))
+        self.assertTrue(any("pinned" in p for p in problems), problems)
+
+    def test_unpinned_rebaseline_is_flagged(self):
+        log = load("mas/scope-changes.json")
+        log["rebaselines"][-1]["after_entry"] = "SC-001"
+        log["rebaselines"][-1]["fingerprint_before"] = log["entries"][0]["scope_fingerprint_after"]
+        _, _, problems = scl.reference(log)
+        self.assertTrue(any("not pinned" in p for p in problems), problems)
+
     def test_log_without_rebaseline_is_flagged(self):
         log = load("mas/scope-changes.json")
         del log["rebaselines"]
